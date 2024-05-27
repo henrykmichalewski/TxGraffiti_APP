@@ -14,6 +14,7 @@ def main():
         within mathematical data. By systematically calculating numerical properties and testing for potential inequalities,
         TxGraffiti highlights the most promising conjectures for further exploration.
 
+        ## Terms of Usage
         I do not ask to be on any papers that result from the use of TxGraffiti, but I would appreciate a mention in the acknowledgements
         and a citation given to the TxGraffiti website. I am always happy to hear about the results of using TxGraffiti, or to work collaboratively
         with you, so please feel free to contact me at rrd6@rice.edu if you wish to discuss anything further. Also, in the future I will be
