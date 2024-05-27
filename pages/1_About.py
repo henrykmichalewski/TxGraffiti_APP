@@ -70,7 +70,7 @@ def about():
         Until 2023, TxGraffiti only used the touch number to filter possible linear conjectures. That is, TxGraffiti would compute the touch number
         of each conjectured inequality found by solving the linear programs and then present to the user only the top 50 (or so) conjectures relative
         to their touch number. This technique was surprisingly valuable and led to several astonishing results, including that the independence number
-        is, at most, the matching number for r-regular graphs with r>0. The latest version of TxGraffiti (and Conjecturing.jl - the Julia counterpart to TxGraffiti)
+        is, at most, the matching number for $r$-regular graphs with $r>0$. The latest version of TxGraffiti (and Conjecturing.jl - the Julia counterpart to TxGraffiti)
         now also gives the user the ability to implement Fajtlowicz's Dalmation heuristic for further filtering of the conjectures; see Larson's [excellent paper](https://www.sciencedirect.com/science/article/pii/S0004370215001575)
         on the heuristic for more details.
     """
