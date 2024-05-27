@@ -411,7 +411,7 @@ def generate_conjectures():
 
     # with st.sidebar:
 
-    invariant_column = st.selectbox('Select the invariant to conjecture on:', numerical_columns)
+    invariant_column = st.selectbox('Select a graph invariant to conjecture on:', numerical_columns)
     single_property = st.selectbox('Would you like to only consider a specific family of graphs? NOTE: Choosing None will take a few minutes for TxGraffiti to generate conjectures.', ['None'] + boolean_columns)
     dalmatian_answer = st.radio('Apply the Dalmatian heuristic for conjecture filtering?', ['y', 'n'])
     generate_conjectures = st.button('Generate Conjectures')
