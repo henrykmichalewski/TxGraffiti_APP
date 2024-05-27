@@ -1,0 +1,44 @@
+a connected graph
+a tree graph
+a connected_graph with min_degree at least 2
+a connected_graph with min_degree at least 3
+a connected_graph with min_degree at least 4
+a connected and bipartite graph
+an eulerian graph
+a connected and planar graph
+a connected and regular graph
+a connected and cubic graph
+a connected graph which is not K_n
+a connected and triangle-free graph
+a connected and at-free graph
+a connected and claw-free graph
+a connected graph with maximum degree at most 3
+a connected graph which is not K_n and has maximum degree at most 3
+a connected, claw-free, and cubic graph
+a connected, planar, and cubic graph
+a connected and cubic graph which is not K_4
+a connected and well-covered graph
+a connected graph with diameter at most 3
+a connected and planar graph with diameter at most 3
+a connected and chordal graph
+a connected and bipartite graph with min_degree at least 2
+a connected and bipartite graph with min_degree at least 3
+a connected and bipartite graph with min_degree at least 4
+a connected and planar graph with min_degree at least 2
+a connected and planar graph with min_degree at least 3
+a connected and planar graph with min_degree at least 4
+a connected graph which is not K_n with min_degree at least 2
+a connected graph which is not K_n with min_degree at least 3
+a connected graph which is not K_n with min_degree at least 4
+a connected and triangle-free graph with min_degree at least 2
+a connected and triangle-free graph with min_degree at least 3
+a connected and triangle-free graph with min_degree at least 4
+a connected and at-free graph with min_degree at least 2
+a connected and at-free graph with min_degree at least 3
+a connected and at-free graph with min_degree at least 4
+a connected and claw-free graph with min_degree at least 2
+a connected and claw-free graph with min_degree at least 3
+a connected and claw-free graph with min_degree at least 4
+a connected graph with min_degree at least 2 and maximum degree at most 3
+a connected and chordal graph with min_degree at least 2
+a connected and chordal graph with min_degree at least 3
