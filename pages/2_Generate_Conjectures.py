@@ -357,7 +357,7 @@ TRIVIAL_BOUNDS = [
     "connected_zero_forcing_number <= order + -1",
     "connected_zero_forcing_number >= chromatic_number + -1",
     "connected_zero_forcing_number >= clique_number + -1",
-    "connected_zero_forcing_number <= total_zero_forcing_number"
+    "connected_zero_forcing_number >= total_zero_forcing_number"
 
 ]
 
