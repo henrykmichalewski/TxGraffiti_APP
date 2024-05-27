@@ -1,4 +1,5 @@
 import grinpy as gp
+import itertools
 
 __all__ = ["compute"]
 
@@ -193,6 +194,12 @@ def compute(G, property):
         return gp.is_connected(G) and gp.is_chordal(G) and gp.min_degree(G) >= 3
     elif  property == "a connected graph with min_degree at least 2 and maximum degree at most 3":
         return gp.is_connected(G) and gp.min_degree(G) >= 2 and gp.max_degree(G) <= 3
+    elif property == "a connected and diamond-free graph":
+        return gp.is_connected(G) and is_diamond_free(G)
+    elif property == "a connected, cubic, and diamond-free graph":
+        return gp.is_connected(G) and is_cubic_and_diamond_free(G)
+    elif property == "a connected and bull-free graph":
+        return gp.is_connected(G) and gp.is_bull_free(G)
     else:
         return getattr(gp, property)(G)
 
@@ -244,3 +251,45 @@ def k_residual_index(G):
     while gp.k_residue(G, k) < gp.independence_number(G):
         k += 1
     return k
+
+def is_diamond_free(G):
+    """Return True if the graph G is diamond-free, and False otherwise.
+
+    A graph is diamond-free if it does not contain a diamond as an induced subgraph.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    bool
+        True if G is diamond-free, and False otherwise.
+    """
+    diamond = gp.complete_graph(4)
+    diamond.remove_edge(1, 2)
+     # enumerate over all possible combinations of 5 vertices contained in G
+    for S in set(itertools.combinations(G.nodes(), 4)):
+        H = G.subgraph(list(S))
+        if gp.is_isomorphic(H, diamond):
+            return False
+    # if the above loop completes, the graph is bull-free
+    return True
+
+def is_cubic_and_diamond_free(G):
+    """Return True if the graph G is cubic and diamond-free, and False otherwise.
+
+    A graph is cubic if every vertex has degree 3, and diamond-free if it does not contain a diamond as an induced subgraph.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    bool
+        True if G is cubic and diamond-free, and False otherwise.
+    """
+    return gp.min_degree(G) == gp.max_degree(G) == 3 and is_diamond_free(G)

@@ -42,3 +42,6 @@ a connected and claw-free graph with min_degree at least 4
 a connected graph with min_degree at least 2 and maximum degree at most 3
 a connected and chordal graph with min_degree at least 2
 a connected and chordal graph with min_degree at least 3
+a connected and diamond-free graph
+a connected, cubic, and diamond-free graph
+a connected and bull-free graph

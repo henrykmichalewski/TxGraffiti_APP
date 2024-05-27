@@ -23,6 +23,7 @@ TEX_MAP = {
     "vertex_cover_number": r"\beta(G)",
     "zero_forcing_number": r"Z(G)",
     "total_zero_forcing_number": r"Z_t(G)",
+    "connected_zero_forcing_number": r"Z_c(G)",
     "power_domination_number": r"\gamma_P(G)",
     "total_domination_number": r"\gamma_t(G)",
     "connected_domination_number": r"\gamma_c(G)",
@@ -121,6 +122,10 @@ TEX_MAP = {
     "a connected graph with min_degree at least 2 and maximum degree at most 3": r"$\text{If } G \text{ is a connected graph with } \delta(G) \geq 2 \text{ and } \Delta(G) \leq 3 \text{, then}$",
     "a connected and chordal graph with min_degree at least 2": r"$\text{If } G \text{ is a connected and chordal graph with } \delta(G) \geq 2 \text{, then}$",
     "a connected and chordal graph with min_degree at least 3": r"$\text{If } G \text{ is a connected and chordal graph with } \delta(G) \geq 3 \text{, then}$",
+    "a connected and bull-free graph": r"$\text{If } G \text{ is a connected and bull-free graph, then}$",
+    "a connected and diamond-free graph": r"$\text{If } G \text{ is a connected and diamond-free graph, then}$",
+    "a connected, cubic, and diamond-free graph": r"$\text{If } G \text{ is a connected, cubic, and diamond-free graph, then}$",
+
 }
 
 DEF_MAP = {
@@ -143,6 +148,7 @@ DEF_MAP = {
     colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue
     and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total
     zero forcing set of $G$.""",
+    "connected_zero_forcing_number": r"""A *connected zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue and white. The *connected zero forcing number* of a graph $G$, denoted by $Z_c(G)$, is the minimum size of a connected zero forcing set of $G$.""",
     "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
     to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
     dominating set of $G$. """,
@@ -266,6 +272,9 @@ DEF_MAP = {
     "a connected and chordal graph with min_degree at least 2": r"""A connected and chordal graph with minimum degree at least 2 is a graph in which every vertex has degree at least 2 and every induced cycle has exactly three vertices.""",
     "a connected and chordal graph with min_degree at least 3": r"""A connected and chordal graph with minimum degree at least 3 is a graph in which every vertex has degree at least 3 and every induced cycle has exactly three vertices.""",
     "a connected and chordal graph with min_degree at least 4": r"""A connected and chordal graph with minimum degree at least 4 is a graph in which every vertex has degree at least 4 and every induced cycle has exactly three vertices.""",
+    "a connected and bull-free graph": r"""A *bull* is the complete graph $K_4$ minus one edge. A *bull-free graph* is a graph in which no induced subgraph is a bull.""",
+    "a connected and diamond-free graph": r"""A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
+    "a connected, cubic, and diamond-free graph": r"""A *cubic graph* is a graph where every vertex has degree 3. A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
 
 }
 
@@ -341,7 +350,13 @@ TRIVIAL_BOUNDS = [
     "independence_number >= domination_number",
     "diameter >= radius",
     "zero_forcing_number >= 1/2 total_zero_forcing_number",
-    "annihilation_number <= 1/2 order"
+    "annihilation_number <= 1/2 order",
+    "connected_zero_forcing_number >= zero_forcing_number",
+    "connected_zero_forcing_number <= zero_forcing_number",
+    "connected_zero_forcing_number >= min_degree",
+    "connected_zero_forcing_number <= order + -1",
+    "connected_zero_forcing_number >= chromatic_number + -1",
+    "connected_zero_forcing_number >= clique_number + -1",
 
 ]
 

@@ -55,3 +55,4 @@ min_edge_cover
 [order/ (max_degree - 1)]
 [order/ (max_degree + 2)]
 (residue + annihilation_number)
+connected_zero_forcing_number
