@@ -14,8 +14,12 @@ def main():
         within mathematical data. By systematically calculating numerical properties and testing for potential inequalities,
         TxGraffiti highlights the most promising conjectures for further exploration.
 
+        To conjecture with TxGraffiti, go to the Generate Conjectures page.
+
         """
     )
+
+
 
 if __name__ == "__main__":
     main()
