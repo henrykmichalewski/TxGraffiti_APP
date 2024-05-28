@@ -145,7 +145,8 @@ DEF_MAP = {
     "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
     all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
     set of $G$.""",
-    "semitotal_domination_number": r"""A *semitotal dominating set* is a set of vertices $S \subseteq V(G)$ in $G$ such that $S$ is a dominating set and each vertex of $S$ within distance 2 to another vertex in $S$.""",
+    "semitotal_domination_number": r"""A *semitotal dominating set* is a set of vertices $S \subseteq V(G)$ in $G$ such that $S$ is a dominating set and each vertex of $S$ within distance 2 to another vertex in $S$.
+    The *semitotal domination number* of $G$ is the minimum cardinality of a semitotal dominating set of $G$, and is denoted by $\gamma_{2t}(G)$.""",
     "total_zero_forcing_number": r"""A *total zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices with no isolates, such that if the vertices in $S$ are initially
     colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue
     and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total
