@@ -344,7 +344,6 @@ TRIVIAL_BOUNDS = [
     "independent_domination_number <= 1/5 diameter + 27/5",
     "domination_number >= [order/ (max_degree + 1)]",
     "connected_domination_number >= power_domination_number",
-    "independence_number <= annihilation_number",
     "independence_number <= radius",
     "independence_number >= residue",
     "independence_number <= order + -1",
