@@ -200,6 +200,8 @@ def compute(G, property):
         return gp.is_connected(G) and is_cubic_and_diamond_free(G)
     elif property == "a connected and bull-free graph":
         return gp.is_connected(G) and gp.is_bull_free(G)
+    elif property == "semitotal_domination_number":
+        return semitotal_domination_number(G)
     else:
         return getattr(gp, property)(G)
 
@@ -293,3 +295,66 @@ def is_cubic_and_diamond_free(G):
         True if G is cubic and diamond-free, and False otherwise.
     """
     return gp.min_degree(G) == gp.max_degree(G) == 3 and is_diamond_free(G)
+
+import networkx as nx
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpBinary
+
+def closed_neighborhood(G, node):
+    """Return the closed neighborhood of a node."""
+    return set(G.neighbors(node)).union({node})
+
+def min_semitotal_dominating_set_ilp(G):
+    """Return a smallest semitotal dominating set in the graph.
+
+    A semitotal dominating set in a graph *G* is a set *D* of nodes of *G* such that:
+    1. *D* is a dominating set.
+    2. Each vertex in *D* has another vertex in *D* within distance 2.
+
+    This method uses integer programming to compute a smallest semitotal dominating set.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    set
+        A set of nodes in a smallest semitotal dominating set in the graph.
+    """
+    prob = LpProblem("min_semitotal_dominating_set", LpMinimize)
+    variables = {node: LpVariable("x{}".format(i + 1), 0, 1, LpBinary) for i, node in enumerate(G.nodes())}
+
+    # Set the semitotal domination number objective function
+    prob += lpSum([variables[n] for n in variables])
+
+    # Constraint 1: Dominating set constraint
+    for node in G.nodes():
+        combination = [variables[n] for n in variables if n in closed_neighborhood(G, node)]
+        prob += lpSum(combination) >= 1
+
+    # Constraint 2: Semitotal domination constraint
+    for node in G.nodes():
+        if len(closed_neighborhood(G, node).intersection(G.nodes())) > 1:
+            prob += variables[node] + lpSum(variables[neighbor] for neighbor in G.neighbors(node) if neighbor != node) >= 2
+
+    prob.solve()
+    solution_set = {node for node in variables if variables[node].value() == 1}
+    return solution_set
+
+def semitotal_domination_number(G):
+    """Return the semitotal domination number of the graph.
+
+    The semitotal domination number of a graph *G* is the size of a smallest semitotal dominating set in *G*.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    int
+        The semitotal domination number of the graph.
+    """
+    return len(min_semitotal_dominating_set_ilp(G))

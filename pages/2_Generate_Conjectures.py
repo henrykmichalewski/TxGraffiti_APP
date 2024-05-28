@@ -26,6 +26,7 @@ TEX_MAP = {
     "connected_zero_forcing_number": r"Z_c(G)",
     "power_domination_number": r"\gamma_P(G)",
     "total_domination_number": r"\gamma_t(G)",
+    "semitotal_domination_number": r"\gamma_{2t}(G)",
     "connected_domination_number": r"\gamma_c(G)",
     "independent_domination_number": r"i(G)",
     "matching_number": r"\mu(G)",
@@ -144,6 +145,7 @@ DEF_MAP = {
     "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
     all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
     set of $G$.""",
+    "semitotal_domination_number": r"""A semitotal dominating set $S \subseteq V(G)$ of $G$ such that $S$ is a dominating set and each vertex of $S$ within distance 2 to another vertex in $S$.""",
     "total_zero_forcing_number": r"""A *total zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices with no isolates, such that if the vertices in $S$ are initially
     colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue
     and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total
