@@ -353,6 +353,7 @@ TRIVIAL_BOUNDS = [
     "independence_number >= domination_number",
     "diameter >= radius",
     "zero_forcing_number >= 1/2 total_zero_forcing_number",
+    "zero_forcing_number <= connected_zero_forcing_number",
     "annihilation_number <= 1/2 order",
     "connected_zero_forcing_number >= zero_forcing_number",
     "connected_zero_forcing_number <= zero_forcing_number",
