@@ -310,6 +310,7 @@ TRIVIAL_BOUNDS = [
     "total_domination_number >= domination_number",
     "total_domination_number >= sub_total_domination_number",
     "domination_number >= 1/2 total_domination_number",
+    "domination_number <= matching_number",
     "domination_number <= 1/2 order",
     "domination_number <= (order - max_degree)",
     "domination_number >= slater",
