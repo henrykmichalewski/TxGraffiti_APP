@@ -149,9 +149,10 @@ DEF_MAP = {
     The *semitotal domination number* of $G$ is the minimum cardinality of a semitotal dominating set of $G$, and is denoted by $\gamma_{2t}(G)$.""",
     "total_zero_forcing_number": r"""A *total zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices with no isolates, such that if the vertices in $S$ are initially
     colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue
-    and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total
-    zero forcing set of $G$.""",
-    "connected_zero_forcing_number": r"""A *connected zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue and white. The *connected zero forcing number* of a graph $G$, denoted by $Z_c(G)$, is the minimum size of a connected zero forcing set of $G$.""",
+    and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total zero forcing set of $G$.""",
+    "connected_zero_forcing_number": r"""A *connected zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$
+    are initially colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue and white.
+    The *connected zero forcing number* of a graph $G$, denoted by $Z_c(G)$, is the minimum size of a connected zero forcing set of $G$.""",
     "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
     to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
     dominating set of $G$. """,
@@ -188,7 +189,7 @@ DEF_MAP = {
     "(order - connected_domination_number)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The connected domination number of a graph $G$,
     denoted by $\gamma_c(G)$, is the minimum cardinality of a connected dominating set of $G$. A connected dominating set of $G$ is a dominating set $D \subseteq V(G)$ of vertices such that the subgraph induced by $D$ is connected.""",
     "(order - power_domination_number)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The power domination number of a graph $G$, denoted by $\gamma_P(G)$,
-    is the minimum cardinality of a power dominating set of $G.""",
+    is the minimum cardinality of a power dominating set of $G$.""",
     "(order - zero_forcing_number)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The zero forcing number of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing set of $G$.
     A zero forcing set of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue.""",
     "(order - diameter)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The diameter of a graph $G$, denoted by $\text{diam}(G)$, is the maximum distance between any two vertices in $G$.""",
@@ -201,21 +202,21 @@ DEF_MAP = {
     "(order - matching_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The matching number of a graph $G$, denoted by $\mu(G)$, is the maximum cardinality of a matching in $G$.
     A matching in $G$ is a set of edges that do not share any common vertices.""",
     "(order - min_maximal_matching_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The minimum maximal matching number of a graph $G$, denoted by $\gamma_e(G)$, is the minimum cardinality of a maximal matching in $G$.""",
-    "(order - min_degree)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The minimum degree of a graph $G$, denoted by $\delta(G)$, is the minimum degree of a vertex in $G.""",
-    "(order - max_degree)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G.""",
-    "(order - clique_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The clique number of a graph $G$, denoted by $\omega(G)$, is the maximum cardinality of a clique in $G.
-    A clique in $G$ is a set of vertices that induces a complete subgraph of $G.""",
-    "(order - residue)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G.""",
+    "(order - min_degree)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The minimum degree of a graph $G$, denoted by $\delta(G)$, is the minimum degree of a vertex in $G$.""",
+    "(order - max_degree)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
+    "(order - clique_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The clique number of a graph $G$, denoted by $\omega(G)$, is the maximum cardinality of a clique in $G$.
+    A clique in $G$ is a set of vertices that induces a complete subgraph of $G$.""",
+    "(order - residue)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G$.""",
     "(order - annihilation_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper.""",
     "(order - sub_total_domination_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The sub-total domination number of a graph $G$ is denoted by $\text{sub}_t(G)$.""",
     "(order - slater)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The Slater number of a graph $G$ is a degree sequence graph invariant denoted by $sl(G)$.""",
     "(order - k_slater_index)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The $k$-Slater index of a graph $G$, denoted by $sl(G, k)$, is the smallest integer $k \geq 1$ so that $\text{sub}_k(G) \geq \gamma(G)$.""",
     "(order - k_residual_index)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The $k$-residual index of a graph $G$, denoted by $R(G, k)$, is the smallest integer $k \geq 1$ so that $\text{R}_k(G) \geq \alpha(G)$.""",
     "[(annihilation_number + residue)/ max_degree]": r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper. The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
-    "[order/ max_degree]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G.""",
-    "[order/ (max_degree + 1)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G.""",
-    "[order/ (max_degree - 1)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G.""",
-    "[order/ (max_degree + 2)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G.""",
+    "[order/ max_degree]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
+    "[order/ (max_degree + 1)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
+    "[order/ (max_degree - 1)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
+    "[order/ (max_degree + 2)]": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
     "(residue + annihilation_number)": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G$. The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper.""",
     "a connected graph": r"""A connected graph is a graph in which there is a path between every pair of vertices.""",
     "a connected and bipartite graph": r"""A connected and bipartite graph is a graph in which the vertices can be partitioned into two sets such that
@@ -365,9 +366,33 @@ TRIVIAL_BOUNDS = [
     "connected_zero_forcing_number <= order + -1",
     "connected_zero_forcing_number >= chromatic_number + -1",
     "connected_zero_forcing_number >= clique_number + -1",
-    "connected_zero_forcing_number >= total_zero_forcing_number"
+    "connected_zero_forcing_number >= total_zero_forcing_number",
+    "zero_forcing_number >= chromatic_number + -1",
+    "zero_forcing_number >= clique_number + -1",
+    "total_zero_forcing_number >= chromatic_number + -1",
+    "total_zero_forcing_number >= clique_number + -1"
+    "connected_zero_forcing_number >= chromatic_number + -1",
+    "connected_zero_forcing_number >= clique_number + -1",
+    "slater <= independent_domination_number",
+    "residue <= independence_number",
+    "[order/ (max_degree + 1)] <= domination_number"
 
 ]
+
+import time
+
+def long_computation():
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+
+    for i in range(100):
+        progress_bar.progress(i + 1)
+        status_text.text(f'Filtering and sorting the proposed inequalities... {i + 1}%')
+        time.sleep(0.1)  # Simulate a long computation
+
+    status_text.text('Done!')
+    st.success('Process complete!')
+
 
 def fraction_to_str(fraction):
     return f"{fraction.numerator}/{fraction.denominator}"
@@ -411,15 +436,41 @@ def conjecture_to_latex(conjecture):
         tex_string = TEX_MAP[conj_dict["conclusion"]["lhs"]] + " " + TEX_MAP[conj_dict["conclusion"]["inequality"]] + " " + slope + "" + TEX_MAP[conj_dict["conclusion"]["rhs"]] + f" {operation} " + intercept + ","
     return tex_string
 
+def multi_radio(label, options):
+    selections = {option: False for option in options}
+
+    st.write(label)
+    for option in options:
+        selections[option] = st.checkbox(option, key=option)
+
+    selected_options = [option for option, selected in selections.items() if selected]
+    return selected_options
+
+def rows_multi_radio(label, options):
+    st.write(label)
+    selections = {option: False for option in options}
+    rows = (len(options) + 3) // 2  # Calculate number of rows needed
+
+    for i in range(rows):
+        cols = st.columns(2)
+        for j in range(2):
+            if 2 * i + j < len(options):
+                option = options[2 * i + j]
+                selections[option] = cols[j].checkbox(option, key=option)
+
+    selected_options = [option for option, selected in selections.items() if selected]
+    return selected_options
+
 def generate_conjectures():
     # st.title("Generate Conjectures")
     st.set_page_config(page_title="Conjecture Generator") #, page_icon="📈")
     st.markdown("# Conjecturing with TxGraffiti")
     # st.sidebar.header("Plotting Demo")
     st.write(
-        """Please select the invariant to conjecture on, whether you would like to conjecture on
-        a specific family of graphs, and whether you would like to apply the Dalmatian heuristic
-        for filtering the conjectures. After selecting these fields, you can generate the conjectures
+        """Please select one or more invariants to conjecture on, whether you would like to conjecture on
+        a specific families of graphs, and whether you would like to apply the Dalmatian heuristic
+        for further filtering the conjectures. **Note, different combinations of these fields will yield different conjectures**.
+        After selecting these fields, you can generate the conjectures
         by clicking the button. The conjectures will be computed and then displayed below.
         """
     )
@@ -435,19 +486,24 @@ def generate_conjectures():
 
     # with st.sidebar:
 
-    invariant_column = st.selectbox('Select a graph invariant to conjecture on:', numerical_columns)
-    single_property = st.selectbox('Would you like to only consider a specific family of graphs? NOTE: Choosing None will take a few minutes for TxGraffiti to generate conjectures.', ['None'] + boolean_columns)
-    dalmatian_answer = st.radio('Apply the Dalmatian heuristic for conjecture filtering?', ['y', 'n'])
-    generate_conjectures = st.button('Generate Conjectures')
+    invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
 
+    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', ['None'] + boolean_columns)
+    dalmatian_answer = st.radio('### Apply the Dalmatian heuristic for conjecture (further) filtering?', ['y', 'n'])
+
+    generate_conjectures = st.button('Generate Conjectures')
+    conjectures = []
     if generate_conjectures:
         if single_property != 'None':
-            boolean_columns = [single_property]
+            boolean_columns = single_property
+        for invariant in invariant_column:
 
-        upper_conjectures = make_all_upper_linear_conjectures(df, invariant_column, numerical_columns, boolean_columns)
-        lower_conjectures = make_all_lower_linear_conjectures(df, invariant_column, numerical_columns, boolean_columns)
+            with st.spinner(f'Learning conjectures for the {invariant} ...'):
+                upper_conjectures = make_all_upper_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
+                lower_conjectures = make_all_lower_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
+                conjectures = conjectures + upper_conjectures + lower_conjectures
+                long_computation()
 
-        conjectures = upper_conjectures + lower_conjectures
         conjectures = [
             conj for conj in conjectures if str(conj.conclusion) not in TRIVIAL_BOUNDS
         ]
@@ -461,7 +517,7 @@ def generate_conjectures():
 
         conjectures = filter_conjectures(df, conjectures)
 
-        st.subheader("Generated Conjectures")
+        st.subheader("TxGraffiti conjectures the following inequalities:")
         for i, conjecture in enumerate(conjectures):
             with st.expander(f"# Conjecture {i + 1}"):
                 print(conjecture.conclusion)
