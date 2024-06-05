@@ -10,6 +10,7 @@ from functions import (
     booleans,
     make_graph_dataframe_from_edgelists
 )
+import numpy as np
 
 DATA_FILE = "training-data/data.csv"
 
@@ -489,14 +490,16 @@ def generate_conjectures():
     # with st.sidebar:
 
     invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
+    if invariant_column == []:
+        invariant_column = numerical_columns
 
-    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', ['None'] + boolean_columns)
+    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     dalmatian_answer = st.radio('### Apply the Dalmatian heuristic for conjecture (further) filtering?', ['y', 'n'])
 
     generate_conjectures = st.button('Generate Conjectures')
     conjectures = []
     if generate_conjectures:
-        if single_property != 'None':
+        if single_property != []:
             boolean_columns = single_property
         for invariant in invariant_column:
 
