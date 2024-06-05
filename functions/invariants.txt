@@ -27,6 +27,7 @@ annihilation_number
 sub_total_domination_number
 slater
 k_slater_index
+wiener_index
 vertex_cover_number
 k_residual_index
 (order - domination_number)

@@ -43,6 +43,7 @@ TEX_MAP = {
     "sub_total_domination_number": r"\text{sub}_t(G)",
     "slater": r"sl(G)",
     "k_slater_index": r"sl(G, k)",
+    "wiener_index": r"W(G)",
     "k_residual_index": r"R(G, k)",
     "triameter": r"\text{tri}(G)",
     "randic_index": r"\text{randic}(G)",
@@ -280,6 +281,7 @@ DEF_MAP = {
     "a connected and bull-free graph": r"""A *bull* is the complete graph $K_4$ minus one edge. A *bull-free graph* is a graph in which no induced subgraph is a bull.""",
     "a connected and diamond-free graph": r"""A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a connected, cubic, and diamond-free graph": r"""A *cubic graph* is a graph where every vertex has degree 3. A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
+    "wiener_index": "The weiner index, denoted by W(G), is the sum of the distances between all pairs of vertices in G.",
 
 }
 
