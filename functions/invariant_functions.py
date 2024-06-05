@@ -22,6 +22,8 @@ def compute(G, property):
     """
     if property == "k_slater_index":
         return k_slater_index(G)
+    elif property == "wiener_index":
+        return gp.wiener_index(G)
     elif property == "vertex_cover_number":
         return vertex_cover_number(G)
     elif property == "k_residual_index":
