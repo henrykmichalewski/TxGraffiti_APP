@@ -490,7 +490,7 @@ def generate_conjectures():
 
     invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
 
-    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', ['None'] + boolean_columns)
+    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     dalmatian_answer = st.radio('### Apply the Dalmatian heuristic for conjecture (further) filtering?', ['y', 'n'])
 
     generate_conjectures = st.button('Generate Conjectures')
