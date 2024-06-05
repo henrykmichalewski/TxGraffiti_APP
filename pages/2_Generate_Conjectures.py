@@ -480,7 +480,7 @@ def generate_conjectures():
     df = pd.read_csv(DATA_FILE)
 
     numerical_columns = [col for col in df.columns if col in invariants]
-    boolean_columns = [col for col in df.columns if col in booleans]
+    boolean_columns = [col for col in df.columns if col in booleans] - ["is_connected"]
 
     # data = st.button("Update Graph Database")
     # if data:
