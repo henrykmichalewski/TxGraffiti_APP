@@ -230,11 +230,11 @@ def update_data_from_user():
                 f.write(edge[0] + " " + edge[1] + "\n")
     G = gp.Graph(edges)
     values = compute_graph_values_from_instance(G, name)
-    df = pd.read_csv("value-data/data.csv")
+    df = pd.read_csv("training-data/data.csv")
     # Append the new values to the dataframe, note that dataframes
     # do not have an append method, so we concatenate the two dataframes
     # and then drop the duplicates.
     df = pd.concat([df, pd.DataFrame(values, index=[0])], ignore_index=True)
     df.set_index("name", inplace=True)
-    df.to_csv("value-data/data.csv")
+    df.to_csv("training-data/data.csv")
     return None
