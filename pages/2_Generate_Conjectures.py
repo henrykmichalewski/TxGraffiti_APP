@@ -380,8 +380,8 @@ TRIVIAL_BOUNDS = [
     "connected_zero_forcing_number >= clique_number + -1",
     "slater <= independent_domination_number",
     "residue <= independence_number",
-    "[order/ (max_degree + 1)] <= domination_number"
-
+    "[order/ (max_degree + 1)] <= domination_number",
+    "annihilation_number >= (order - matching_number)",
 ]
 
 import time
