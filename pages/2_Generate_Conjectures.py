@@ -382,6 +382,14 @@ TRIVIAL_BOUNDS = [
     "residue <= independence_number",
     "[order/ (max_degree + 1)] <= domination_number",
     "annihilation_number >= (order - matching_number)",
+    "annihilation_number >= domination_number",
+    "annihilation_number >= independence_number",
+    "annihilation_number >= residue",
+    "annihilation_number >= matching_number",
+    "annihilation_number >= independent_domination_number",
+    "annihilation_number >= slater",
+    "annihilation_number >= power_domination_number",
+
 ]
 
 import time
