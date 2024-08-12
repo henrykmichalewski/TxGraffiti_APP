@@ -490,7 +490,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
 
-    numerical_columns = [col for col in df.columns if col in invariants]
+    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number"]]
     boolean_columns = [col for col in df.columns if col in booleans]
 
     # data = st.button("Update Graph Database")
