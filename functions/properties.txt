@@ -45,3 +45,4 @@ a connected and chordal graph with min_degree at least 3
 a connected and diamond-free graph
 a connected, cubic, and diamond-free graph
 a connected and bull-free graph
+a block graph

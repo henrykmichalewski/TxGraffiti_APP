@@ -1,4 +1,6 @@
 import grinpy as gp
+import networkx as nx
+import numpy as np
 import itertools
 
 __all__ = ["compute"]
@@ -100,6 +102,16 @@ def compute(G, property):
         return gp.number_of_nodes(G) / (gp.max_degree(G) + 2)
     elif property == "(residue + annihilation_number)":
         return gp.residue(G) + gp.annihilation_number(G)
+    elif property == "graph_energy":
+        return graph_energy(G)
+    elif property == "square_positive_energy":
+        return square_positive_energy(G)
+    elif property == "square_negative_energy":
+        return square_negative_energy(G)
+    elif property == "positive_semidefinite_zero_forcing_number":
+        return positive_semidefinite_zero_forcing_number(G)
+    elif property == "second_largest_eigenvalue":
+        return second_largest_eigenvalue(G)
     elif property == "a connected graph":
         return gp.is_connected(G)
     elif property == "a connected and planar graph":
@@ -204,6 +216,8 @@ def compute(G, property):
         return gp.is_connected(G) and gp.is_bull_free(G)
     elif property == "semitotal_domination_number":
         return semitotal_domination_number(G)
+    elif property == "a block graph":
+        return is_block_graph(G)
     else:
         return getattr(gp, property)(G)
 
@@ -360,3 +374,304 @@ def semitotal_domination_number(G):
         The semitotal domination number of the graph.
     """
     return len(min_semitotal_dominating_set_ilp(G))
+
+def graph_energy(G):
+    """
+    Compute the energy of a graph G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    float
+        The energy of the graph G.
+    """
+    # Step 1: Compute the adjacency matrix A(G)
+    A = nx.adjacency_matrix(G).todense()
+
+    # Step 2: Compute the eigenvalues of the adjacency matrix
+    eigenvalues = np.linalg.eigvals(A)
+
+    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
+    energy = sum(np.abs(eigenvalues))
+
+    return round(energy)
+
+def square_positive_energy(G):
+    """
+    Compute the square positive energy of a graph G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    float
+        The square positive energy of the graph G.
+    """
+    # Step 1: Compute the adjacency matrix A(G)
+    A = nx.adjacency_matrix(G).todense()
+
+    # Step 2: Compute the eigenvalues of the adjacency matrix
+    eigenvalues = np.linalg.eigvals(A)
+
+    positive_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig > 0]
+    # negative_eigenvalues = [eig for eig in eigenvalues if eig < 0]
+
+    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
+    energy = sum(positive_eigenvalues_sqaures)
+
+    return round(energy)
+
+def square_negative_energy(G):
+    """
+    Compute the square negative energy of a graph G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    float
+        The square negative energy of the graph G.
+    """
+    # Step 1: Compute the adjacency matrix A(G)
+    A = nx.adjacency_matrix(G).todense()
+
+    # Step 2: Compute the eigenvalues of the adjacency matrix
+    eigenvalues = np.linalg.eigvals(A)
+
+    negative_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig < 0]
+
+    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
+    energy = sum(negative_eigenvalues_sqaures)
+
+    return round(energy)
+
+
+from itertools import combinations
+from networkx import is_connected, Graph, neighbors
+
+def is_psd_forcing_vertex(G, v, black_set, component):
+    """
+    Return whether or not v can force any white vertex in the component.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    v : node
+        A single node in G.
+
+    black_set : set
+        A set of black vertices in G.
+
+    component : set
+        A set of vertices in a component of G - black_set.
+
+    Returns
+    -------
+    tuple
+        A tuple (True, w) if v can force the white vertex w in the component, (False, None) otherwise.
+    """
+    set_neighbors = set(neighbors(G, v))
+    white_neighbors_in_component = set_neighbors.intersection(component)
+
+    if len(white_neighbors_in_component) == 1:
+        w = white_neighbors_in_component.pop()
+        return (True, w)
+    return (False, None)
+
+
+def psd_color_change(G, black_set):
+    """
+    Apply the PSD color change rule repeatedly until no more vertices can be forced.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    black_set : set
+        A set of initial black vertices.
+
+    Returns
+    -------
+    set
+        The derived set of black vertices.
+    """
+    black_set = set(black_set)
+    white_set = set(G.nodes()) - black_set
+
+    while True:
+        new_black = set()
+        components = [set(c) for c in nx.connected_components(G.subgraph(white_set))]
+
+        for component in components:
+            for v in black_set:
+                can_force, w = is_psd_forcing_vertex(G, v, black_set, component)
+                if can_force:
+                    new_black.add(w)
+
+        if not new_black:
+            break
+
+        black_set.update(new_black)
+        white_set -= new_black
+
+    return black_set
+
+
+def is_psd_zero_forcing_set(G, black_set):
+    """
+    Return whether or not the vertices in black_set comprise a PSD zero forcing set in G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    black_set : set
+        A set of initial black vertices.
+
+    Returns
+    -------
+    boolean
+        True if the black_set is a PSD zero forcing set in G. False otherwise.
+    """
+    derived_set = psd_color_change(G, black_set)
+    return len(derived_set) == G.order()
+
+
+def min_psd_zero_forcing_set(G):
+    """
+    Return a smallest PSD zero forcing set in G.
+
+    The method used to compute the set is brute force.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    list
+        A list of nodes in a smallest PSD zero forcing set in G.
+    """
+    for i in range(1, G.order() + 1):
+        for black_set in combinations(G.nodes(), i):
+            if is_psd_zero_forcing_set(G, black_set):
+                return list(black_set)
+
+
+def positive_semidefinite_zero_forcing_number(G):
+    """
+    Return the PSD zero forcing number of G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    int
+        The PSD zero forcing number of G.
+    """
+    return len(min_psd_zero_forcing_set(G))
+
+import pulp
+import networkx as nx
+
+def semitotal_domination_number(G):
+    # Map node labels to indices
+    node_mapping = {node: idx for idx, node in enumerate(G.nodes())}
+    inv_node_mapping = {idx: node for node, idx in node_mapping.items()}
+    n = len(G)
+
+    # Create a linear-integer problem
+    prob = pulp.LpProblem("SemitotalDomination", pulp.LpMinimize)
+
+    # Decision variables
+    x = pulp.LpVariable.dicts("x", range(n), 0, 1, pulp.LpBinary)
+
+    # Objective function
+    prob += pulp.lpSum(x[i] for i in range(n)), "MinimizeSemitotalDominationSet"
+
+    # Dominating set constraint
+    for i in range(n):
+        node = inv_node_mapping[i]
+        prob += x[i] + pulp.lpSum(x[node_mapping[j]] for j in G.neighbors(node)) >= 1, f"DominatingSet_{i}"
+
+    # Semitotal constraint
+    for i in range(n):
+        node = inv_node_mapping[i]
+        distance_2_neighbors = set(nx.single_source_shortest_path_length(G, node, cutoff=2).keys())
+        distance_2_neighbors.discard(node)  # Exclude the vertex itself
+        prob += x[i] <= pulp.lpSum(x[node_mapping[j]] for j in distance_2_neighbors), f"Semitotal_{i}"
+
+    # Solve the problem
+    prob.solve()
+
+    # Get the solution
+    semitotal_dominating_set = [inv_node_mapping[i] for i in range(n) if x[i].varValue > 0.5]
+    return len(semitotal_dominating_set), semitotal_dominating_set
+
+def second_largest_eigenvalue(G):
+    """
+    Compute the second largest eigenvalue of the adjacency matrix of a graph G.
+
+    Parameters
+    ----------
+    G : NetworkX graph
+        An undirected graph.
+
+    Returns
+    -------
+    float
+        The second largest eigenvalue of the adjacency matrix of G.
+    """
+    # Step 1: Compute the adjacency matrix A(G)
+    A = nx.adjacency_matrix(G).todense()
+
+    # Step 2: Compute the eigenvalues of the adjacency matrix
+    eigenvalues = np.linalg.eigvals(A)
+
+    # Step 3: Sort the eigenvalues in descending order
+    sorted_eigenvalues = np.sort(eigenvalues)[::-1]
+
+    value = round(sorted_eigenvalues[1])
+
+    # Step 4: Return the second largest eigenvalue
+    return value
+
+def is_complete_graph(G):
+    """Check if a graph G is a complete graph."""
+    n = G.number_of_nodes()
+    # A complete graph with n nodes has n*(n-1)/2 edges
+    return G.number_of_edges() == n * (n - 1) // 2
+
+def is_block_graph(G):
+    # Check if the graph is connected
+    if not nx.is_connected(G):
+        return False
+
+    # Find all biconnected components (blocks)
+    blocks = list(nx.biconnected_components(G))
+
+    for block in blocks:
+        subgraph = G.subgraph(block)
+        # Check if the subgraph (block) is a clique
+        if not is_complete_graph(subgraph):
+            return False
+
+    return True

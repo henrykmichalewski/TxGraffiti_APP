@@ -38,6 +38,8 @@ TEX_MAP = {
     "radius": r"\text{rad}(G)",
     "order": r"n(G)",
     "size": r"m(G)",
+    "positive_semidefinite_zero_forcing_number": r"Z_+(G)",
+    "graph_energy": r"[\mathcal{E}(G)]",
     "residue": r"R(G)",
     "annihilation_number": r"a(G)",
     "sub_total_domination_number": r"\text{sub}_t(G)",
@@ -47,6 +49,9 @@ TEX_MAP = {
     "k_residual_index": r"R(G, k)",
     "triameter": r"\text{tri}(G)",
     "randic_index": r"\text{randic}(G)",
+    "second_largest_eigenvalues" : r"[\lambda_2(G)]",
+    "square_positive_energy" : r"[s^{+}(G)]",
+    "square_negative_energy" : r"[s^{-}(G)]",
     "harmonic_index": r"\text{harmonic}(G)",
     "sum_connectivity_index": r"\text{sum}_c(G)",
     "(order - domination_number)": r"(n(G) - \gamma(G))",
@@ -128,6 +133,7 @@ TEX_MAP = {
     "a connected and bull-free graph": r"$\text{If } G \text{ is a connected and bull-free graph, then}$",
     "a connected and diamond-free graph": r"$\text{If } G \text{ is a connected and diamond-free graph, then}$",
     "a connected, cubic, and diamond-free graph": r"$\text{If } G \text{ is a connected, cubic, and diamond-free graph, then}$",
+    "a block graph": r"$\text{If } G \text{ is a block graph, then}$",
 
 }
 
@@ -174,6 +180,11 @@ DEF_MAP = {
     "triameter": r"""The triameter of a graph $G$is denoted by $\text{tri}(G)$.""",
     "order" : r"""The order of a graph $G$, denoted by $n(G)$, is the number of vertices in $G$.""",
     "size" : r"""The size of a graph $G$, denoted by $m(G)$, is the number of edges in $G$.""",
+    "square_positive_energy" : r"""The square positive energy of a graph $G$, denoted $[s^{+}(G)]$, is the sum of the squares of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+    "square_negative_energy" : r"""The square negative energy of a graph $G$, denoted $[s^{-}(G)]$, is the sum of the squares of the negative eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+    "graph_energy" : r"""The energy of a graph $G$, denoted $[\mathcal{E}(G)]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+    "second_largest_eigenvalues" : r"""The second largest eigenvalue of a graph $G$, denoted by $[\lambda_2(G)]$, is the second largest eigenvalue of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+    "positive_semidefinite_zero_forcing_number" : r"""The *positive semidefinite zero forcing number* of a graph $G$, denoted by $Z_{+}(G)$, is the minimum cardinality of a positive semidefinite zero forcing set of $G$.""",
     "residue" : r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$.""",
     "harmonic_index": r"""The harmonic index of a graph $G$ is a degree sequence graph invariant denoted by $\text{harmonic}(G)$.""",
@@ -281,6 +292,7 @@ DEF_MAP = {
     "a connected and bull-free graph": r"""A *bull* is the complete graph $K_4$ minus one edge. A *bull-free graph* is a graph in which no induced subgraph is a bull.""",
     "a connected and diamond-free graph": r"""A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a connected, cubic, and diamond-free graph": r"""A *cubic graph* is a graph where every vertex has degree 3. A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
+    "a block graph": """A block graph is a connected graph in which every biconnected component is a clique.""",
     "wiener_index": "The weiner index, denoted by W(G), is the sum of the distances between all pairs of vertices in G.",
 
 }
@@ -303,12 +315,18 @@ TRIVIAL_BOUNDS = [
     "independent_domination_number <= independence_number",
     "total_domination_number <= connected_domination_number",
     "zero_forcing_number >= min_degree",
+    "positive_semidefinite_zero_forcing_number <= zero_forcing_number",
+    "positive_semidefinite_zero_forcing_number <= total_zero_forcing_number",
+    "positive_semidefinite_zero_forcing_number <= connected_zero_forcing_number",
+    "zero_forcing_number >= positive_semidefinite_zero_forcing_number",
     "zero_forcing_number <= total_zero_forcing_number",
     "total_zero_forcing_number >= zero_forcing_number",
+    "total_zero_forcing_number >= positive_semidefinite_zero_forcing_number",
     "power_domination_number >= total_zero_forcing_number",
     "zero_forcing_number >= power_domination_number",
     "zero_forcing_number <= (order - connected_domination_number)",
     "total_zero_forcing_number >= min_degree",
+    "positive_semidefinite_zero_forcing_number >= min_degree",
     "matching_number >= min_maximal_matching_number",
     "min_maximal_matching_number <= matching_number",
     "matching_number <= 1/2 order",
@@ -372,6 +390,7 @@ TRIVIAL_BOUNDS = [
     "connected_zero_forcing_number >= chromatic_number + -1",
     "connected_zero_forcing_number >= clique_number + -1",
     "connected_zero_forcing_number >= total_zero_forcing_number",
+    "connected_zero_forcing_number >= positive_semidefinite_zero_forcing_number",
     "zero_forcing_number >= chromatic_number + -1",
     "zero_forcing_number >= clique_number + -1",
     "total_zero_forcing_number >= chromatic_number + -1",
@@ -490,7 +509,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
 
-    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number"]]
+    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues"]]
     boolean_columns = [col for col in df.columns if col in booleans]
 
     # data = st.button("Update Graph Database")
