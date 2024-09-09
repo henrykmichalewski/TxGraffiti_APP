@@ -58,8 +58,10 @@ TEX_MAP = {
     "square_negative_energy" : r"[s^{-}(G)]",
     "harmonic_index": r"\text{harmonic}(G)",
     "sum_connectivity_index": r"\text{sum}_c(G)",
+    "square_clique_number": r"\omega(G^2)",
     "square_residue": r"R(G^2)",
     "square_annihilation": r"a(G^2)",
+    "square_zero_forcing_number": r"Z(G^2)",
     "(order - domination_number)": r"(n(G) - \gamma(G))",
     "(order - total_domination_number)": r"(n(G) - \gamma_t(G))",
     "(order - connected_domination_number)": r"(n(G) - \gamma_c(G))",
@@ -159,6 +161,7 @@ DEF_MAP = {
     "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
     all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
     set of $G$.""",
+    "square_clique_number": r"""The clique number of the square of a graph $G$, denoted by $\omega(G^2)$, is the maximum cardinality of a clique in $G^2$.""",
     "LG_residue": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
     "LG_annihilation": r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
@@ -197,6 +200,7 @@ DEF_MAP = {
     "positive_semidefinite_zero_forcing_number" : r"""The *positive semidefinite zero forcing number* of a graph $G$, denoted by $Z_{+}(G)$, is the minimum cardinality of a positive semidefinite zero forcing set of $G$.""",
     "residue" : r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$.""",
+    "square_zero_forcing_number" : r"""The zero forcing number of the square of a graph $G$, denoted by $Z(G^2)$, is the minimum size of a zero forcing set of $G^2$.""",
     "LG_graph_energy" : r"""The energy of the line graph of a graph $G$, denoted by $[\mathcal{E}(L(G))]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $L(G)$ *rounded to the nearest integer*.""",
     "LG_slater" : r"""The Slater number of the line graph of a graph $G$ is a degree sequence graph invariant denoted by $sl(L(G))$.""",
     "harmonic_index": r"""The harmonic index of a graph $G$ is a degree sequence graph invariant denoted by $\text{harmonic}(G)$.""",
