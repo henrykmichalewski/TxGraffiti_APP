@@ -69,3 +69,5 @@ LG_graph_energy
 LG_slater
 square_residue
 square_annihilation
+square_zero_forcing_number
+square_clique_number
