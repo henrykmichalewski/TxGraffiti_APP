@@ -14,7 +14,7 @@ size
 independent_domination_number
 chromatic_number
 matching_number
-min_maximal_matching_number
+edge_domination_number
 triameter
 randic_index
 harmonic_index
@@ -52,11 +52,6 @@ k_residual_index
 (order - k_slater_index)
 (order - k_residual_index)
 min_edge_cover
-[(annihilation_number + residue)/ max_degree]
-[order/ max_degree]
-[order/ (max_degree + 1)]
-[order/ (max_degree - 1)]
-[order/ (max_degree + 2)]
 (residue + annihilation_number)
 graph_energy
 square_positive_energy
@@ -71,3 +66,4 @@ square_residue
 square_annihilation
 square_zero_forcing_number
 square_clique_number
+outer_connected_domination_number
