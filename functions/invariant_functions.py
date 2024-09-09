@@ -34,6 +34,12 @@ def compute(G, property):
         return gp.number_of_nodes(G)
     elif property == "size":
         return gp.number_of_edges(G)
+    elif property == "edge_domination_number":
+        LG = gp.line_graph(G)
+        return gp.domination_number(LG)
+    elif property == "min_maximal_matching_number":
+        LG = gp.line_graph(G)
+        return gp.independent_domination_number(LG)
     elif property == "(order - domination_number)":
         return gp.number_of_nodes(G) - gp.domination_number(G)
     elif property == "(order - total_domination_number)":
@@ -218,6 +224,8 @@ def compute(G, property):
         return semitotal_domination_number(G)
     elif property == "a block graph":
         return is_block_graph(G)
+    elif property == "outer_connected_domination_number":
+        return outer_connected_domination_number(G)
     else:
         return getattr(gp, property)(G)
 
@@ -677,3 +685,32 @@ def is_block_graph(G):
             return False
 
     return True
+
+import itertools
+
+def is_dominating_set(G, S):
+    X = G.nodes() - S
+    for u in X:
+        if not any(v in S for v in G.neighbors(u)):
+            return False
+    return True
+
+def complement_is_connected(G, S):
+    X = G.nodes() - S
+    return nx.is_connected(G.subgraph(X))
+
+def is_outer_connected_dominating_set(G, S):
+    return is_dominating_set(G, S) and complement_is_connected(G, S)
+
+def min_outer_connected_dominating_set(G):
+    n = len(G.nodes())
+    min_set = None
+
+    for r in range(1, n + 1):  # Try all subset sizes
+        for S in itertools.combinations(G.nodes(), r):
+            S = set(S)
+            if is_outer_connected_dominating_set(G, S):
+                return S
+
+def outer_connected_domination_number(G):
+    return len(min_outer_connected_dominating_set(G))
