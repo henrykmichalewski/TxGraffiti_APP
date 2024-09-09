@@ -67,7 +67,3 @@ square_annihilation
 square_zero_forcing_number
 square_clique_number
 outer_connected_domination_number
-yair_special_one
-yair_special_two
-2_residue
-2_independence_number

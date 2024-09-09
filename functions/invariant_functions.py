@@ -226,14 +226,6 @@ def compute(G, property):
         return is_block_graph(G)
     elif property == "outer_connected_domination_number":
         return outer_connected_domination_number(G)
-    elif property == "yair_special_one":
-        return yair_special_one(G)
-    elif property == "yair_special_two":
-        return yair_special_two(G)
-    elif property == "2_residue":
-        return gp.k_residue(G, 2)
-    elif property == "2_independence_number":
-        return gp.k_independence_number(G, 2)
     else:
         return getattr(gp, property)(G)
 
@@ -436,16 +428,12 @@ def square_positive_energy(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    # Step 3: Take the real part of the eigenvalues to ensure they are real-valued
-    eigenvalues_real = eigenvalues.real
+    positive_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig > 0]
+    # negative_eigenvalues = [eig for eig in eigenvalues if eig < 0]
 
-    # Step 4: Compute the square of positive eigenvalues
-    positive_eigenvalues_squares = [eig**2 for eig in eigenvalues_real if eig > 0]
+    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
+    energy = sum(positive_eigenvalues_sqaures)
 
-    # Step 5: Calculate the energy as the sum of the squares of the positive eigenvalues
-    energy = sum(positive_eigenvalues_squares)
-
-    # Step 6: Return the rounded energy value
     return round(energy)
 
 def square_negative_energy(G):
@@ -468,16 +456,11 @@ def square_negative_energy(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    # Step 3: Take the real part of the eigenvalues to ensure they are real-valued
-    eigenvalues_real = eigenvalues.real
+    negative_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig < 0]
 
-    # Step 4: Compute the square of negative eigenvalues
-    negative_eigenvalues_squares = [eig**2 for eig in eigenvalues_real if eig < 0]
+    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
+    energy = sum(negative_eigenvalues_sqaures)
 
-    # Step 5: Calculate the energy as the sum of the squares of the negative eigenvalues
-    energy = sum(negative_eigenvalues_squares)
-
-    # Step 6: Return the rounded energy value
     return round(energy)
 
 
@@ -653,8 +636,7 @@ def semitotal_domination_number(G):
 
 def second_largest_eigenvalue(G):
     """
-    Compute the second largest eigenvalue of the adjacency matrix of a graph G
-    and return the nearest integer.
+    Compute the second largest eigenvalue of the adjacency matrix of a graph G.
 
     Parameters
     ----------
@@ -663,8 +645,8 @@ def second_largest_eigenvalue(G):
 
     Returns
     -------
-    int
-        The nearest integer to the second largest real eigenvalue of the adjacency matrix of G.
+    float
+        The second largest eigenvalue of the adjacency matrix of G.
     """
     # Step 1: Compute the adjacency matrix A(G)
     A = nx.adjacency_matrix(G).todense()
@@ -672,13 +654,15 @@ def second_largest_eigenvalue(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    # Step 3: Take the real part of the eigenvalues and sort them in descending order
-    sorted_eigenvalues = np.sort(eigenvalues.real)[::-1]
+    # Step 3: Sort the eigenvalues in descending order
+    sorted_eigenvalues = np.sort(eigenvalues)[::-1]
 
-    # Step 4: Get the second largest eigenvalue and round it to the nearest integer
-    second_largest_value = round(sorted_eigenvalues[1])
+    value = round(sorted_eigenvalues[1])
 
-    return second_largest_value
+    value = int(value)
+
+    # Step 4: Return the second largest eigenvalue
+    return value
 
 def is_complete_graph(G):
     """Check if a graph G is a complete graph."""
@@ -730,32 +714,3 @@ def min_outer_connected_dominating_set(G):
 
 def outer_connected_domination_number(G):
     return len(min_outer_connected_dominating_set(G))
-
-
-import numpy as np
-
-def yair_special_one(G):
-    """
-    Computes the summation: sum of 1 / floor((d_G(v) + 2) / 2)
-    for all vertices v in the graph G.
-
-    Parameters:
-    G (networkx.Graph): The input graph
-
-    Returns:
-    float: The result of the summation
-    """
-    return sum(1 / np.floor((d_G_v + 2) / 2) for v, d_G_v in G.degree())
-
-def yair_special_two(G):
-    """
-    Computes the summation: sum of 2 / (d_G(v) + 2)
-    for all vertices v in the graph G.
-
-    Parameters:
-    G (networkx.Graph): The input graph
-
-    Returns:
-    float: The result of the summation
-    """
-    return sum(2 / (d_G_v + 2) for v, d_G_v in G.degree())
