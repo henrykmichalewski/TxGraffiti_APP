@@ -651,6 +651,8 @@ def second_largest_eigenvalue(G):
 
     value = round(sorted_eigenvalues[1])
 
+    value = int(value)
+
     # Step 4: Return the second largest eigenvalue
     return value
 
