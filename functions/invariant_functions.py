@@ -226,6 +226,14 @@ def compute(G, property):
         return is_block_graph(G)
     elif property == "outer_connected_domination_number":
         return outer_connected_domination_number(G)
+    elif property == "yair_special_one":
+        return yair_special_one(G)
+    elif property == "yair_special_two":
+        return yair_special_two(G)
+    elif property == "2_residue":
+        return gp.k_residue(G, 2)
+    elif property == "2_independence_number":
+        return gp.k_independence_number(G, 2)
     else:
         return getattr(gp, property)(G)
 
@@ -714,3 +722,32 @@ def min_outer_connected_dominating_set(G):
 
 def outer_connected_domination_number(G):
     return len(min_outer_connected_dominating_set(G))
+
+
+import numpy as np
+
+def yair_special_one(G):
+    """
+    Computes the summation: sum of 1 / floor((d_G(v) + 2) / 2)
+    for all vertices v in the graph G.
+
+    Parameters:
+    G (networkx.Graph): The input graph
+
+    Returns:
+    float: The result of the summation
+    """
+    return sum(1 / np.floor((d_G_v + 2) / 2) for v, d_G_v in G.degree())
+
+def yair_special_two(G):
+    """
+    Computes the summation: sum of 2 / (d_G(v) + 2)
+    for all vertices v in the graph G.
+
+    Parameters:
+    G (networkx.Graph): The input graph
+
+    Returns:
+    float: The result of the summation
+    """
+    return sum(2 / (d_G_v + 2) for v, d_G_v in G.degree())
