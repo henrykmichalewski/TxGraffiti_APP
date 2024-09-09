@@ -62,4 +62,10 @@ graph_energy
 square_positive_energy
 square_negative_energy
 positive_semidefinite_zero_forcing_number
-second_largest_eigenvalues
+second_largest_eigenvalue
+LG_residue
+LG_annihilation
+LG_graph_energy
+LG_slater
+square_residue
+square_annihilation

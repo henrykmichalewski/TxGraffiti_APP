@@ -38,6 +38,10 @@ TEX_MAP = {
     "radius": r"\text{rad}(G)",
     "order": r"n(G)",
     "size": r"m(G)",
+    "LG_residue": r"R(L(G))",
+    "LG_annihilation": r"a(L(G))",
+    "LG_graph_energy": r"[\mathcal{E}(L(G))]",
+    "LG_slater": r"sl(L(G))",
     "positive_semidefinite_zero_forcing_number": r"Z_+(G)",
     "graph_energy": r"[\mathcal{E}(G)]",
     "residue": r"R(G)",
@@ -49,11 +53,13 @@ TEX_MAP = {
     "k_residual_index": r"R(G, k)",
     "triameter": r"\text{tri}(G)",
     "randic_index": r"\text{randic}(G)",
-    "second_largest_eigenvalues" : r"[\lambda_2(G)]",
+    "second_largest_eigenvalue" : r"[\lambda_2(G)]",
     "square_positive_energy" : r"[s^{+}(G)]",
     "square_negative_energy" : r"[s^{-}(G)]",
     "harmonic_index": r"\text{harmonic}(G)",
     "sum_connectivity_index": r"\text{sum}_c(G)",
+    "square_residue": r"R(G^2)",
+    "square_annihilation": r"a(G^2)",
     "(order - domination_number)": r"(n(G) - \gamma(G))",
     "(order - total_domination_number)": r"(n(G) - \gamma_t(G))",
     "(order - connected_domination_number)": r"(n(G) - \gamma_c(G))",
@@ -153,6 +159,9 @@ DEF_MAP = {
     "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
     all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
     set of $G$.""",
+    "LG_residue": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
+    the degree sequence of $G$. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
+    "LG_annihilation": r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
     "semitotal_domination_number": r"""A *semitotal dominating set* is a set of vertices $S \subseteq V(G)$ in $G$ such that $S$ is a dominating set and each vertex of $S$ within distance 2 to another vertex in $S$.
     The *semitotal domination number* of $G$ is the minimum cardinality of a semitotal dominating set of $G$, and is denoted by $\gamma_{2t}(G)$.""",
     "total_zero_forcing_number": r"""A *total zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices with no isolates, such that if the vertices in $S$ are initially
@@ -164,6 +173,7 @@ DEF_MAP = {
     "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
     to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
     dominating set of $G$. """,
+    "sum_connectivity_index": r"""The sum connectivity index of a graph $G$ is a degree sequence graph invariant denoted by $\text{sum}_c(G)$.""",
     "min_edge_cover": r"""A *minimum edge cover* of $G$ is a set $E \subseteq E(G)$ of edges such that every vertex in $G$ is incident to an edge in $E$. The *minimum edge cover number* of a graph $G$, denoted by $\beta'(G)$, is the minimum cardinality of a minimum edge cover of $G$.""",
     "randic_index": r"""The Randić index of a graph $G$ is a degree sequence graph invariant denoted by $\text{randic}(G)$.""",
     "connected_domination_number" : r"""A *connected dominating set* of $G$ is a dominating set $D \subseteq V(G)$ of vertices such that the subgraph induced by $D$ is connected.
@@ -183,10 +193,12 @@ DEF_MAP = {
     "square_positive_energy" : r"""The square positive energy of a graph $G$, denoted $[s^{+}(G)]$, is the sum of the squares of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
     "square_negative_energy" : r"""The square negative energy of a graph $G$, denoted $[s^{-}(G)]$, is the sum of the squares of the negative eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
     "graph_energy" : r"""The energy of a graph $G$, denoted $[\mathcal{E}(G)]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
-    "second_largest_eigenvalues" : r"""The second largest eigenvalue of a graph $G$, denoted by $[\lambda_2(G)]$, is the second largest eigenvalue of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+    "second_largest_eigenvalue" : r"""The second largest eigenvalue of a graph $G$, denoted by $[\lambda_2(G)]$, is the second largest eigenvalue of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
     "positive_semidefinite_zero_forcing_number" : r"""The *positive semidefinite zero forcing number* of a graph $G$, denoted by $Z_{+}(G)$, is the minimum cardinality of a positive semidefinite zero forcing set of $G$.""",
     "residue" : r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$.""",
+    "LG_graph_energy" : r"""The energy of the line graph of a graph $G$, denoted by $[\mathcal{E}(L(G))]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $L(G)$ *rounded to the nearest integer*.""",
+    "LG_slater" : r"""The Slater number of the line graph of a graph $G$ is a degree sequence graph invariant denoted by $sl(L(G))$.""",
     "harmonic_index": r"""The harmonic index of a graph $G$ is a degree sequence graph invariant denoted by $\text{harmonic}(G)$.""",
     "annihilation_number" : r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper.""",
     "sub_total_domination_number" : r"""The sub-total domination number of a graph $G$ is denoted by $\text{sub}_t(G)$.""",
@@ -212,6 +224,8 @@ DEF_MAP = {
     An independent dominating set of $G$ is a set $D \subseteq V(G)$ of vertices such that $D$ is independent and every vertex in $G$ is adjacent to a vertex in $D$.""",
     "(order - chromatic_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The chromatic number of a graph $G$, denoted by $\chi(G)$, is the minimum number of colors needed to color the
     vertices of $G$ such that no two adjacent vertices have the same color.""",
+    "square_residue": r"""The square residue of a graph $G$, denoted by $R(G^2)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G^2$.""",
+    "square_annihilation": r"""The square annihilation number of a graph $G$, denoted by $a(G^2)$, is a degree sequence invariant introduced by R. Pepper.""",
     "(order - matching_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The matching number of a graph $G$, denoted by $\mu(G)$, is the maximum cardinality of a matching in $G$.
     A matching in $G$ is a set of edges that do not share any common vertices.""",
     "(order - min_maximal_matching_number)" : r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The minimum maximal matching number of a graph $G$, denoted by $\gamma_e(G)$, is the minimum cardinality of a maximal matching in $G$.""",
@@ -511,6 +525,7 @@ def generate_conjectures():
 
     numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues"]]
     boolean_columns = [col for col in df.columns if col in booleans]
+
 
     # data = st.button("Update Graph Database")
     # if data:
