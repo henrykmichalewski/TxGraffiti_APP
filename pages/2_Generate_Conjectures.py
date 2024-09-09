@@ -19,6 +19,7 @@ TEX_MAP = {
     ">=": r"\geq",
     "domination_number": r"\gamma(G)",
     "independence_number": r"\alpha(G)",
+    "2_independence_number": r"\alpha_2(G)",
     "chromatic_number": r"\chi(G)",
     "clique_number": r"\omega(G)",
     "vertex_cover_number": r"\beta(G)",
@@ -53,6 +54,9 @@ TEX_MAP = {
     "k_slater_index": r"sl(G, k)",
     "wiener_index": r"W(G)",
     "k_residual_index": r"R(G, k)",
+    "2_residue": r"R_2(G)",
+    "yair_special_one": r"\sum_{v \in V(G)} \frac{1}{\left\lfloor \frac{d_G(v) + 2}{2} \right\rfloor}",
+    "yair_special_two": r"\sum_{v \in V(G)} \frac{2}{d_G(v) + 2}",
     "triameter": r"\text{tri}(G)",
     "randic_index": r"\text{randic}(G)",
     "second_largest_eigenvalue" : r"[\lambda_2(G)]",
@@ -178,6 +182,10 @@ DEF_MAP = {
     "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
     to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
     dominating set of $G$. """,
+    "2_independence_number": r"""The 2-independence number of a graph $G$, denoted by $\alpha_2(G)$, is the maximum cardinality of a set $I \subseteq V(G)$ of vertices such that G[I] has maximum degree at most 1.""",
+    "2_residue": r"""The 2-residue of a graph $G$ is denoted by $R_2(G)$.""",
+    "yair_special_one": r"""The Yair special one of a graph $G$ is denoted by $\sum_{v \in V(G)} \frac{1}{\left\lfloor \frac{d_G(v) + 2}{2} \right\rfloor}$.""",
+    "yair_special_two": r"""The Yair special two of a graph $G$ is denoted by $\sum_{v \in V(G)} \frac{2}{d_G(v) + 2}$.""",
     "sum_connectivity_index": r"""The sum connectivity index of a graph $G$ is a degree sequence graph invariant denoted by $\text{sum}_c(G)$.""",
     "min_edge_cover": r"""A *minimum edge cover* of $G$ is a set $E \subseteq E(G)$ of edges such that every vertex in $G$ is incident to an edge in $E$. The *minimum edge cover number* of a graph $G$, denoted by $\beta'(G)$, is the minimum cardinality of a minimum edge cover of $G$.""",
     "randic_index": r"""The Randić index of a graph $G$ is a degree sequence graph invariant denoted by $\text{randic}(G)$.""",
@@ -351,6 +359,7 @@ TRIVIAL_BOUNDS = [
     "zero_forcing_number >= power_domination_number",
     "zero_forcing_number <= (order - connected_domination_number)",
     "total_zero_forcing_number >= min_degree",
+    "2_independence_number >= independence_number",
     "positive_semidefinite_zero_forcing_number >= min_degree",
     "matching_number >= min_maximal_matching_number",
     "min_maximal_matching_number <= matching_number",
@@ -535,7 +544,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
 
-    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues"]]
+    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy"]]
     boolean_columns = [col for col in df.columns if col in booleans]
 
 
@@ -559,7 +568,7 @@ def generate_conjectures():
             boolean_columns = single_property
         for invariant in invariant_column:
 
-            with st.spinner(f'Learning conjectures for the {invariant} ...'):
+            with st.spinner(f'Learning conjectures for the {invariant} ...(This may take a few minutes)'):
                 upper_conjectures = make_all_upper_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
                 lower_conjectures = make_all_lower_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
                 conjectures = conjectures + upper_conjectures + lower_conjectures
