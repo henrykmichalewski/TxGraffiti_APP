@@ -544,7 +544,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
 
-    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues"]]
+    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy"]]
     boolean_columns = [col for col in df.columns if col in booleans]
 
 
@@ -568,7 +568,7 @@ def generate_conjectures():
             boolean_columns = single_property
         for invariant in invariant_column:
 
-            with st.spinner(f'Learning conjectures for the {invariant} ...'):
+            with st.spinner(f'Learning conjectures for the {invariant} ...(This may take a few minutes)'):
                 upper_conjectures = make_all_upper_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
                 lower_conjectures = make_all_lower_linear_conjectures(df, invariant, numerical_columns, boolean_columns)
                 conjectures = conjectures + upper_conjectures + lower_conjectures

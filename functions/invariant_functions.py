@@ -436,12 +436,16 @@ def square_positive_energy(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    positive_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig > 0]
-    # negative_eigenvalues = [eig for eig in eigenvalues if eig < 0]
+    # Step 3: Take the real part of the eigenvalues to ensure they are real-valued
+    eigenvalues_real = eigenvalues.real
 
-    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
-    energy = sum(positive_eigenvalues_sqaures)
+    # Step 4: Compute the square of positive eigenvalues
+    positive_eigenvalues_squares = [eig**2 for eig in eigenvalues_real if eig > 0]
 
+    # Step 5: Calculate the energy as the sum of the squares of the positive eigenvalues
+    energy = sum(positive_eigenvalues_squares)
+
+    # Step 6: Return the rounded energy value
     return round(energy)
 
 def square_negative_energy(G):
@@ -464,11 +468,16 @@ def square_negative_energy(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    negative_eigenvalues_sqaures = [eig**2 for eig in eigenvalues if eig < 0]
+    # Step 3: Take the real part of the eigenvalues to ensure they are real-valued
+    eigenvalues_real = eigenvalues.real
 
-    # Step 3: Calculate the energy as the sum of the absolute values of the eigenvalues
-    energy = sum(negative_eigenvalues_sqaures)
+    # Step 4: Compute the square of negative eigenvalues
+    negative_eigenvalues_squares = [eig**2 for eig in eigenvalues_real if eig < 0]
 
+    # Step 5: Calculate the energy as the sum of the squares of the negative eigenvalues
+    energy = sum(negative_eigenvalues_squares)
+
+    # Step 6: Return the rounded energy value
     return round(energy)
 
 
@@ -644,7 +653,8 @@ def semitotal_domination_number(G):
 
 def second_largest_eigenvalue(G):
     """
-    Compute the second largest eigenvalue of the adjacency matrix of a graph G.
+    Compute the second largest eigenvalue of the adjacency matrix of a graph G
+    and return the nearest integer.
 
     Parameters
     ----------
@@ -653,8 +663,8 @@ def second_largest_eigenvalue(G):
 
     Returns
     -------
-    float
-        The second largest eigenvalue of the adjacency matrix of G.
+    int
+        The nearest integer to the second largest real eigenvalue of the adjacency matrix of G.
     """
     # Step 1: Compute the adjacency matrix A(G)
     A = nx.adjacency_matrix(G).todense()
@@ -662,15 +672,13 @@ def second_largest_eigenvalue(G):
     # Step 2: Compute the eigenvalues of the adjacency matrix
     eigenvalues = np.linalg.eigvals(A)
 
-    # Step 3: Sort the eigenvalues in descending order
-    sorted_eigenvalues = np.sort(eigenvalues)[::-1]
+    # Step 3: Take the real part of the eigenvalues and sort them in descending order
+    sorted_eigenvalues = np.sort(eigenvalues.real)[::-1]
 
-    value = round(sorted_eigenvalues[1])
+    # Step 4: Get the second largest eigenvalue and round it to the nearest integer
+    second_largest_value = round(sorted_eigenvalues[1])
 
-    value = int(value)
-
-    # Step 4: Return the second largest eigenvalue
-    return value
+    return second_largest_value
 
 def is_complete_graph(G):
     """Check if a graph G is a complete graph."""
