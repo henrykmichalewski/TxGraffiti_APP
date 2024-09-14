@@ -40,6 +40,10 @@ def compute(G, property):
     elif property == "min_maximal_matching_number":
         LG = gp.line_graph(G)
         return gp.independent_domination_number(LG)
+    elif property == "roman_domination_number":
+        return roman_domination_number(G)
+    elif property == "double_roman_domination_number":
+        return double_roman_domination_number(G)
     elif property == "(order - domination_number)":
         return gp.number_of_nodes(G) - gp.domination_number(G)
     elif property == "(order - total_domination_number)":
@@ -714,3 +718,86 @@ def min_outer_connected_dominating_set(G):
 
 def outer_connected_domination_number(G):
     return len(min_outer_connected_dominating_set(G))
+
+
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpBinary, value
+
+def roman_domination(graph):
+    # Initialize the problem
+    prob = LpProblem("RomanDomination", LpMinimize)
+
+    # Define variables x_v, y_v for each vertex v
+    x = {v: LpVariable(f"x_{v}", cat=LpBinary) for v in graph.nodes()}
+    y = {v: LpVariable(f"y_{v}", cat=LpBinary) for v in graph.nodes()}
+
+    # Objective function: min sum(x_v + 2*y_v)
+    prob += lpSum(x[v] + 2 * y[v] for v in graph.nodes()), "MinimizeCost"
+
+    # Dominance Constraint: x_v + y_v + sum(y_u for u in N(v)) >= 1 for all v
+    for v in graph.nodes():
+        neighbors = list(graph.neighbors(v))
+        prob += x[v] + y[v] + lpSum(y[u] for u in neighbors) >= 1, f"DominanceConstraint_{v}"
+
+    # Mutual Exclusivity: x_v + y_v <= 1 for all v
+    for v in graph.nodes():
+        prob += x[v] + y[v] <= 1, f"ExclusivityConstraint_{v}"
+
+    # Solve the problem
+    prob.solve()
+
+    # Extract solution
+    solution = {
+        "x": {v: value(x[v]) for v in graph.nodes()},
+        "y": {v: value(y[v]) for v in graph.nodes()},
+        "objective": value(prob.objective)
+    }
+
+    return solution
+
+def roman_domination_number(graph):
+    solution = roman_domination(graph)
+    return solution["objective"]
+
+
+def double_roman_domination(graph):
+    # Initialize the problem
+    prob = LpProblem("DoubleRomanDomination", LpMinimize)
+
+    # Define variables x_v, y_v, z_v for each vertex v
+    x = {v: LpVariable(f"x_{v}", cat=LpBinary) for v in graph.nodes()}
+    y = {v: LpVariable(f"y_{v}", cat=LpBinary) for v in graph.nodes()}
+    z = {v: LpVariable(f"z_{v}", cat=LpBinary) for v in graph.nodes()}
+
+    # Objective function: min sum(x_v + 2*y_v + 3*z_v)
+    prob += lpSum(x[v] + 2 * y[v] + 3 * z[v] for v in graph.nodes()), "MinimizeCost"
+
+    # Constraint (1b): xv + yv + zv + 1/2 * sum(yu for u in N(v)) + sum(zu for u in N(v)) >= 1
+    for v in graph.nodes():
+        neighbors = list(graph.neighbors(v))
+        prob += x[v] + y[v] + z[v] + 0.5 * lpSum(y[u] for u in neighbors) + lpSum(z[u] for u in neighbors) >= 1, f"Constraint_1b_{v}"
+
+    # Constraint (1c): sum(yu + zu) >= xv for each vertex v
+    for v in graph.nodes():
+        neighbors = list(graph.neighbors(v))
+        prob += lpSum(y[u] + z[u] for u in neighbors) >= x[v], f"Constraint_1c_{v}"
+
+    # Constraint (1d): xv + yv + zv <= 1
+    for v in graph.nodes():
+        prob += x[v] + y[v] + z[v] <= 1, f"Constraint_1d_{v}"
+
+    # Solve the problem
+    prob.solve()
+
+    # Extract solution
+    solution = {
+        "x": {v: value(x[v]) for v in graph.nodes()},
+        "y": {v: value(y[v]) for v in graph.nodes()},
+        "z": {v: value(z[v]) for v in graph.nodes()},
+        "objective": value(prob.objective)
+    }
+
+    return solution
+
+def double_roman_domination_number(graph):
+    solution = double_roman_domination(graph)
+    return solution["objective"]
