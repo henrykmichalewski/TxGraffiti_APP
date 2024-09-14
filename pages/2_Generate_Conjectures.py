@@ -20,10 +20,13 @@ TEX_MAP = {
     "domination_number": r"\gamma(G)",
     "independence_number": r"\alpha(G)",
     "chromatic_number": r"\chi(G)",
+    "square_chromatic_number": r"\chi(G^2)",
+    "cubed_chromatic_number": r"\chi(G^3)",
     "clique_number": r"\omega(G)",
     "vertex_cover_number": r"\beta(G)",
     "zero_forcing_number": r"Z(G)",
     "total_zero_forcing_number": r"Z_t(G)",
+    "residue_residue_power_sum": r"\sum_{i=1}^{R(G)} R(G^i)",
     "connected_zero_forcing_number": r"Z_c(G)",
     "outer_connected_domination_number": r"\tilde{\gamma}_{c}(G)",
     "power_domination_number": r"\gamma_P(G)",
@@ -31,6 +34,8 @@ TEX_MAP = {
     "semitotal_domination_number": r"\gamma_{2t}(G)",
     "connected_domination_number": r"\gamma_c(G)",
     "independent_domination_number": r"i(G)",
+    "roman_domination_number": r"\gamma_{R}(G)",
+    "double_roman_domination_number": r"\gamma_{dR}(G)",
     "matching_number": r"\mu(G)",
     "min_maximal_matching_number": r"i(L(G))",
     "edge_domination_number": r"\gamma_e(G)",
@@ -44,12 +49,21 @@ TEX_MAP = {
     "LG_annihilation": r"a(L(G))",
     "LG_graph_energy": r"[\mathcal{E}(L(G))]",
     "LG_slater": r"sl(L(G))",
+    "power_2_residue_sum": r"\sum_{i=1}^{\Delta(G)} R(G^i)",
+    "power_max_degree_annihilation_sum": r"\sum_{i=1}^{\Delta(G)} a(G^i)",
+    "power_max_degree_residue_sum": r"\sum_{i=1}^{\Delta(G)} R(G^i)",
+    "power_min_degree_residue_sum": r"\sum_{i=1}^{\delta(G)} R(G^i)",
+    "power_min_degree_annihilation_sum": r"\sum_{i=1}^{\delta(G)} a(G^i)",
     "positive_semidefinite_zero_forcing_number": r"Z_+(G)",
     "graph_energy": r"[\mathcal{E}(G)]",
     "residue": r"R(G)",
     "annihilation_number": r"a(G)",
     "sub_total_domination_number": r"\text{sub}_t(G)",
     "slater": r"sl(G)",
+    "power_2_residue_sum": r"(R(G) + R(G^2))",
+    "power_3_residue_sum": r"(R(G) + R(G^2) + R(G^3))",
+    "power_2_annihilation_sum": r"(a(G) + a(G^2))",
+    "power_3_annihilation_sum": r"(a(G) + a(G^2) + a(G^3))",
     "k_slater_index": r"sl(G, k)",
     "wiener_index": r"W(G)",
     "k_residual_index": r"R(G, k)",
@@ -62,7 +76,9 @@ TEX_MAP = {
     "sum_connectivity_index": r"\text{sum}_c(G)",
     "square_clique_number": r"\omega(G^2)",
     "square_residue": r"R(G^2)",
+    "cube_residue": r"R(G^3)",
     "square_annihilation": r"a(G^2)",
+    "cube_annihilation": r"a(G^3)",
     "square_zero_forcing_number": r"Z(G^2)",
     "(order - domination_number)": r"(n(G) - \gamma(G))",
     "(order - total_domination_number)": r"(n(G) - \gamma_t(G))",
@@ -163,6 +179,17 @@ DEF_MAP = {
     "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
     all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
     set of $G$.""",
+    "roman_domination_number": r"""The *Roman domination number* of a graph $G$, denoted by $\gamma_R(G)$, is the minimum cardinality of a Roman dominating set of $G$.""",
+    "double_roman_domination_number": r"""The *double Roman domination number* of a graph $G$, denoted by $\gamma_{dR}(G)$, is the minimum cardinality of a double Roman dominating set of $G$.""",
+    "residue_residue_power_sum": r"""The sum of the residues of the graphs $G^{i}$ for $1 \leq i \leq R(G)$.""",
+    "power_max_degree_residue_sum": r"""The sum of the residues of $G$ through $G^{\Delta}$.""",
+    "power_max_degree_annihilation_sum": r"""The sum of the annihilation numbers of $G$ through $G^{\Delta}$.""",
+    "power_min_degree_residue_sum": r"""The sum of the residues of $G$ through $G^{\delta}$.""",
+    "power_min_degree_annihilation_sum": r"""The sum of the annihilation numbers of $G$ through $G^{\delta}$.""",
+    "square_chromatic_number": r"""The chromatic number of the square of a graph $G$, denoted by $\chi(G^2)$, is the minimum number of colors needed to color the vertices of $G^2$ such that no two adjacent vertices have the same color.""",
+    "cubed_chromatic_number": r"""The chromatic number of the cube of a graph $G$, denoted by $\chi(G^3)$, is the minimum number of colors needed to color the vertices of $G^3$ such that no two adjacent vertices have the same color.""",
+    "cube_residue": r"""The residue of the cube of a graph $G$, denoted by $R(G^3)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G^3$.""",
+    "cube_annihilation": r"""The annihilation number of the cube of a graph $G$, denoted by $a(G^3)$, is a degree sequence invariant introduced by R. Pepper.""",
     "square_clique_number": r"""The clique number of the square of a graph $G$, denoted by $\omega(G^2)$, is the maximum cardinality of a clique in $G^2$.""",
     "LG_residue": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
@@ -178,7 +205,11 @@ DEF_MAP = {
     "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
     to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
     dominating set of $G$. """,
+    "power_2_residue_sum": r"""The sum of the residue of a graph $G$ and the residue of the square of $G$.""",
+    "power_3_residue_sum": r"""The sum of the residue of a graph $G$, the residue of the square of $G$, and the residue of the cube of $G$.""",
     "sum_connectivity_index": r"""The sum connectivity index of a graph $G$ is a degree sequence graph invariant denoted by $\text{sum}_c(G)$.""",
+    "power_2_annihilation_sum": r"""The sum of the annihilation number of a graph $G$ and the annihilation number of the square of $G$.""",
+    "power_3_annihilation_sum": r"""The sum of the annihilation number of a graph $G$, the annihilation number of the square of $G$, and the annihilation number of the cube of $G$.""",
     "min_edge_cover": r"""A *minimum edge cover* of $G$ is a set $E \subseteq E(G)$ of edges such that every vertex in $G$ is incident to an edge in $E$. The *minimum edge cover number* of a graph $G$, denoted by $\beta'(G)$, is the minimum cardinality of a minimum edge cover of $G$.""",
     "randic_index": r"""The Randić index of a graph $G$ is a degree sequence graph invariant denoted by $\text{randic}(G)$.""",
     "connected_domination_number" : r"""A *connected dominating set* of $G$ is a dominating set $D \subseteq V(G)$ of vertices such that the subgraph induced by $D$ is connected.
@@ -321,6 +352,8 @@ DEF_MAP = {
 
 TRIVIAL_BOUNDS = [
     "domination_number <= order",
+    "domination_number <= roman_domination_number",
+    "domination_number <= double_roman_domination_number",
     "order <= size - 1",
     "domination_number <= total_domination_number",
     "domination_number <= independent_domination_number",
@@ -339,6 +372,13 @@ TRIVIAL_BOUNDS = [
     "domination_number <= outer_connected_domination_number",
     "outer_connected_domination_number >= domination_number",
     "outer_connected_domination_number >= slater",
+    "roman_domination_number >= domination_number",
+    "double_roman_domination_number >= roman_domination_number",
+    "roman_domination_number >= slater",
+    "double_roman_domination_number >= slater",
+    "roman_domination_number <= double_roman_domination_number",
+    "double_roman_domination_number <= 3 domination_number",
+    "double_roman_domination_number >= 2 domination_number",
     "zero_forcing_number >= min_degree",
     "positive_semidefinite_zero_forcing_number <= zero_forcing_number",
     "positive_semidefinite_zero_forcing_number <= total_zero_forcing_number",
@@ -387,6 +427,7 @@ TRIVIAL_BOUNDS = [
     "slater <= domination_number",
     "chromatic_number >= clique_number",
     "independent_domination_number >= domination_number",
+    "matching_number <= (order - matching_number)",
     "independent_domination_number <= (order - max_degree)",
     "independent_domination_number >= slater",
     "independent_domination_number >= power_domination_number",
@@ -548,6 +589,9 @@ def generate_conjectures():
     invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
     if invariant_column == []:
         invariant_column = numerical_columns
+
+    # removal_invariants = multi_radio('### Exclude any invariants?', numerical_columns)
+    # invariant_column = [invariant for invariant in invariant_column if invariant not in removal_invariants]
 
     single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     dalmatian_answer = st.radio('### Apply the Dalmatian heuristic for conjecture (further) filtering?', ['y', 'n'])
