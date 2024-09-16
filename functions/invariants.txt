@@ -82,3 +82,5 @@ power_min_degree_annihilation_sum
 residue_residue_power_sum
 roman_domination_number
 double_roman_domination_number
+two_rainbow_domination_number
+three_rainbow_domination_number
