@@ -48,6 +48,8 @@ def compute(G, property):
         return two_rainbow_domination_number(G)
     elif property == "three_rainbow_domination_number":
         return three_rainbow_domination_number(G)
+    elif property == "restrained_domination_number":
+        return restrained_domination_number(G)
     elif property == "(order - domination_number)":
         return gp.number_of_nodes(G) - gp.domination_number(G)
     elif property == "(order - total_domination_number)":
@@ -856,3 +858,34 @@ def two_rainbow_domination_number(G):
 
 def three_rainbow_domination_number(G):
     return rainbow_domination_number(G, 3)
+
+
+def minimum_restrained_dominating_set(G):
+    # Initialize the linear programming problem
+    prob = pulp.LpProblem("MinimumRestrainedDomination", pulp.LpMinimize)
+
+    # Decision variables: x_v is 1 if vertex v is in the restrained dominating set, 0 otherwise
+    x = {v: pulp.LpVariable(f"x_{v}", cat="Binary") for v in G.nodes()}
+
+    # Objective: Minimize the sum of x_v
+    prob += pulp.lpSum(x[v] for v in G.nodes()), "Objective"
+
+    # Constraint 1: Domination condition
+    for v in G.nodes():
+        prob += x[v] + pulp.lpSum(x[u] for u in G.neighbors(v)) >= 1, f"Domination_{v}"
+
+    # Constraint 2: No isolated vertices in the complement of the dominating set
+    for v in G.nodes():
+        prob += pulp.lpSum(1 - x[u] for u in G.neighbors(v)) >= (1 - x[v]), f"NoIsolated_{v}"
+
+    # Solve the problem
+    prob.solve(pulp.PULP_CBC_CMD(msg=0))
+
+    # Extract the solution
+    restrained_dom_set = [v for v in G.nodes() if pulp.value(x[v]) == 1]
+
+    return restrained_dom_set
+
+def restrained_domination_number(G):
+    restrained_dom_set = minimum_restrained_dominating_set(G)
+    return len(restrained_dom_set)
