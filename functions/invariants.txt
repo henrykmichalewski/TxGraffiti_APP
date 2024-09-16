@@ -84,3 +84,4 @@ roman_domination_number
 double_roman_domination_number
 two_rainbow_domination_number
 three_rainbow_domination_number
+restrained_domination_number

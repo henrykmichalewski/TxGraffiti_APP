@@ -8,7 +8,6 @@ from functions import (
     filter_conjectures,
     invariants,
     booleans,
-    make_graph_dataframe_from_edgelists
 )
 import numpy as np
 
@@ -38,6 +37,7 @@ TEX_MAP = {
     "independent_domination_number": r"i(G)",
     "roman_domination_number": r"\gamma_{R}(G)",
     "double_roman_domination_number": r"\gamma_{dR}(G)",
+    "restrained_domination_number": r"\gamma_{r}(G)",
     "matching_number": r"\mu(G)",
     "min_maximal_matching_number": r"i(L(G))",
     "edge_domination_number": r"\gamma_e(G)",
@@ -166,89 +166,261 @@ TEX_MAP = {
 }
 
 DEF_MAP = {
-    "domination_number": r"""A *dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is either in $D$
-    or adjacent to a vertex in $D$. The *domination number* of a graph $G$, denoted by $\gamma(G)$, is the minimum cardinality of a
-    dominating set of $G$.""",
-    "independence_number": r"""An *independent set* of a graph $G$ is a set $I \subseteq V(G)$ of vertices such that no two vertices in $I$ are adjacent.
-    The *independence number* of a graph $G$, denoted by $\alpha(G)$, is the maximum cardinality of an independent set of $G$.""",
-    "chromatic_number": r"""The chromatic number of a graph $G$, denoted by $\chi(G)$, is the minimum number of colors needed
-    to color the vertices of $G$ such that no two adjacent vertices have the same color. A coloring of $G$ is an assignment of
-    colors to the vertices of $G$ such that no two adjacent vertices have the same color.""",
-    "clique_number": r"""A *clique* in $G$ is a set of vertices that induces a complete subgraph of $G$. The *clique number* of a graph $G$, denoted by $\omega(G)$, is the maximum cardinality of a clique in $G$.""",
+    "order" : r"""The order of a graph $G$, denoted by $n(G)$, is the number of vertices in $G$.""",
+
+    "size" : r"""The size of a graph $G$, denoted by $m(G)$, is the number of edges in $G$.""",
+
+    "min_degree" : r"""The minimum degree of a graph $G$, denoted by $\delta(G)$, is the minimum
+    degree of a vertex in $G$.""",
+
+    "max_degree" : r"""The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum
+    degree of a vertex in $G$.""",
+
+    "diameter" : r"""The diameter of a graph $G$, denoted by $\text{diam}(G)$, is the maximum
+    distance between any two vertices in $G$.""",
+
+    "triameter": r""" The triameter of a graph $G$ is defined as
+    $\text{tri}(G) = \max\{ d(u,v) + d(v,w) + d(u,w) \: : \: u,v,w \in V(G) \}$.""",
+
+    "radius" : r"""The radius of a graph $G$, denoted by $\text{rad}(G)$, is the minimum distance
+    between any two vertices in $G$.""",
+
+    "domination_number": r"""A *dominating set* of $G$ is a set $D \subseteq V(G)$ of
+    vertices such that every vertex in $G$ is either in $D$ or adjacent to a vertex in
+    $D$. The *domination number* of a graph $G$, denoted by $\gamma(G)$, is the minimum
+    cardinality of a dominating set of $G$.""",
+
+    "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$
+    of vertices such that every vertex in $G$ is adjacent to a vertex in $D$. The *total domination number*
+    of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total dominating set of $G$. """,
+
+    "connected_domination_number" : r"""A *connected dominating set* of $G$ is a dominating
+    set $D \subseteq V(G)$ of vertices such that the subgraph induced by $D$ is connected.
+    The *connected domination number* of a graph $G$, denoted by $\gamma_c(G)$, is the minimum
+    cardinality of a connected dominating set of $G$.""",
+
+    "independence_number": r"""An *independent set* of a graph $G$ is a set $I \subseteq V(G)$
+    of vertices such that no two vertices in $I$ are adjacent. The *independence number* of $G$,
+    denoted by $\alpha(G)$, is the maximum cardinality of an independent set of $G$.""",
+
+    "chromatic_number": r"""The chromatic number of a graph $G$, denoted by $\chi(G)$, is
+    the minimum number of colors needed to color the vertices of $G$ such that no two
+    adjacent vertices have the same color.""",
+
+    "square_chromatic_number": r"""The *square* of an undirected graph G is another graph denoted $G^2$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 2. The chromatic number of the square of a graph $G$, denoted
+    by $\chi(G^2)$, is the minimum number of colors needed to color the vertices of $G^2$ such
+    that no two adjacent vertices have the same color.""",
+
+    "clique_number": r"""A *clique* in $G$ is a set of vertices that induces a complete
+    subgraph of $G$. The *clique number* of a graph $G$, denoted by $\omega(G)$, is the maximum cardinality of a clique in $G$.""",
     "vertex_cover_number": r"""A *vertex cover* of $G$ is a set $C \subseteq V(G)$ of vertices such that every edge in $G$ is incident to at least one
     vertex in $C$. The *vertex cover number* of a graph $G$, denoted by $\beta(G)$, is the minimum cardinality of a
     vertex cover of $G$.""",
-    "zero_forcing_number": r"""A *zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$ are initially colored blue and
-    all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue. The *zero forcing number* of a graph $G$, denoted by $Z(G)$, is the minimum size of a zero forcing
-    set of $G$.""",
-    "two_rainbow_domination_number": r"""The *2-rainbow connection number* of $G$, denoted $\gamma_{r2}(G)$.""",
-    "roman_domination_number": r"""The *Roman domination number* of a graph $G$, denoted by $\gamma_R(G)$, is the minimum cardinality of a Roman dominating set of $G$.""",
-    "three_rainbow_domination_number": r"""The *3-rainbow connection number* of $G$, denoted $\gamma_{r3}(G)$.""",
-    "double_roman_domination_number": r"""The *double Roman domination number* of a graph $G$, denoted by $\gamma_{dR}(G)$, is the minimum cardinality of a double Roman dominating set of $G$.""",
-    "residue_residue_power_sum": r"""The sum of the residues of the graphs $G^{i}$ for $1 \leq i \leq R(G)$.""",
-    "power_max_degree_residue_sum": r"""The sum of the residues of $G$ through $G^{\Delta}$.""",
-    "power_max_degree_annihilation_sum": r"""The sum of the annihilation numbers of $G$ through $G^{\Delta}$.""",
+
+    "zero_forcing_number": r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
+    allows any blue colored vertex with exactly one white colored neighbor to force its one white colored neighbor to become
+    colored blue. A set $B \subseteq V(G)$ of initially blue colored vertices is called a *zero forcing set* of $G$ if by iteratively
+    applying the zero forcing color change rule all of the vertices in $G$ become colored blue. The *zero forcing number* of
+    a graph $G$, denoted by $Z(G)$, is the minimum cardinality of a zero forcing set of $G$.""",
+
+    "total_zero_forcing_number": r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
+    allows any blue colored vertex with exactly one white colored neighbor to force its one white colored neighbor to become
+    colored blue. A set $B \subseteq V(G)$ of initially blue colored vertices is called a *zero forcing set* of $G$ if by iteratively
+    applying the zero forcing color change rule all of the vertices in $G$ become colored blue. The *total zero forcing number* of
+    a graph $G$, denoted by $Z_t(G)$, is the minimum cardinality of a zero forcing set of $G$ which induces a isolate-free subgraph.""",
+
+    "connected_zero_forcing_number": r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
+    allows any blue colored vertex with exactly one white colored neighbor to force its one white colored neighbor to become
+    colored blue. A set $B \subseteq V(G)$ of initially blue colored vertices is called a *zero forcing set* of $G$ if by iteratively
+    applying the zero forcing color change rule all of the vertices in $G$ become colored blue. The *connected zero forcing number* of
+    a graph $G$, denoted by $Z_t(G)$, is the minimum cardinality of a zero forcing set of $G$ which induces a connected subgraph.""",
+
+    "power_domination_number" : r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
+    allows any blue colored vertex with exactly one white colored neighbor to force its one white colored neighbor to become
+    colored blue. A set $B \subseteq V(G)$ of initially blue colored vertices is called a *zero forcing set* of $G$ if by iteratively
+    applying the zero forcing color change rule all of the vertices in $G$ become colored blue. A *power dominating set* of $G$ is
+    a dominating set of a zero forcing set of $G$. The power domination number of a graph $G$, denoted by $\gamma_P(G)$, is the
+    minimum cardinality of a power dominating set of $G$.""",
+
+    "independent_domination_number" : r"""An independent dominating set of $G$ is a set $D \subseteq V(G)$ of vertices such that $D$
+    is independent and every vertex in $G$ is adjacent to a vertex in $D$. The *independent domination number* of a graph $G$,
+    denoted by $i(G)$, is the minimum cardinality of an independent dominating set of $G$. """,
+
+    "matching_number" : r"""A *matching* in $G$ is a set of edges that do not share any common vertices. The *matching number*
+    of a graph $G$, denoted by $\mu(G)$, is the maximum cardinality of a matching in $G$.""",
+
+    "edge_domination_number": r"""An *edge dominating set* of $G$ is a set $D \subseteq E(G)$ of edges such that every
+    edge in $G$ is incident to an edge in $D$. The *edge domination number* of a graph $G$, denoted by $\gamma_e(G)$,
+    is the minimum cardinality of an edge dominating set of $G$.""",
+
+    "annihilation_number" : r"""If $d_1, \dots, d_n$ is the degree sequence of a graph $G$ with $m$ edges, where $d_1 \leq \cdots \leq d_n$,
+    then the *annihilation number* of $G$ is the largest integer $k$ such that $\sum_{i=1}^{k} d_i \leq m$, or equivalently, the largest integer
+    $k$ such that $\sum_{i=1}^{k} d_i \leq \sum_{i=k+1}^{n} d_i$.""",
+
+    "slater" : r"""The *Slater number* of a graph $G$, written $sl(G)$, is defined as the smallest integer $j$ such that
+    $d_1 + \dots + d_j \geq n(G)$, where $d_1, \dots, d_n$ is the degree sequence of $G$ with $d_i \geq d_{i+1}$ for all $i \in [n(G) - 1]$.""",
+
+    "sub_total_domination_number" : r"""The sub-total domination number of a graph $G$ is denoted by $\text{sub}_t(G)$,
+    smallest integer $j$ such that
+    $j + (d_1 + \dots + d_j) \geq n(G)$, where $d_1, \dots, d_n$ is the degree sequence of $G$ with $d_i \geq d_{i+1}$ for all $i \in [n(G) - 1]$.""",
+
+    "wiener_index" : r"""The *Wiener index* of a graph $G$, denoted by $W(G)$, is the sum of the shortest path distances between all pairs of vertices in $G$.
+    Formally, if $d(u, v)$ denotes the distance between vertices $u$ and $v$ in $G$, then $W(G) = \sum_{\{u,v\} \subseteq V(G)} d(u, v).$""",
+
+
+    "two_rainbow_domination_number": r"""Given a graph $G$ and a set of $[k] = \{1, \dots, k\}$ colors, assume that we assign
+    an arbitrary subset of these colors to each vertex of $G$. If we require that each vertex to which an empty set is assigned
+    has in its (open) neighborhood all $k$ colors, then this assignment is called a *$k$-rainbow dominating function* of the graph $G$.
+    The corresponding invariant $\gamma_{rk}(G)$, which is the minimum sum of numbers of assigned colors over all vertices of $G$,
+    is called the *$k$-rainbow domination number* of G. The *2-rainbow domination number* of $G$, denoted
+    $\gamma_{r2}(G)$, is the minimum cardinality of a 2-rainbow dominating set of $G$.""",
+
+    "roman_domination_number": r"""A *Roman dominating function* of $G$ is a function $f \: : \: V(G) \rightarrow \{0, 1, 2\}$
+    such that every vertex $v$ for which $f(v) = 0$ has a neighbor $u$ with $f(u) = 2$. The weight of a Roman dominating function
+    $f$ is $w(f) = \sum_{v \in V(G)} f(v)$. The *Roman domination number* of a graph $G$, denoted by $\gamma_R(G)$, is the minimum
+    weight of all possible Roman dominating functions in $G$.""",
+
+    "three_rainbow_domination_number": r"""Given a graph $G$ and a set of $[k] = \{1, \dots, k\}$ colors, assume that we assign
+    an arbitrary subset of these colors to each vertex of $G$. If we require that each vertex to which an empty set is assigned
+    has in its (open) neighborhood all $k$ colors, then this assignment is called a *$k$-rainbow dominating function* of the graph $G$.
+    The corresponding invariant $\gamma_{rk}(G)$, which is the minimum sum of numbers of assigned colors over all vertices of $G$,
+    is called the *$k$-rainbow domination number* of G. The *3-rainbow domination number* of $G$, denoted
+    $\gamma_{r3}(G)$, is the minimum cardinality of a 3-rainbow dominating set in $G$.""",
+
+    "double_roman_domination_number": r"""A function $f \: : \: V(G) \rightarrow \{0, 1, 2, 3\}$ is a double Roman dominating
+    function on a graph $G$ if the following conditions are met. Let $V_i$ denote the set of vertices assigned $i$ by function
+    $f$. (i) If $f(v) = 0 $, then vertex $v$ must have at least two neighbors in $V_2$ or one neighbor in $V_3$. (ii) If $f(v) = 1$,
+    then vertex $v$ must have at least one neighbor in $V_2 \cup V_3$. The *double Roman domination number* of $G$, written
+    $\gamma_{dR}(G)$, equals the minimum weight of a double Roman dominating function on $G$. """,
+
+    "restrained_domination_number": r"""A *restrained dominating set* of $G$, is a dominating set $D \subseteq V(G)$,
+    such that each vertex in $V(G) \setminus D$ is adjacent to another vertex in $V(G) \setminus D$.
+    The *restrained domination number* of a graph $G$, denoted by $\gamma_{r}(G)$, is the minimum
+    cardinality of a restrained dominating set of $G$.""",
+
+    "residue_residue_power_sum": r"""The *$k$-power* of an undirected graph $G$ is another graph denoted $G^k$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most $k$. The *residue* of a graph is the number of zero obtained after termination
+    of the Havel-Hakimi process on $G$, and is denoted $R(G)$.""",
+
+    "power_max_degree_residue_sum": r"""The *$k$-power* of an undirected graph $G$ is another graph denoted $G^k$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most $k$. The *maximum degree* of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.
+    The *residue* of a graph is the number of zero obtained after termination of the Havel-Hakimi process on $G$, and is denoted $R(G)$.""",
+
+    "power_max_degree_annihilation_sum": r"""The *$k$-power* of an undirected graph $G$ is another graph denoted $G^k$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most $k$. The *maximum degree* of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.
+    If $d_1, \dots, d_n$ is the degree sequence of a graph $G$ with $m$ edges, where $d_1 \leq \cdots \leq d_n$,
+    then the *annihilation number* of $G$ is the largest integer $k$ such that $\sum_{i=1}^{k} d_i \leq m$, or equivalently, the largest integer
+    $k$ such that $\sum_{i=1}^{k} d_i \leq \sum_{i=k+1}^{n} d_i$.""",
+
     "power_min_degree_residue_sum": r"""The sum of the residues of $G$ through $G^{\delta}$.""",
-    "power_min_degree_annihilation_sum": r"""The sum of the annihilation numbers of $G$ through $G^{\delta}$.""",
-    "square_chromatic_number": r"""The chromatic number of the square of a graph $G$, denoted by $\chi(G^2)$, is the minimum number of colors needed to color the vertices of $G^2$ such that no two adjacent vertices have the same color.""",
-    "cubed_chromatic_number": r"""The chromatic number of the cube of a graph $G$, denoted by $\chi(G^3)$, is the minimum number of colors needed to color the vertices of $G^3$ such that no two adjacent vertices have the same color.""",
-    "cube_residue": r"""The residue of the cube of a graph $G$, denoted by $R(G^3)$, is the number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G^3$.""",
-    "cube_annihilation": r"""The annihilation number of the cube of a graph $G$, denoted by $a(G^3)$, is a degree sequence invariant introduced by R. Pepper.""",
-    "square_clique_number": r"""The clique number of the square of a graph $G$, denoted by $\omega(G^2)$, is the maximum cardinality of a clique in $G^2$.""",
-    "LG_residue": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
-    the degree sequence of $G$. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
+
+    "power_min_degree_annihilation_sum": r"""The *$k$-power* of an undirected graph $G$ is another graph denoted $G^k$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most $k$. The *minimum degree* of a graph $G$, denoted by $\delta(G)$, is the maximum degree of a vertex in $G$.
+    If $d_1, \dots, d_n$ is the degree sequence of a graph $G$ with $m$ edges, where $d_1 \leq \cdots \leq d_n$,
+    then the *annihilation number* of $G$ is the largest integer $k$ such that $\sum_{i=1}^{k} d_i \leq m$, or equivalently, the largest integer
+    $k$ such that $\sum_{i=1}^{k} d_i \leq \sum_{i=k+1}^{n} d_i$.""",
+
+    "cubed_chromatic_number": r"""The *cube* of an undirected graph G is another graph denoted $G^3$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 3. The chromatic number of the cube of a graph $G$, denoted by
+    $\chi(G^3)$, is the minimum number of colors needed to color the vertices of the cube $G^3$ of $G$ such
+    that no two adjacent vertices have the same color.""",
+
+    "cube_residue": r"""The *cube* of an undirected graph G is another graph denoted $G^3$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 3. The residue of a graph $G$, denoted by $R(G)$, is the
+    number of zeros at the termination of the Havel-Hakimi proccess on the degree sequence of $G$.""",
+
+    "cube_annihilation": r"""The *cube* of an undirected graph G is another graph denoted $G^3$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 3. If $d_1, \dots, d_n$ is the degree sequence of a graph $G$ with $m$ edges, where $d_1 \leq \cdots \leq d_n$,
+    then the *annihilation number* of $G$ is the largest integer $k$ such that $\sum_{i=1}^{k} d_i \leq m$, or equivalently, the largest integer
+    $k$ such that $\sum_{i=1}^{k} d_i \leq \sum_{i=k+1}^{n} d_i$.""",
+
+    "square_clique_number": r""" The square of an undirected graph G is another graph denoted $G^2$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 2. The clique number of the square of a graph $G$, denoted by $\omega(G^2)$,
+    is the maximum cardinality of a clique in $G^2$.""",
+
+    "LG_residue": r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the
+    termination of the Havel-Hakimi proccess on the degree sequence of $G$. The line graph of a graph $G$,
+    denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$
+    are adjacent if their corresponding edges in $G$ share a common vertex.""",
+
     "LG_annihilation": r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper. The line graph of a graph $G$, denoted by $L(G)$, is the graph whose vertices correspond to the edges of $G$ and two vertices in $L(G)$ are adjacent if their corresponding edges in $G$ share a common vertex.""",
     "semitotal_domination_number": r"""A *semitotal dominating set* is a set of vertices $S \subseteq V(G)$ in $G$ such that $S$ is a dominating set and each vertex of $S$ within distance 2 to another vertex in $S$.
     The *semitotal domination number* of $G$ is the minimum cardinality of a semitotal dominating set of $G$, and is denoted by $\gamma_{2t}(G)$.""",
-    "total_zero_forcing_number": r"""A *total zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices with no isolates, such that if the vertices in $S$ are initially
-    colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue
-    and white. The *total (zero) forcing number* of a graph $G$, denoted by $Z_t(G)$, is the minimum size of a total zero forcing set of $G$.""",
-    "connected_zero_forcing_number": r"""A *connected zero forcing set* of $G$ is a set $S \subseteq V(G)$ of vertices such that if the vertices in $S$
-    are initially colored blue and all other vertices are initially colored white, then the coloring process will eventually turn all vertices blue and white.
-    The *connected zero forcing number* of a graph $G$, denoted by $Z_c(G)$, is the minimum size of a connected zero forcing set of $G$.""",
-    "total_domination_number" : r"""A *total dominating set* of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is adjacent
-    to a vertex in $D$. The *total domination number* of a graph $G$, denoted by $\gamma_t(G)$, is the minimum cardinality of a total
-    dominating set of $G$. """,
-    "power_2_residue_sum": r"""The sum of the residue of a graph $G$ and the residue of the square of $G$.""",
+
+    "power_2_residue_sum": r"""The square of an undirected graph G is another graph denoted $G^2$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 2. The sum of the residue of a graph $G$ and the residue of the square of $G$.""",
     "power_3_residue_sum": r"""The sum of the residue of a graph $G$, the residue of the square of $G$, and the residue of the cube of $G$.""",
     "sum_connectivity_index": r"""The sum connectivity index of a graph $G$ is a degree sequence graph invariant denoted by $\text{sum}_c(G)$.""",
-    "power_2_annihilation_sum": r"""The sum of the annihilation number of a graph $G$ and the annihilation number of the square of $G$.""",
+    "power_2_annihilation_sum": r"""The square of an undirected graph G is another graph denoted $G^2$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$
+    is at most 2. The sum of the annihilation number of a graph $G$ and the annihilation number of the square of $G$.""",
     "power_3_annihilation_sum": r"""The sum of the annihilation number of a graph $G$, the annihilation number of the square of $G$, and the annihilation number of the cube of $G$.""",
     "min_edge_cover": r"""A *minimum edge cover* of $G$ is a set $E \subseteq E(G)$ of edges such that every vertex in $G$ is incident to an edge in $E$. The *minimum edge cover number* of a graph $G$, denoted by $\beta'(G)$, is the minimum cardinality of a minimum edge cover of $G$.""",
     "randic_index": r"""The Randić index of a graph $G$ is a degree sequence graph invariant denoted by $\text{randic}(G)$.""",
-    "connected_domination_number" : r"""A *connected dominating set* of $G$ is a dominating set $D \subseteq V(G)$ of vertices such that the subgraph induced by $D$ is connected.
-    The *connected domination number* of a graph $G$, denoted by $\gamma_c(G)$, is the minimum cardinality of a connected dominating set of $G$.""",
-    "independent_domination_number" : r"""The independent domination number of a graph $G$, denoted by $i(G)$, is the minimum cardinality of an independent
-    dominating set of $G$. An independent dominating set of $G$ is a set $D \subseteq V(G)$ of vertices such that $D$ is independent and every vertex in $G$ is adjacent to a vertex in $D$.""",
-    "power_domination_number" : r"""The power domination number of a graph $G$, denoted by $\gamma_P(G)$, is the minimum cardinality of a power dominating set of $G$.""",
-    "matching_number" : r"""A *matching* in $G$ is a set of edges that do not share any common vertices. The *matching number* of a graph $G$, denoted by $\mu(G)$, is the maximum cardinality of a matching in $G$.""",
-    "min_maximal_matching_number" : r"""The minimum maximal matching number of a graph $G$, denoted by $i(L(G))$, is the minimum cardinality of a maximal matching in $G$; equivalently, the independent domination number of the line graph L(G).""",
-    "edge_domination_number": r"""An *edge dominating set* of $G$ is a set $D \subseteq E(G)$ of edges such that every edge in $G$ is incident to an edge in $D$. The *edge domination number* of a graph $G$, denoted by $\gamma_e(G)$, is the minimum cardinality of an edge dominating set of $G$.""",
-    "min_degree" : r"""The minimum degree of a graph $G$, denoted by $\delta(G)$, is the minimum degree of a vertex in $G$.""",
-    "max_degree" : r"""The maximum degree of a graph $G$, denoted by $\Delta(G)$, is the maximum degree of a vertex in $G$.""",
-    "diameter" : r"""The diameter of a graph $G$, denoted by $\text{diam}(G)$, is the maximum distance between any two vertices in $G$.""",
-    "radius" : r"""The radius of a graph $G$, denoted by $\text{rad}(G)$, is the minimum distance between any two vertices in $G$.""",
-    "triameter": r"""The triameter of a graph $G$is denoted by $\text{tri}(G)$.""",
-    "order" : r"""The order of a graph $G$, denoted by $n(G)$, is the number of vertices in $G$.""",
-    "size" : r"""The size of a graph $G$, denoted by $m(G)$, is the number of edges in $G$.""",
-    "square_positive_energy" : r"""The square positive energy of a graph $G$, denoted $[s^{+}(G)]$, is the sum of the squares of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
-    "square_negative_energy" : r"""The square negative energy of a graph $G$, denoted $[s^{-}(G)]$, is the sum of the squares of the negative eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
-    "graph_energy" : r"""The energy of a graph $G$, denoted $[\mathcal{E}(G)]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
-    "second_largest_eigenvalue" : r"""The second largest eigenvalue of a graph $G$, denoted by $[\lambda_2(G)]$, is the second largest eigenvalue of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
-    "positive_semidefinite_zero_forcing_number" : r"""The *positive semidefinite zero forcing number* of a graph $G$, denoted by $Z_{+}(G)$, is the minimum cardinality of a positive semidefinite zero forcing set of $G$.""",
+
+    "square_positive_energy" : r"""The square positive energy of a graph $G$, denoted $[s^{+}(G)]$, is
+    the sum of the squares of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+
+    "square_negative_energy" : r"""The square negative energy of a graph $G$, denoted $[s^{-}(G)]$, is the
+    sum of the squares of the negative eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+
+    "graph_energy" : r"""The energy of a graph $G$, denoted $[\mathcal{E}(G)]$, is the sum of the absolute values
+    of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+
+    "second_largest_eigenvalue" : r"""The second largest eigenvalue of a graph $G$, denoted by $[\lambda_2(G)]$, is
+    the second largest eigenvalue of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
+
+    "min_maximal_matching_number" : r"""The minimum maximal matching number of a graph $G$, denoted by $i(L(G))$,
+    is the minimum cardinality of a maximal matching in $G$; equivalently, the independent domination number of
+    the line graph L(G).""",
+
+    "positive_semidefinite_zero_forcing_number" : r"""In a graph $G$ where some vertices $S$ are colored blue and
+    the remaining vertices are colored white, the positive semidefinite color change rule is: If $W_1, \dots, W_k$
+    are the sets of vertices of the $k$ components of $G - S$ (note that it is possible that $k=1$), $w \in W_i$,
+    $u \in S$, and $w$ is the only white neighbor of $u$ in the subgraph of $G$ induced by $W_i \cup S$, then change
+    the color of $w$ to blue; in this case, we say $u$ forces $w$ and write $u \to w$. Given an initial set $B$ of
+    blue vertices, the derived set of $B$ is the set of blue vertices that results from applying the positive
+    semidefinite color change rule until no more changes are possible. A positive semidefinite zero forcing set
+    is an initial set $B$ of vertices such that the derived set of $B$ is all the vertices of $G$. The
+    *positive semidefinite zero forcing number* of a graph $G$, denoted $Z_+(G)$, is the minimum of $|B|$ over all
+    positive semidefinite zero forcing sets $B \subseteq V(G)$.""",
+
     "residue" : r"""The residue of a graph $G$, denoted by $R(G)$, is the number of zeros at the termination of the Havel-Hakimi proccess on
     the degree sequence of $G$.""",
-    "square_zero_forcing_number" : r"""The zero forcing number of the square of a graph $G$, denoted by $Z(G^2)$, is the minimum size of a zero forcing set of $G^2$.""",
-    "LG_graph_energy" : r"""The energy of the line graph of a graph $G$, denoted by $[\mathcal{E}(L(G))]$, is the sum of the absolute values of the eigenvalues of the adjacency matrix of $L(G)$ *rounded to the nearest integer*.""",
+
+    "harmonic_index" : r"""The *harmonic index* of a graph $G$, denoted by $H(G)$, is a degree-based graph invariant defined as the sum of the reciprocals of the degrees of the adjacent vertices. Formally, if $d(u)$ and $d(v)$ are the degrees of adjacent vertices $u$ and $v$, then
+    $$H(G) = \sum_{\{u,v\} \in E(G)} \frac{2}{d(u) + d(v)}.$$""",
+
+
+    "square_zero_forcing_number" : r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
+    allows any blue colored vertex with exactly one white colored neighbor to force its one white colored neighbor to become
+    colored blue. A set $B \subseteq V(G)$ of initially blue colored vertices is called a *zero forcing set* of $G$ if by iteratively
+    applying the zero forcing color change rule all of the vertices in $G$ become colored blue. The *zero forcing number* of
+    a graph $G$, denoted by $Z(G)$, is the minimum cardinality of a zero forcing set of $G$. The square of an undirected graph G is another graph denoted $G^2$
+    that has the same set of vertices, but in which two vertices are adjacent when their distance in $G$ is at most 2.""",
+
+    "LG_graph_energy" : r"""The energy of the line graph of a graph $G$, denoted by $[\mathcal{E}(L(G))]$, is
+    the sum of the absolute values of the eigenvalues of the adjacency matrix of $L(G)$ *rounded to the nearest integer*.""",
+
     "LG_slater" : r"""The Slater number of the line graph of a graph $G$ is a degree sequence graph invariant denoted by $sl(L(G))$.""",
-    "harmonic_index": r"""The harmonic index of a graph $G$ is a degree sequence graph invariant denoted by $\text{harmonic}(G)$.""",
-    "annihilation_number" : r"""The annihilation number of a graph $G$, denoted by $a(G)$, is a degree sequence invariant introduced by R. Pepper.""",
-    "sub_total_domination_number" : r"""The sub-total domination number of a graph $G$ is denoted by $\text{sub}_t(G)$.""",
-    "slater" : r"""The Slater number of a graph $G$ is a degree sequence graph invariant denoted by $sl(G)$.""",
+
     "k_slater_index": r"""The $k$-Slater index of a graph $G$, denoted by $sl(G, k)$, is the smallest integer $k \geq 1$ so that $\text{sub}_k(G) \geq \gamma(G)$,
      where $\text{sub}_k(G)$ is the sub-$k$-domination number of $G$.""",
+
     "k_residual_index" : r"""The $k$-residual index of a graph $G$, denoted by $R(G, k)$, is the smallest integer $k \geq 1$ so that $\text{R}_k(G) \geq \alpha(G)$,
     where $\text{R}_k(G)$ is the $k$-residue of $G$ and $\alpha(G)$ is the independence number of $G$.""",
+
     "(order - domination_number)":  r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The domination number of a graph $G$, denoted by $\gamma(G)$, is the minimum cardinality of a dominating set of $G$.
     A dominating set of $G$ is a set $D \subseteq V(G)$ of vertices such that every vertex in $G$ is either in $D$ or adjacent to a vertex in $D$.""",
     "(order - total_domination_number)": r"""The order of $G$, denoted $n(G)$, is the number of vertices in $G$. The total domination number of a graph $G$,
@@ -350,7 +522,7 @@ DEF_MAP = {
     "a connected and diamond-free graph": r"""A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a connected, cubic, and diamond-free graph": r"""A *cubic graph* is a graph where every vertex has degree 3. A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a block graph": """A block graph is a connected graph in which every biconnected component is a clique.""",
-    "wiener_index": "The weiner index, denoted by W(G), is the sum of the distances between all pairs of vertices in G.",
+
 
 }
 
@@ -366,6 +538,14 @@ TRIVIAL_BOUNDS = [
     "domination_number <= connected_domination_number",
     "domination_number <= independence_number",
     "domination_number <= 2 min_maximal_matching_number",
+    "domination_number >= 1/3 double_roman_domination_number",
+    "independent_domination_number >= 1/3 double_roman_domination_number",
+    "total_domination_number >= 1/3 double_roman_domination_number",
+    "connected_domination_number >= 1/3 double_roman_domination_number",
+    "independence_number >= 1/3 double_roman_domination_number",
+     "independence_number >= 1/2 roman_domination_number",
+    "restrained_domination_number >= domination_number",
+    "domination_number <= restrained_domination_number",
     "total_domination_number <= 2 min_maximal_matching_number",
     "two_rainbow_domination_number >= domination_number",
     "three_rainbow_domination_number >= domination_number",
@@ -495,6 +675,20 @@ TRIVIAL_BOUNDS = [
     "annihilation_number >= independent_domination_number",
     "annihilation_number >= slater",
     "annihilation_number >= power_domination_number",
+    "double_roman_domination_number <= 3 restrained_domination_number",
+    "double_roman_domination_number <= 3 outer_connected_domination_number",
+    "double_roman_domination_number <= 2 two_rainbow_domination_number",
+    "restrained_domination_number >= slater",
+    "restrained_domination_number >= 1/2 roman_domination_number",
+    "restrained_domination_number >= power_domination_number,",
+    "restrained_domination_number >= 1/3 double_roman_domination_number",
+    "restrained_domination_number >= power_domination_number",
+    "triameter <= 3 diameter",
+    "slater <= sub_total_domination_number",
+    "slater <= restrained_domination_number",
+    "slater <= outer_connected_domination_number",
+    "slater <= total_domination_number",
+    "slater <= connected_domination_number",
 
 ]
 
@@ -653,7 +847,7 @@ def generate_conjectures():
 
                 lhs = conjecture.conclusion.lhs
                 rhs = conjecture.conclusion.rhs
-                st.write(f"**Definitions:** {DEF_MAP[conjecture.hypothesis.statement]} {DEF_MAP[lhs]} {DEF_MAP[rhs]}")
+                st.write(f"**Definitions:** {DEF_MAP[conjecture.hypothesis.statement]} \n \n {DEF_MAP[lhs]} \n \n {DEF_MAP[rhs]}")
 
 
         st.session_state.conjectures = [conjecture_to_dict(conj) for conj in conjectures]
