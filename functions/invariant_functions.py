@@ -44,6 +44,10 @@ def compute(G, property):
         return roman_domination_number(G)
     elif property == "double_roman_domination_number":
         return double_roman_domination_number(G)
+    elif property == "two_rainbow_domination_number":
+        return two_rainbow_domination_number(G)
+    elif property == "three_rainbow_domination_number":
+        return three_rainbow_domination_number(G)
     elif property == "(order - domination_number)":
         return gp.number_of_nodes(G) - gp.domination_number(G)
     elif property == "(order - total_domination_number)":
@@ -801,3 +805,54 @@ def double_roman_domination(graph):
 def double_roman_domination_number(graph):
     solution = double_roman_domination(graph)
     return solution["objective"]
+
+
+def solve_rainbow_domination(G, k):
+    # Create a PuLP problem instance
+    prob = pulp.LpProblem("Rainbow_Domination", pulp.LpMinimize)
+
+    # Create binary variables f_vi where f_vi = 1 if vertex v is colored with color i
+    f = pulp.LpVariable.dicts("f", ((v, i) for v in G.nodes for i in range(1, k+1)), cat='Binary')
+
+    # Create binary variables x_v where x_v = 1 if vertex v is uncolored
+    x = pulp.LpVariable.dicts("x", G.nodes, cat='Binary')
+
+    # Objective function: Minimize the total number of colored vertices
+    prob += pulp.lpSum(f[v, i] for v in G.nodes for i in range(1, k+1)), "Minimize total colored vertices"
+
+    # Constraint 1: Each vertex is either colored with one of the k colors or remains uncolored
+    for v in G.nodes:
+        prob += pulp.lpSum(f[v, i] for i in range(1, k+1)) + x[v] == 1, f"Color or Uncolored constraint for vertex {v}"
+
+    # Constraint 2: If a vertex is uncolored (x_v = 1), it must be adjacent to vertices colored with all k colors
+    for v in G.nodes:
+        for i in range(1, k+1):
+            # Ensure that uncolored vertex v is adjacent to a vertex colored with color i
+            prob += pulp.lpSum(f[u, i] for u in G.neighbors(v)) >= x[v], f"Rainbow domination for vertex {v} color {i}"
+
+    # Solve the problem using PuLP's default solver
+    prob.solve()
+
+    # Output results
+    # print("Status:", pulp.LpStatus[prob.status])
+
+    # Print which vertices are colored and with what color
+    colored_vertices = [(v, i) for v in G.nodes for i in range(1, k+1) if pulp.value(f[v, i]) == 1]
+    uncolored_vertices = [v for v in G.nodes if pulp.value(x[v]) == 1]
+
+    print(f"Colored vertices: {colored_vertices}")
+    print(f"Uncolored vertices: {uncolored_vertices}")
+
+    return colored_vertices, uncolored_vertices
+
+
+def rainbow_domination_number(G, k):
+    colored_vertices, uncolored_vertices = solve_rainbow_domination(G, k)
+    return len(colored_vertices)
+
+
+def two_rainbow_domination_number(G):
+    return rainbow_domination_number(G, 2)
+
+def three_rainbow_domination_number(G):
+    return rainbow_domination_number(G, 3)
