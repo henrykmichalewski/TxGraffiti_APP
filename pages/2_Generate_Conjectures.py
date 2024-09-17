@@ -689,6 +689,49 @@ TRIVIAL_BOUNDS = [
     "slater <= outer_connected_domination_number",
     "slater <= total_domination_number",
     "slater <= connected_domination_number",
+    "domination_number <= 1/2 double_roman_domination_number",
+    "total_domination_number <= 2 edge_domination_number",
+    "power_domination_number <= 1/2 total_zero_forcing_number",
+    "zero_forcing_number <= size + -1",
+    "total_zero_forcing_number >= 2 power_domination_number",
+    "total_zero_forcing_number <= size",
+    "diameter <= 2 radius",
+    "radius <= diameter",
+    "radius >= 1/2 diameter",
+    "radius <= independence_number",
+    "independent_domination_number <= (order - independent_domination_number)",
+    "independent_domination_number <= (order - domination_number)",
+    "chromatic_number <= zero_forcing_number + 1",
+    "chromatic_number <= clique_number + 1",
+    "chromatic_number <= max_degree + 1",
+    "clique_number <= chromatic_number",
+    "clique_number <= zero_forcing_number + 1",
+    "clique_number <= max_degree + 1",
+    "residue <= power_min_degree_residue_sum",
+    "residue <= annihilation_number",
+    "annihilation_number <= power_min_degree_annihilation_sum",
+    "(order - domination_number) >= (order - independent_domination_number)",
+    "(order - domination_number) <= (order - slater)",
+    "(order - domination_number) >= (order - total_domination_number)",
+    "(order - domination_number) <= (order - power_domination_number)",
+    "(order - domination_number) >= domination_number",
+    "(order - domination_number) <= order + -1",
+    "(order - domination_number) >= vertex_cover_number",
+    "(order - domination_number) >= (order - connected_domination_number)",
+    "(order - total_domination_number) <= (order - sub_total_domination_number)",
+    "(order - total_domination_number) <= (order - domination_number)",
+    "(order - connected_domination_number) <= (order - domination_number)",
+    "(order - connected_domination_number) <= order + -1",
+    "(order - power_domination_number) <= order + -1",
+    "(order - power_domination_number) >= (order - domination_number)",
+    "(order - zero_forcing_number) <= (order - min_degree)",
+    "(order - zero_forcing_number) <= (order - chromatic_number) + 1",
+    "(order - zero_forcing_number) <= order + -1",
+    "(order - zero_forcing_number) <= (order - power_domination_number)",
+    "min_edge_cover <= order + -1",
+    "positive_semidefinite_zero_forcing_number <= vertex_cover_number",
+
+
 
 ]
 
@@ -790,7 +833,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
 
-    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues"]]
+    numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues", "size"]]
     boolean_columns = [col for col in df.columns if col in booleans]
 
 
