@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 import itertools
 
-__all__ = ["compute"]
+__all__ = ["compute", "factors_compute"]
 
 
 def compute(G, property):
@@ -238,6 +238,30 @@ def compute(G, property):
         return outer_connected_domination_number(G)
     else:
         return getattr(gp, property)(G)
+
+def factors_compute(G, H, property):
+    # Split the property string by the operation (either + or *)
+    if '+' in property:
+        operation = '+'
+    elif '*' in property:
+        operation = '*'
+    else:
+        raise ValueError("Property must contain either '*' for multiplication or '+' for addition.")
+
+    # Extract the properties for G and H
+    property_G, property_H = property.split(f" {operation} ")
+
+
+    # Compute the values for G and H using the respective properties
+    value_G = compute(G, property_G)
+    value_H = compute(H, property_H)
+
+    # Apply the operation
+    if operation == '+':
+        return value_G + value_H
+    elif operation == '*':
+        return value_G * value_H
+
 
 
 def k_slater_index(G):
