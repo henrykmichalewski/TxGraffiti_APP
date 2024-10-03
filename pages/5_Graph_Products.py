@@ -2,12 +2,7 @@ import streamlit as st
 import pandas as pd
 from fractions import Fraction
 from functions import (
-    make_all_upper_linear_conjectures,
-    make_all_lower_linear_conjectures,
-    dalmatian,
-    filter_conjectures,
-    invariants,
-    booleans,
+    write_on_the_wall,
 )
 import numpy as np
 import time
@@ -1476,14 +1471,18 @@ def generate_conjectures():
 
 
     df = pd.read_csv(DATA_FILE)
+    # Make a new column for "a connected graph" which is all true
+    df["a connected graph"] = True
 
 
-    #set the index to the name of the graph
-    df.set_index("name", inplace=True)
+
+
+    # set the index to the name of the graph
+    # df.set_index("name", inplace=True)
 
     # print(df.cartesian_product_domination_number)
     # invariants = list(df.columns) - ["name"]
-    invariants = [x for x in df.columns if x not in ["name", "is_connected"]]
+    invariants = [x for x in df.columns if x not in ["name", "a connected graph"]]
     callables = [x for x in invariants if "product" in x]
     # print(callables)
     # target = "cartesian_product_domination_number"
@@ -1497,6 +1496,9 @@ def generate_conjectures():
     # with st.sidebar:
 
     invariant_column = rows_multi_radio('### Select categories to conjecture on (the more you select the longer TxGraffiti will take to learn):', callables)
+    dalmatian_answer = st.radio('### Apply the **weak**-Dalmatian heuristic or **strong**-Dalmatian heuristic for conjecture (further) filtering?', ['weak', 'strong'])
+
+    use_strong_dalmatian = False if dalmatian_answer == 'weak' else True
 
     if invariant_column:
         if "cartesian" in invariant_column[0]:
@@ -1517,32 +1519,33 @@ def generate_conjectures():
     if generate_conjectures:
         for invariant in invariant_column:
             with st.spinner(f'Learning conjectures for the {invariant} ...'):
-                upper_conjectures = make_all_upper_linear_conjectures(df, invariant, invariants, ["is_connected"])
-                lower_conjectures = make_all_lower_linear_conjectures(df, invariant, invariants, ["is_connected"])
-                conjectures = conjectures + upper_conjectures + lower_conjectures
+                conjectures += write_on_the_wall(
+                    df,
+                    invariant,
+                    invariants,
+                    ["is_connected"],
+                    use_strong_dalmatian=use_strong_dalmatian,
+                    )
                 long_computation()
 
-
-        conjs = [conj for conj in conjectures if conj.touch > 0]
-        conjs.sort(key=lambda x: x.touch, reverse=True)
-        conjs = dalmatian(df, conjs)
-        for conj in conjs:
+        for conj in conjectures:
             print(conj.conclusion)
         # conjectures = dalmatian(df, conjectures)
 
 
         st.subheader("TxGraffiti conjectures the following inequalities:")
-        for i, conjecture in enumerate(conjs):
+        for i, conjecture in enumerate(conjectures):
             with st.expander(f"# Conjecture {i + 1}"):
                 lhs = TEX_MAP[conjecture.conclusion.lhs]
-                rhs = TEX_MAP[conjecture.conclusion.rhs]
+                rhs = TEX_MAP[str(conjecture.conclusion.rhs[0])]
                 inequality = TEX_MAP[conjecture.conclusion.inequality]
-                if conjecture.conclusion.slope == 1:
+                slope = conjecture.conclusion.slopes[0]
+                if slope == 1:
                     slope = ""
-                elif conjecture.conclusion.slope.denominator == 1:
-                    slope = str(conjecture.conclusion.slope.numerator)
+                elif slope.denominator == 1:
+                    slope = str(slope.numerator)
                 else:
-                    slope = fraction_to_str(conjecture.conclusion.slope)
+                    slope = fraction_to_str(slope)
                 # slope = fraction_to_str(conjecture.conclusion.slope) if conjecture.conclusion.slope != 1 else ""
                 intercept = fraction_to_str(conjecture.conclusion.intercept) if conjecture.conclusion.intercept != 0 else ""
 
