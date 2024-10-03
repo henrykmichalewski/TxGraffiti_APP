@@ -1472,7 +1472,7 @@ def generate_conjectures():
 
     df = pd.read_csv(DATA_FILE)
     # Make a new column for "a connected graph" which is all true
-    df["a connected graph"] = True
+    # df["a connected graph"] = True
 
 
 
