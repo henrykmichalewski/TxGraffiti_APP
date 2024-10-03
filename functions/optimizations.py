@@ -46,6 +46,8 @@ def make_upper_linear_conjecture(
     # Get the names of each row in the dataframe.
     true_objects = df["name"].tolist()
 
+    df = df.groupby(others, as_index=False)[target].max()
+
     # Extract the data from the dataframe for each 'other' variable and the target variable.
     Xs = [df[other].tolist() for other in others]  # List of lists, one list for each variable
     Y = df[target].tolist()   # List of values for the target variable
@@ -121,6 +123,8 @@ def make_lower_linear_conjecture(
 
     # Get the names of each row in the dataframe.
     true_objects = df["name"].tolist()
+
+    df = df.groupby(others, as_index=False)[target].min()
 
     # Extract the data from the dataframe for each 'other' variable and the target variable.
     Xs = [df[other].tolist() for other in others]  # List of lists, one list for each variable
