@@ -245,7 +245,7 @@ class MultiLinearConjecture(Conjecture):
             rhs = self.conclusion.rhs_evaluate(x)
 
             # Create a figure and axis object
-            fig, ax = plt.subplots(figsize=(10, 6))
+            fig, ax = plt.subplots(figsize=(10, 10))
 
             # Plot the data
             ax.set_title(f"{self.__repr__()}")

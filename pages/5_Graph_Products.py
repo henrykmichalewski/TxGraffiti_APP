@@ -1573,6 +1573,12 @@ def generate_conjectures():
 
                 st.write(f"and this bound is sharp on {conjecture.touch} graphs.")
 
+                fig = conjecture.plot(df)
+                if fig:
+                    st.pyplot(fig)  # Display the plot below the conjecture
+
+                print(conjecture.false_graphs(df))
+
 # Main entry point
 if __name__ == "__main__":
     generate_conjectures()
