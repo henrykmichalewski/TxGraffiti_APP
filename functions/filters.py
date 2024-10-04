@@ -1,11 +1,32 @@
-from classes.conjecture import MultiLinearConclusion, Conjecture
+from classes.conjecture import MultiLinearConclusion, Conjecture, MultiLinearConjecture, Hypothesis
 
 __all__ = [
     "filter_by_inequalities",
     "filter_conjectures",
     "find_equalities",
     "remove_zero_slopes",
+    "filter_false_conjectures",
+    "make_more_general_conjectures",
 ]
+
+def filter_false_conjectures(conjectures, df):
+    new_conjectures = []
+    for conj in conjectures:
+        if conj.false_graphs(df).empty:
+            new_conjectures.append(conj)
+    return new_conjectures
+
+def make_more_general_conjectures(conjectures, df):
+    new_conjectures = []
+    for conj in conjectures:
+        hyp = Hypothesis("a connected graph")
+        conclusion = conj.conclusion
+        new_conj = MultiLinearConjecture(hyp, conclusion)
+        if new_conj.false_graphs(df).empty:
+            new_conjectures.append(new_conj)
+        else:
+            new_conjectures.append(conj)
+    return new_conjectures
 
 def filter_by_inequalities(conjectures, known_inequalities):
     new_conjectures = conjectures.copy()

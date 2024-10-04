@@ -7,6 +7,9 @@ from functions import (
     strong_dalmatian,
     sort_conjectures,
     theo,
+    filter_false_conjectures,
+    make_more_general_conjectures,
+
 )
 
 from functions import (
@@ -58,8 +61,8 @@ def write_on_the_wall(
         type_two_conjectures=False,
     ):
 
-    if "a connected graph" not in boolean_columns:
-        boolean_columns.append("a connected graph")
+    # if "a connected graph" not in boolean_columns:
+    #     boolean_columns.append("a connected graph")
 
     # # print(numerical_columns)
     upper_conjectures = []
@@ -78,7 +81,7 @@ def write_on_the_wall(
                     df,
                     target,
                     new_numerical_columns,
-                    ["a connected graph"],
+                    boolean_columns,
                 )
             upper_conjectures = [conj for conj in upper_conjectures if conj.conclusion.slopes != [0, 0]]
             filtered_conjectures = [upper_conjectures[0]]
@@ -86,6 +89,8 @@ def write_on_the_wall(
                 if not any(conj == old_conj for old_conj in filtered_conjectures):
                     filtered_conjectures.append(conj)
             upper_conjectures = filtered_conjectures
+        upper_conjectures = filter_false_conjectures(upper_conjectures, df)
+        # upper_conjectures = make_more_general_conjectures(upper_conjectures, df)
         upper_conjectures = remove_zero_slopes(upper_conjectures)
         upper_conjectures = filter_by_inequalities(upper_conjectures, known_inequalities)
         upper_conjectures = filter_conjectures(upper_conjectures, known_conjectures)
@@ -113,7 +118,7 @@ def write_on_the_wall(
                     df,
                     target,
                     new_numerical_columns,
-                    ["a connected graph"],
+                    boolean_columns,
                 )
             lower_conjectures = [conj for conj in lower_conjectures if conj.conclusion.slopes != [0, 0]]
             filtered_conjectures = [lower_conjectures[0]]
@@ -121,6 +126,8 @@ def write_on_the_wall(
                 if not any(conj == old_conj for old_conj in filtered_conjectures):
                     filtered_conjectures.append(conj)
             lower_conjectures = filtered_conjectures
+        lower_conjectures = filter_false_conjectures(lower_conjectures, df)
+        # lower_conjectures = make_more_general_conjectures(lower_conjectures, df)
         lower_conjectures = remove_zero_slopes(lower_conjectures)
         lower_conjectures = filter_by_inequalities(lower_conjectures, known_inequalities)
         lower_conjectures = filter_conjectures(lower_conjectures, known_conjectures)

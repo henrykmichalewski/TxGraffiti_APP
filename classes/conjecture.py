@@ -185,6 +185,9 @@ class MultiLinearConclusion(Conclusion):
         elif self.inequality == ">=":
             return MultiLinearConclusion(self.lhs, "<=", self.slopes, self.rhs, self.intercept)
 
+    def rhs_evaluate(self, x):
+        return sum(m * x for m in self.slopes) + self.intercept
+
 
 class LinearConjecture(Conjecture):
     """
@@ -214,3 +217,51 @@ class MultiLinearConjecture(Conjecture):
 
     def __eq__(self, other):
         return self.hypothesis == other.hypothesis and self.conclusion == other.conclusion
+
+    def false_graphs(self, df):
+        if self.conclusion.inequality == "<=":
+            return df.loc[(df[self.hypothesis.statement] == True) &
+                          (df[self.conclusion.lhs] > sum(self.conclusion.slopes[i] * df[self.conclusion.rhs[i]]
+                                                         for i in range(len(self.conclusion.rhs))) + self.conclusion.intercept)]
+        else:
+            return df.loc[(df[self.hypothesis.statement] == True) &
+                          (df[self.conclusion.lhs] < sum(self.conclusion.slopes[i] * df[self.conclusion.rhs[i]]
+                                                         for i in range(len(self.conclusion.rhs))) + self.conclusion.intercept)]
+
+
+
+    def plot(self, df):
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        sns.set_theme()
+
+        if len(self.conclusion.slopes) == 1:
+            # Filter dataframe where the hypothesis holds
+            df = df[df[self.hypothesis.statement] == True]
+
+            # Set up data for plotting
+            y = df[self.conclusion.lhs]
+            x = df[self.conclusion.rhs]
+            rhs = self.conclusion.rhs_evaluate(x)
+
+            # Create a figure and axis object
+            fig, ax = plt.subplots(figsize=(10, 6))
+
+            # Plot the data
+            ax.set_title(f"{self.__repr__()}")
+            ax.scatter(x, y, color='blue', label=f'Data')
+            ax.plot(x, rhs, color='red', label=f'Prediction: {self.conclusion}')
+
+            # Set labels and grid
+            ax.set_xlabel(self.conclusion.rhs)
+            ax.set_ylabel(self.conclusion.lhs)
+            ax.grid(True)
+            ax.legend()
+
+            # Return the figure
+            return fig
+        else:
+            print("Cannot plot multi-linear conjectures")
+            return None
+
+

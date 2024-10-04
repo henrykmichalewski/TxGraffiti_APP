@@ -105,6 +105,13 @@ def generate_conjectures():
                 rhs = conjecture.conclusion.rhs
                 st.write(f"**Definitions:** {def_map(conjecture.hypothesis.statement)} \n \n {def_map(lhs)} \n \n {def_map(rhs)}")
 
+                # Generate the plot for the conjecture
+                fig = conjecture.plot(df)
+                if fig:
+                    st.pyplot(fig)  # Display the plot below the conjecture
+
+                print(conjecture.false_graphs(df))
+
 
         st.session_state.conjectures = [conjecture_to_dict(conj) for conj in conjectures]
         st.session_state.filtered_indices = list(range(len(conjectures)))

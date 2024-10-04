@@ -8,7 +8,7 @@ def about():
         page_icon="🔍",
     )
 
-    st.write("# TxGraffiti")
+    st.write("# TxGraffiti: Automated Conjecturing on Graphs")
 
     st.markdown(
         """
@@ -73,6 +73,9 @@ def about():
         is, at most, the matching number for $r$-regular graphs with $r>0$. The latest version of TxGraffiti (and Conjecturing.jl - the Julia counterpart to TxGraffiti)
         now also gives the user the ability to implement Fajtlowicz's Dalmation heuristic for further filtering of the conjectures; see Larson's [excellent paper](https://www.sciencedirect.com/science/article/pii/S0004370215001575)
         on the heuristic for more details.
+
+
+        For a detailed mathematical description of **TxGraffiti**'s algorithms and the history of automated conjecturing in mathematics, see our preprint on arXiv: [arXiv preprint 2409.19379](https://arxiv.org/abs/2409.19379)
     """
     )
 

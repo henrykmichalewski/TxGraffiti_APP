@@ -14,7 +14,7 @@ def make_upper_linear_conjecture(
         df,
         target,
         others,
-        hyp="connected",
+        hyp="a connected graph",
         symbol="G"
     ):
     """
@@ -92,7 +92,7 @@ def make_lower_linear_conjecture(
         df,
         target,
         others,
-        hyp="connected",
+        hyp="a connected graph",
         symbol="G"
     ):
     """
