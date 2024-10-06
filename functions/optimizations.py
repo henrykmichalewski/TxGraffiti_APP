@@ -46,7 +46,12 @@ def make_upper_linear_conjecture(
     # Get the names of each row in the dataframe.
     true_objects = df["name"].tolist()
 
-    df = df.groupby(others, as_index=False)[target].max()
+    # df = df.groupby(others, as_index=False)[target].max()
+    # Compute the maximum for each group and compare with the target column
+    df['max_target'] = df.groupby(others)[target].transform('max')
+
+    # Filter rows where the target value is equal to the group max
+    df = df[df[target] == df['max_target']]
 
     # Extract the data from the dataframe for each 'other' variable and the target variable.
     Xs = [df[other].tolist() for other in others]  # List of lists, one list for each variable
@@ -124,7 +129,11 @@ def make_lower_linear_conjecture(
     # Get the names of each row in the dataframe.
     true_objects = df["name"].tolist()
 
-    df = df.groupby(others, as_index=False)[target].min()
+    # Compute the maximum for each group and compare with the target column
+    df['min_target'] = df.groupby(others)[target].transform('min')
+
+    # Filter rows where the target value is equal to the group max
+    df = df[df[target] == df['min_target']]
 
     # Extract the data from the dataframe for each 'other' variable and the target variable.
     Xs = [df[other].tolist() for other in others]  # List of lists, one list for each variable
@@ -205,15 +214,6 @@ def make_all_upper_linear_conjectures(df, target, others, properties):
                 conjectures.append(conjecture)
     return conjectures
 
-    # conjectures = [conj for conj in conjectures if conj.conclusion.slopes[0] != 0 or conj.conclusion.slopes[0] != 0]
-
-    # filtered_conjectures = [conjectures[0]]
-    # for conj in conjectures[1:]:
-    #     if not any(conj == old_conj for old_conj in filtered_conjectures):
-    #         filtered_conjectures.append(conj)
-    # return filtered_conjectures
-
-
 def make_all_lower_linear_conjectures(df, target, others, properties):
     # Create conjectures for every pair of invariants in 'others' combined with each property
     conjectures = []
@@ -232,9 +232,3 @@ def make_all_lower_linear_conjectures(df, target, others, properties):
                 conjecture = make_lower_linear_conjecture(df, target, [other1, other2], hyp=prop)
 
     return conjectures
-    # conjectures = [conj for conj in conjectures if conj.conclusion.slopes[0] != 0 or conj.conclusion.slopes[0] != 0]
-    # filtered_conjectures = [conjectures[0]]
-    # for conj in conjectures[1:]:
-    #     if not any(conj == old_conj for old_conj in filtered_conjectures):
-    #         filtered_conjectures.append(conj)
-    # return filtered_conjectures
