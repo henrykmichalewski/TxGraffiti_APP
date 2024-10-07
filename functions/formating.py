@@ -17,6 +17,7 @@ __all__ =[
 TEX_MAP = {
     "<=": r"\leq",
     ">=": r"\geq",
+    "=": r"=",
     "domination_number": r"\gamma(G)",
     "independence_number": r"\alpha(G)",
     "chromatic_number": r"\chi(G)",
