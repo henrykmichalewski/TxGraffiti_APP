@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from functions import (
-    write_on_the_wall_with_mip,
     rows_multi_radio,
     multi_radio,
     invariants,
@@ -11,6 +10,8 @@ from functions import (
     def_map,
     tex_map,
 )
+
+from functions.write_on_the_wall import write_on_the_wall_with_mip
 import json
 
 
