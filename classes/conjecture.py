@@ -223,9 +223,13 @@ class MultiLinearConjecture(Conjecture):
             return df.loc[(df[self.hypothesis.statement] == True) &
                           (df[self.conclusion.lhs] > sum(self.conclusion.slopes[i] * df[self.conclusion.rhs[i]]
                                                          for i in range(len(self.conclusion.rhs))) + self.conclusion.intercept)]
-        else:
+        elif self.conclusion.inequality == ">=":
             return df.loc[(df[self.hypothesis.statement] == True) &
                           (df[self.conclusion.lhs] < sum(self.conclusion.slopes[i] * df[self.conclusion.rhs[i]]
+                                                         for i in range(len(self.conclusion.rhs))) + self.conclusion.intercept)]
+        else:
+            return df.loc[(df[self.hypothesis.statement] == True) &
+                          (df[self.conclusion.lhs] != sum(self.conclusion.slopes[i] * df[self.conclusion.rhs[i]]
                                                          for i in range(len(self.conclusion.rhs))) + self.conclusion.intercept)]
 
 

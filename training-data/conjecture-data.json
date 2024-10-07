@@ -10,10 +10,12 @@
         "If G is a connected and claw-free graph, then independent_domination_number <= domination_number",
         "If G is a connected and well-covered graph, then independent_domination_number >= independence_number",
         "If G is a tree graph, then independence_number >= (order - matching_number)",
-        "If G is a connected and bipartite graph, then independence_number >= min_edge_cover"
+        "If G is a connected and bipartite graph, then independence_number >= min_edge_cover",
+        "If G is a connected and triangle-free graph, then independence_number >= max_degree"
     ],
     "known_inequalities": [
         "independence_number <= (order - matching_number)",
+        "independence_number <= (order - min_maximal_matching_number)",
         "independence_number <= annihilation_number",
         "independence_number <= (order - min_degree)",
         "independence_number <= min_edge_cover",

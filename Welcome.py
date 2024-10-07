@@ -27,7 +27,7 @@ def main():
     ### Contact
     - TxGraffiti Creator: Randy R. Davila, PhD
 
-    - Email: rrd6@rice.edu.
+    - Email: rrd6@rice.edu and randyrdavila@gmail.com
 
         """
     )

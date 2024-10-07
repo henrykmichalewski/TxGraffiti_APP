@@ -6,8 +6,10 @@ __all__ = [
     'strong_dalmatian',
 ]
 
-def sort_conjectures(conjectures):
+def sort_conjectures(conjectures, filter_touch=False):
     # Sort the conjectures by touch number.
+    if filter_touch:
+        conjectures = [conj for conj in conjectures if conj.touch > filter_touch]
     conjectures.sort(key=lambda x: x.touch, reverse=True)
 
     # Return the sorted list of conjectures.
