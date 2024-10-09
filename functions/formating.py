@@ -161,6 +161,7 @@ TEX_MAP = {
     "a connected graph with min_degree at least 2 and maximum degree at most 3": r"$\text{If } G \text{ is a connected graph with } \delta(G) \geq 2 \text{ and } \Delta(G) \leq 3 \text{, then}$",
     "a connected and chordal graph with min_degree at least 2": r"$\text{If } G \text{ is a connected and chordal graph with } \delta(G) \geq 2 \text{, then}$",
     "a connected and chordal graph with min_degree at least 3": r"$\text{If } G \text{ is a connected and chordal graph with } \delta(G) \geq 3 \text{, then}$",
+    "a connected graph that is a line graph": r"$\text{If } G \text{ is a connected graph that is also a line graph, then}$",
     "a connected and bull-free graph": r"$\text{If } G \text{ is a connected and bull-free graph, then}$",
     "a connected and diamond-free graph": r"$\text{If } G \text{ is a connected and diamond-free graph, then}$",
     "a connected, cubic, and diamond-free graph": r"$\text{If } G \text{ is a connected, cubic, and diamond-free graph, then}$",
@@ -186,6 +187,10 @@ TEX_MAP = {
     "hyper_zagreb_index_2_degree": r"\sum_{v \in V(G)} d_2(v)(d_2(v) - 1)",
     "reciprocal_geometric_arithmetic_index_2_degree": r"\sum_{uv \in E(G)} \frac{2 \sqrt{d_2(u) \cdot d_2(v)}}{d_2(u) + d_2(v)}",
     "augmented_average_edge_degree": r"\frac{2|E(G)|}{\bar{d}_e(G) + 2}",
+    "inverse_edge_degree_plus_two_sum": r"\sum_{e \in E(G)} \frac{1}{d(e) + 2}",
+    "inverse_edge_degree_plus_one_sum": r"\sum_{e \in E(G)} \frac{1}{d(e) + 1}",
+    "inverse_degree_plus_one_sum": r"\sum_{v \in V(G)} \frac{1}{d(v) + 1}",
+    "inverse_degree_plus_two_sum": r"\sum_{v \in V(G)} \frac{1}{d(v) + 2}",
 }
 
 
@@ -516,6 +521,7 @@ DEF_MAP = {
     a claw-free graph is a graph in which the neighborhood of any vertex is the complement of a triangle-free graph.""",
     "a connected, planar, and cubic graph": r"""A connected, planar, and cubic graph is a graph in which every vertex has degree 3 and can be embedded in the plane without any edges crossing.""",
     "a connected and cubic graph which is not K_4": r"""A connected and cubic graph which is not $K_4$ is a graph in which every vertex has degree 3 and is not a complete graph on 4 vertices.""",
+    "a connected graph that is a line graph": r"""A *line graph* is a graph whose vertices correspond to the edges of a given graph $G$ and two vertices in the line graph are adjacent if their corresponding edges in $G$ share a common vertex.""",
     "a connected and well-covered graph": r"""A connected and well-covered graph is a graph in which every maximal independent set is also maximum.""",
     "a connected graph with diameter at most 3": r"""A connected graph with diameter at most 3 is a graph in which the maximum distance between any two vertices is at most 3.""",
     "a connected and planar graph with diameter at most 3": r"""A connected and planar graph with diameter at most 3 is a graph that can be embedded in the plane without any edges crossing and the maximum distance between any two vertices is at most 3.""",
@@ -593,6 +599,14 @@ DEF_MAP = {
     "reciprocal_geometric_arithmetic_index_2_degree": r"""The reciprocal geometric-arithmetic index for the 2-degree $RGA^{(2)}(G)$ is the sum of the ratios of twice the square root of the product of the 2-degrees of adjacent vertices to the sum of their 2-degrees: $RGA^{(2)}(G) = \sum_{uv \in E(G)} \frac{2 \sqrt{d_2(u) \cdot d_2(v)}}{d_2(u) + d_2(v)}$.""",
 
     "augmented_average_edge_degree": r"""The augmented average edge degree is defined as $\frac{2|E(G)|}{\bar{d}_e(G) + 2}$, where $|E(G)|$ is the number of edges in the graph and $\bar{d}_e(G)$ is the average edge degree of $G$. The average edge degree $\bar{d}_e(G)$ is the average number of edges that share an endpoint with a given edge.""",
+
+    "inverse_edge_degree_plus_two_sum": r"""The inverse edge degree plus two sum is defined as $\sum_{e \in E(G)} \frac{1}{d(e) + 2}$, where $E(G)$ is the set of edges in the graph and $d(e)$ is the degree of edge $e$.""",
+
+    "inverse_edge_degree_plus_one_sum": r"""The inverse edge degree plus one sum is defined as $\sum_{e \in E(G)} \frac{1}{d(e) + 1}$, where $E(G)$ is the set of edges in the graph and $d(e)$ is the degree of edge $e$.""",
+
+    "inverse_degree_plus_two_sum": r"""$V(G)$ is the set of vertices in the graph and $d(v)$ is the degree of vertex $v$.""",
+
+    "inverse_degree_plus_one_sum": r"""$V(G)$ is the set of vertices in the graph and $d(v)$ is the degree of vertex $v$.""",
 }
 
 
