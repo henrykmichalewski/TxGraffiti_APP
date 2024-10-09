@@ -289,6 +289,7 @@
         "order - (order - domination_number)",
         "total_domination_number <= 2 * edge_domination_number",
         "zero_forcing_number <= - diameter + order",
-        "total_domination_number <= 7/9 * max_degree + 5/3"
+        "total_domination_number <= 7/9 * max_degree + 5/3",
+        "edge_domination_number <= matching_number"
     ]
 }

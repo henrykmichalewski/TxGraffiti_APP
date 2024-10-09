@@ -69,15 +69,16 @@ TEX_MAP = {
     "power_2_annihilation_sum": r"(a(G) + a(G^2))",
     "power_3_annihilation_sum": r"(a(G) + a(G^2) + a(G^3))",
     "k_slater_index": r"\min\{k \in \mathbb{N} \: : \: sl_k(G) \geq \gamma(G)\}",
-    "wiener_index": r"W(G)",
+    "wiener_index": r"\sum_{\{u,v\} \subseteq V(G)} d(u, v)",
     "k_residual_index": r"R(G, k)",
     "triameter": r"\text{tri}(G)",
-    "randic_index": r"\text{randic}(G)",
+    "randic_index": r"\sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) \cdot d(v)}}",
     "second_largest_eigenvalue" : r"[\lambda_2(G)]",
     "square_positive_energy" : r"[s^{+}(G)]",
     "square_negative_energy" : r"[s^{-}(G)]",
-    "harmonic_index": r"\text{harmonic}(G)",
-    "sum_connectivity_index": r"\text{sum}_c(G)",
+    "harmonic_index": r"\sum_{\{u,v\} \in E(G)} \frac{2}{d(u) + d(v)}",
+    "strong_harmonic_index": r"\sum_{\{u,v\} \in E(G)} \min \Big\{\frac{1}{d(u)}, \frac{1}{d(v)} \Big \}",
+    "sum_connectivity_index": r"\sum_{\{u,v\} \in E(G)} \frac{1}{\sqrt{d(u) + d(v)}}",
     "square_clique_number": r"\omega(G^2)",
     "square_residue": r"R(G^2)",
     "cube_residue": r"R(G^3)",
@@ -164,8 +165,29 @@ TEX_MAP = {
     "a connected and diamond-free graph": r"$\text{If } G \text{ is a connected and diamond-free graph, then}$",
     "a connected, cubic, and diamond-free graph": r"$\text{If } G \text{ is a connected, cubic, and diamond-free graph, then}$",
     "a block graph": r"$\text{If } G \text{ is a block graph, then}$",
-
+    "reciprocal_first_zagreb_index": r"\sum_{v \in V(G)} \frac{1}{d(v)^2}",
+    "reciprocal_second_zagreb_index": r"\sum_{uv \in E(G)} \frac{1}{d(u) \cdot d(v)}",
+    "reciprocal_estrada_index": r"\sum_{i=1}^{n} \frac{1}{e^{\lambda_i}}",
+    "reciprocal_harary_index": r"\sum_{u \neq v} \frac{1}{d_G(u,v)^2}",
+    "reciprocal_second_zagreb_variation": r"\sum_{uv \in E(G)} \frac{1}{d(u) + d(v)}",
+    "reciprocal_randic_index": r"\sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) \cdot d(v)}}",
+    "reciprocal_augmented_zagreb_index": r"\sum_{uv \in E(G)} \left( \frac{d(u) + d(v) - 2}{d(u) \cdot d(v)} \right)^3",
+    "reciprocal_sum_connectivity_index": r"\sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) + d(v)}}",
+    "reciprocal_hyper_zagreb_index": r"\sum_{v \in V(G)} \frac{1}{d(v)(d(v) - 1)}",
+    "reciprocal_geometric_arithmetic_index": r"\sum_{uv \in E(G)} \frac{2\sqrt{d(u) \cdot d(v)}}{d(u) + d(v)}",
+    # New 2-degree indices
+    "first_zagreb_index_2_degree": r"\sum_{v \in V(G)} d_2(v)^2",
+    "second_zagreb_index_2_degree": r"\sum_{uv \in E(G)} d_2(u) \cdot d_2(v)",
+    "reciprocal_first_zagreb_index_2_degree": r"\sum_{v \in V(G)} \frac{1}{d_2(v)^2}",
+    "reciprocal_second_zagreb_index_2_degree": r"\sum_{uv \in E(G)} \frac{1}{d_2(u) \cdot d_2(v)}",
+    "average_degree_2_degree": r"\frac{1}{n} \sum_{v \in V(G)} d_2(v)",
+    "reciprocal_randic_index_2_degree": r"\sum_{uv \in E(G)} \frac{1}{\sqrt{d_2(u) \cdot d_2(v)}}",
+    "reciprocal_sum_connectivity_index_2_degree": r"\sum_{uv \in E(G)} \frac{1}{\sqrt{d_2(u) + d_2(v)}}",
+    "hyper_zagreb_index_2_degree": r"\sum_{v \in V(G)} d_2(v)(d_2(v) - 1)",
+    "reciprocal_geometric_arithmetic_index_2_degree": r"\sum_{uv \in E(G)} \frac{2 \sqrt{d_2(u) \cdot d_2(v)}}{d_2(u) + d_2(v)}",
+    "augmented_average_edge_degree": r"\frac{2|E(G)|}{\bar{d}_e(G) + 2}",
 }
+
 
 DEF_MAP = {
     "order" : r"""The order of a graph $G$, denoted by $n(G)$, is the number of vertices in $G$.""",
@@ -217,6 +239,7 @@ DEF_MAP = {
 
     "clique_number": r"""A *clique* in $G$ is a set of vertices that induces a complete
     subgraph of $G$. The *clique number* of a graph $G$, denoted by $\omega(G)$, is the maximum cardinality of a clique in $G$.""",
+
     "vertex_cover_number": r"""A *vertex cover* of $G$ is a set $C \subseteq V(G)$ of vertices such that every edge in $G$ is incident to at least one
     vertex in $C$. The *vertex cover number* of a graph $G$, denoted by $\beta(G)$, is the minimum cardinality of a
     vertex cover of $G$.""",
@@ -369,7 +392,8 @@ DEF_MAP = {
     is at most 2. The sum of the annihilation number of a graph $G$ and the annihilation number of the square of $G$.""",
     "power_3_annihilation_sum": r"""The sum of the annihilation number of a graph $G$, the annihilation number of the square of $G$, and the annihilation number of the cube of $G$.""",
     "min_edge_cover": r"""A *minimum edge cover* of $G$ is a set $E \subseteq E(G)$ of edges such that every vertex in $G$ is incident to an edge in $E$. The *minimum edge cover number* of a graph $G$, denoted by $\beta'(G)$, is the minimum cardinality of a minimum edge cover of $G$.""",
-    "randic_index": r"""The Randić index of a graph $G$ is a degree sequence graph invariant denoted by $\text{randic}(G)$.""",
+    "randic_index": r"""The Randić index $R(G)$ is defined as the sum of the reciprocals of the square roots of the product of the degrees of adjacent vertices in a graph.
+    For each edge $uv \in E(G)$, where $d(u)$ and $d(v)$ are the degrees of the vertices $u$ and $v$, the Randić index is given by $R(G) = \sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) \cdot d(v)}}$.""",
 
     "square_positive_energy" : r"""The square positive energy of a graph $G$, denoted $[s^{+}(G)]$, is
     the sum of the squares of the eigenvalues of the adjacency matrix of $G$ *rounded to the nearest integer*.""",
@@ -403,6 +427,10 @@ DEF_MAP = {
 
     "harmonic_index" : r"""The *harmonic index* of a graph $G$, denoted by $H(G)$, is a degree-based graph invariant defined as the sum of the reciprocals of the degrees of the adjacent vertices. Formally, if $d(u)$ and $d(v)$ are the degrees of adjacent vertices $u$ and $v$, then
     $$H(G) = \sum_{\{u,v\} \in E(G)} \frac{2}{d(u) + d(v)}.$$""",
+
+    "strong_harmonic_index" : r"""The *strong harmonic index* of a graph $G$, denoted by $H_s(G)$, is a degree-based graph invariant defined as the sum of the minimum of reciprocals of the degrees of the adjacent vertices.
+    Formally, if $d(u)$ and $d(v)$ are the degrees of adjacent vertices $u$ and $v$, then
+    $$H_s(G) = \sum_{\{u,v\} \in E(G)} \min\{\frac{1}{d(u)}, \frac{1}{d(v)}\}.$$""",
 
 
     "square_zero_forcing_number" : r"""Given a blue and white coloring of the vertices of $G$, the *zero forcing color change rule*
@@ -524,7 +552,51 @@ DEF_MAP = {
     "a connected and diamond-free graph": r"""A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a connected, cubic, and diamond-free graph": r"""A *cubic graph* is a graph where every vertex has degree 3. A *diamond* is a graph formed by removing one edge from the complete graph $K_4$. A *diamond-free graph* is a graph in which no induced subgraph is a diamond.""",
     "a block graph": """A block graph is a connected graph in which every biconnected component is a clique.""",
+    # Existing indices
+    "reciprocal_first_zagreb_index": r"""The reciprocal first Zagreb index $RZ_1(G)$ is defined as the sum of the reciprocals of the square of the degrees of the vertices of $G$: $RZ_1(G) = \sum_{v \in V(G)} \frac{1}{d(v)^2}$.""",
+
+    "reciprocal_second_zagreb_index": r"""The reciprocal second Zagreb index $RZ_2(G)$ is defined as the sum of the reciprocals of the product of degrees of adjacent vertices in $G$: $RZ_2(G) = \sum_{uv \in E(G)} \frac{1}{d(u) \cdot d(v)}$.""",
+
+    "reciprocal_estrada_index": r"""The reciprocal Estrada index $REE(G)$ is defined as the sum of the reciprocals of the exponential of the eigenvalues of the adjacency matrix of $G$: $REE(G) = \sum_{i=1}^{n} \frac{1}{e^{\lambda_i}}$.""",
+
+    "reciprocal_harary_index": r"""The reciprocal Harary index $RH(G)$ is the sum of the reciprocals of the square of the shortest path distances between distinct vertices in $G$: $RH(G) = \sum_{u \neq v} \frac{1}{d_G(u,v)^2}$.""",
+
+    "reciprocal_second_zagreb_variation": r"""The reciprocal second Zagreb variation $RZ_2^*(G)$ is the sum of the reciprocals of the sum of the degrees of adjacent vertices: $RZ_2^*(G) = \sum_{uv \in E(G)} \frac{1}{d(u) + d(v)}$.""",
+
+    "reciprocal_randic_index": r"""The reciprocal Randić index $RR(G)$ is the sum of the reciprocals of the square roots of the product of degrees of adjacent vertices: $RR(G) = \sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) \cdot d(v)}}$.""",
+
+    "reciprocal_augmented_zagreb_index": r"""The reciprocal augmented Zagreb index $RAZI(G)$ is the sum of the cubes of the reciprocals of the product of the degrees of adjacent vertices, adjusted by the sum of their degrees: $RAZI(G) = \sum_{uv \in E(G)} \left( \frac{d(u) + d(v) - 2}{d(u) \cdot d(v)} \right)^3$.""",
+
+    "reciprocal_sum_connectivity_index": r"""The reciprocal sum-connectivity index $R\chi(G)$ is the sum of the reciprocals of the square roots of the sum of the degrees of adjacent vertices: $R\chi(G) = \sum_{uv \in E(G)} \frac{1}{\sqrt{d(u) + d(v)}}$.""",
+
+    "reciprocal_hyper_zagreb_index": r"""The reciprocal hyper-Zagreb index $RHM_1(G)$ is the sum of the reciprocals of the product of the degrees of vertices and one less than their degrees: $RHM_1(G) = \sum_{v \in V(G)} \frac{1}{d(v)(d(v) - 1)}$.""",
+
+    "reciprocal_geometric_arithmetic_index": r"""The reciprocal geometric-arithmetic index $RGA(G)$ is the sum of the ratios of twice the square root of the product of the degrees of adjacent vertices to the sum of their degrees: $RGA(G) = \sum_{uv \in E(G)} \frac{2\sqrt{d(u) \cdot d(v)}}{d(u) + d(v)}$.""",
+
+    # 2-degree-based indices
+    "first_zagreb_index_2_degree": r"""The first Zagreb index for the 2-degree $Z_1^{(2)}(G)$ is defined as the sum of the squares of the 2-degrees of the vertices: $Z_1^{(2)}(G) = \sum_{v \in V(G)} d_2(v)^2$.""",
+
+    "second_zagreb_index_2_degree": r"""The second Zagreb index for the 2-degree $Z_2^{(2)}(G)$ is defined as the sum of the products of the 2-degrees of adjacent vertices: $Z_2^{(2)}(G) = \sum_{uv \in E(G)} d_2(u) \cdot d_2(v)$.""",
+
+    "reciprocal_first_zagreb_index_2_degree": r"""The reciprocal first Zagreb index for the 2-degree $RZ_1^{(2)}(G)$ is the sum of the reciprocals of the squares of the 2-degrees of the vertices: $RZ_1^{(2)}(G) = \sum_{v \in V(G)} \frac{1}{d_2(v)^2}$.""",
+
+    "reciprocal_second_zagreb_index_2_degree": r"""The reciprocal second Zagreb index for the 2-degree $RZ_2^{(2)}(G)$ is the sum of the reciprocals of the products of the 2-degrees of adjacent vertices: $RZ_2^{(2)}(G) = \sum_{uv \in E(G)} \frac{1}{d_2(u) \cdot d_2(v)}$.""",
+
+    "average_degree_2_degree": r"""The average 2-degree $\bar{d_2}(G)$ is the average number of vertices within distance 2 from each vertex in the graph: $\bar{d_2}(G) = \frac{1}{n} \sum_{v \in V(G)} d_2(v)$.""",
+
+    "reciprocal_randic_index_2_degree": r"""The reciprocal Randić index for the 2-degree $RR^{(2)}(G)$ is the sum of the reciprocals of the square roots of the products of the 2-degrees of adjacent vertices: $RR^{(2)}(G) = \sum_{uv \in E(G)} \frac{1}{\sqrt{d_2(u) \cdot d_2(v)}}$.""",
+
+    "reciprocal_sum_connectivity_index_2_degree": r"""The reciprocal sum-connectivity index for the 2-degree $R\chi^{(2)}(G)$ is the sum of the reciprocals of the square roots of the sum of the 2-degrees of adjacent vertices: $R\chi^{(2)}(G) = \sum_{uv \in E(G)} \frac{1}{\sqrt{d_2(u) + d_2(v)}}$.""",
+
+    "hyper_zagreb_index_2_degree": r"""The hyper-Zagreb index for the 2-degree $HM_1^{(2)}(G)$ is the sum of the products of the 2-degrees of the vertices and one less than their 2-degrees: $HM_1^{(2)}(G) = \sum_{v \in V(G)} d_2(v)(d_2(v) - 1)$.""",
+
+    "reciprocal_geometric_arithmetic_index_2_degree": r"""The reciprocal geometric-arithmetic index for the 2-degree $RGA^{(2)}(G)$ is the sum of the ratios of twice the square root of the product of the 2-degrees of adjacent vertices to the sum of their 2-degrees: $RGA^{(2)}(G) = \sum_{uv \in E(G)} \frac{2 \sqrt{d_2(u) \cdot d_2(v)}}{d_2(u) + d_2(v)}$.""",
+
+    "augmented_average_edge_degree": r"""The augmented average edge degree is defined as $\frac{2|E(G)|}{\bar{d}_e(G) + 2}$, where $|E(G)|$ is the number of edges in the graph and $\bar{d}_e(G)$ is the average edge degree of $G$. The average edge degree $\bar{d}_e(G)$ is the average number of edges that share an endpoint with a given edge.""",
 }
+
+
+
 
 def long_computation():
     progress_bar = st.progress(0)

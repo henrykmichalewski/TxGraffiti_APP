@@ -16,6 +16,7 @@ __all__ = [
     "update_data_from_user",
     "invariants",
     "booleans",
+    "computable_invariants",
 ]
 
 
@@ -27,6 +28,11 @@ invariants = [
 booleans = [
     line.rstrip("\n")
     for line in open("functions/properties.txt")
+]
+
+computable_invariants = [
+    line.rstrip("\n")
+    for line in open("functions/computable_invariants.txt")
 ]
 
 def compute_graph_values_from_instance(G, name="G", invariants=invariants, properties=booleans):

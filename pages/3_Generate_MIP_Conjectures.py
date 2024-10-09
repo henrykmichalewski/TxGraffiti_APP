@@ -37,12 +37,58 @@ def generate_conjectures():
     st.markdown("# Conjecturing with TxGraffiti")
     # st.sidebar.header("Plotting Demo")
     st.write(
-        """Generate conjectures using a mixed-integer program which maximizes the number of equalities found in the
-        formulaiton of linear inequalities. Please select one or more invariants to conjecture on, whether you would like to conjecture on
-        a specific families of graphs, and whether you would like to apply the Dalmatian heuristic
-        for further filtering the conjectures. **Note, different combinations of these fields will yield different conjectures**.
-        After selecting these fields, you can generate the conjectures
-        by clicking the button. The conjectures will be computed and then displayed below.
+        """Generate conjectures using a *mixed-integer program* that maximizes the number of equalities found in the
+        formulaiton of linear inequalities.
+        """
+    )
+
+    st.markdown(
+    """
+    # Mixed-Integer Programming (MIP) Formulation
+
+    We define the mixed-integer programming (MIP) formulation for finding both upper and lower bounds on the target invariant $Y$ as follows:
+
+    ## Objective
+    """
+    )
+
+    # Display the objective using st.latex()
+    st.latex(r"\text{Maximize} \quad \sum_{j=1}^{N} \left( z_j^{\text{upper}} + z_j^{\text{lower}} \right)")
+
+    st.markdown(
+        """
+        ## Subject to:
+
+        """
+    )
+
+    # Display the constraints using st.latex() and st.markdown() to align content
+    st.latex(r"\sum_{i=1}^{k} w_i^{\text{upper}} X_{i,j} + b^{\text{upper}} \geq Y_j \quad \forall j = 1, 2, \dots, N")
+    st.latex(r"\sum_{i=1}^{k} w_i^{\text{upper}} X_{i,j} + b^{\text{upper}} - Y_j \leq M(1 - z_j^{\text{upper}}) \quad \forall j = 1, 2, \dots, N")
+    st.latex(r"\sum_{i=1}^{k} w_i^{\text{lower}} X_{i,j} + b^{\text{lower}} \leq Y_j \quad \forall j = 1, 2, \dots, N")
+    st.latex(r"Y_j - \sum_{i=1}^{k} w_i^{\text{lower}} X_{i,j} - b^{\text{lower}} \leq M(1 - z_j^{\text{lower}}) \quad \forall j = 1, 2, \dots, N")
+
+    st.markdown(
+        """
+        ## Where:
+        """
+    )
+
+    # Use markdown for the list of variables
+    st.markdown(
+        """
+        - $w_i^{\text{upper}}, w_i^{\text{lower}}$ are the weights for the upper and lower bounds, respectively,
+        - $b^{\text{upper}}, b^{\text{lower}}$ are the intercepts for the upper and lower bounds, respectively,
+        - $z_j^{\text{upper}}, z_j^{\text{lower}}$ are binary variables indicating if the upper or lower bounds hold with equality for each data point $j$,
+        - $M$ is a large constant (Big-M) used to relax the equality constraints,
+        - $X_{i,j}$ is the value of the $i$-th invariant for the $j$-th data point,
+        - $Y_j$ is the value of the target invariant for the $j$-th data point.
+        """
+    )
+
+    st.markdown(
+        """
+        This formulation ensures that the MIP solver maximizes the number of times the upper and lower bounds hold with equality, resulting in tight bounds for the target invariant $Y$. Thereafter, we apply the standard *TxGraffiti* heuristics.
         """
     )
 
@@ -67,7 +113,7 @@ def generate_conjectures():
 
     single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     type_two_conjectures = st.radio('### Type 2 Conjecturing? (will increase the run time by several minutes)', ['no', 'yes'])
-    dalmatian_answer = st.radio('### Apply the **weak**-Dalmatian heuristic or **strong**-Dalmatian for conjecture (further) filtering?', ['weak', 'strong'])
+    dalmatian_answer = st.radio('### Apply the **weak**-Dalmatian heuristic or **strong**-Dalmatian heuristic for conjecture (further) filtering?', ['weak', 'strong'])
 
     use_strong_dalmatian = False if dalmatian_answer == 'weak' else True
     type_two_conjectures = False if type_two_conjectures == 'no' else True

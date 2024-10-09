@@ -236,6 +236,52 @@ def compute(G, property):
         return is_block_graph(G)
     elif property == "outer_connected_domination_number":
         return outer_connected_domination_number(G)
+    elif property == "strong_harmonic_index":
+        return strong_harmonic_index(G)
+    elif property == "reciprocal_first_zagreb_index":
+        return reciprocal_first_zagreb_index(G)
+    elif property == "reciprocal_second_zagreb_index":
+        return reciprocal_second_zagreb_index(G)
+    elif property == "reciprocal_estrada_index":
+        return reciprocal_estrada_index(G)
+    elif property == "reciprocal_harary_index":
+        return reciprocal_harary_index(G)
+    elif property == "reciprocal_second_zagreb_variation":
+        return reciprocal_second_zagreb_variation(G)
+    elif property == "reciprocal_randic_index":
+        return reciprocal_randic_index(G)
+    elif property == "reciprocal_augmented_zagreb_index":
+        return reciprocal_augmented_zagreb_index(G)
+    elif property == "reciprocal_sum_connectivity_index":
+        return reciprocal_sum_connectivity_index(G)
+    elif property == "reciprocal_hyper_zagreb_index":
+        return reciprocal_hyper_zagreb_index(G)
+    elif property == "reciprocal_geometric_arithmetic_index":
+        return reciprocal_geometric_arithmetic_index(G)
+
+    # New 2-degree based indices
+    elif property == "first_zagreb_index_2_degree":
+        return first_zagreb_index_2_degree(G)
+    elif property == "second_zagreb_index_2_degree":
+        return second_zagreb_index_2_degree(G)
+    elif property == "reciprocal_first_zagreb_index_2_degree":
+        return reciprocal_first_zagreb_index_2_degree(G)
+    elif property == "reciprocal_second_zagreb_index_2_degree":
+        return reciprocal_second_zagreb_index_2_degree(G)
+    elif property == "average_degree_2_degree":
+        return average_degree_2_degree(G)
+    elif property == "reciprocal_randic_index_2_degree":
+        return reciprocal_randic_index_2_degree(G)
+    elif property == "reciprocal_sum_connectivity_index_2_degree":
+        return reciprocal_sum_connectivity_index_2_degree(G)
+    elif property == "hyper_zagreb_index_2_degree":
+        return hyper_zagreb_index_2_degree(G)
+    elif property == "reciprocal_geometric_arithmetic_index_2_degree":
+        return reciprocal_geometric_arithmetic_index_2_degree(G)
+
+    elif property == "augmented_average_edge_degree":
+        return augmented_average_edge_degree(G)
+
     else:
         return getattr(gp, property)(G)
 
@@ -913,3 +959,106 @@ def minimum_restrained_dominating_set(G):
 def restrained_domination_number(G):
     restrained_dom_set = minimum_restrained_dominating_set(G)
     return len(restrained_dom_set)
+
+def min_reciprocal_degree(G, v, w):
+    return min(1/G.degree(v), 1/G.degree(w))
+
+def strong_harmonic_index(G):
+    return sum(min_reciprocal_degree(G, v, w) for v, w in G.edges())
+
+# Reciprocal First Zagreb Index
+def reciprocal_first_zagreb_index(G):
+    return sum(1 / (d ** 2) for v, d in G.degree() if d > 0)
+
+# Reciprocal Second Zagreb Index
+def reciprocal_second_zagreb_index(G):
+    return sum(1 / (G.degree(u) * G.degree(v)) for u, v in G.edges() if G.degree(u) > 0 and G.degree(v) > 0)
+
+# # Reciprocal Estrada Index
+# def reciprocal_estrada_index(G):
+#     eigenvalues = np.linalg.eigvals(nx.adjacency_matrix(G).todense())
+#     return sum(1 / np.exp(l) for l in eigenvalues if np.exp(l) > 0)
+
+# Reciprocal Harary Index
+def reciprocal_harary_index(G):
+    return sum(1 / (nx.shortest_path_length(G, u, v) ** 2) for u in G for v in G if u != v)
+
+# Reciprocal Second Zagreb Index Variation
+def reciprocal_second_zagreb_variation(G):
+    return sum(1 / (G.degree(u) + G.degree(v)) for u, v in G.edges() if (G.degree(u) + G.degree(v)) > 0)
+
+# Reciprocal Randić Index
+def reciprocal_randic_index(G):
+    return sum(1 / np.sqrt(G.degree(u) * G.degree(v)) for u, v in G.edges() if G.degree(u) > 0 and G.degree(v) > 0)
+
+# Reciprocal Augmented Zagreb Index
+def reciprocal_augmented_zagreb_index(G):
+    return sum(((G.degree(u) + G.degree(v) - 2) / (G.degree(u) * G.degree(v))) ** 3 for u, v in G.edges() if G.degree(u) > 0 and G.degree(v) > 0)
+
+# Reciprocal Sum-connectivity Index
+def reciprocal_sum_connectivity_index(G):
+    return sum(1 / np.sqrt(G.degree(u) + G.degree(v)) for u, v in G.edges() if (G.degree(u) + G.degree(v)) > 0)
+
+# Reciprocal Hyper-Zagreb Index
+def reciprocal_hyper_zagreb_index(G):
+    return sum(1 / (d * (d - 1)) for v, d in G.degree() if d > 1)
+
+# Reciprocal Geometric-Arithmetic Index
+def reciprocal_geometric_arithmetic_index(G):
+    return sum(2 * np.sqrt(G.degree(u) * G.degree(v)) / (G.degree(u) + G.degree(v)) for u, v in G.edges() if (G.degree(u) + G.degree(v)) > 0)
+
+def two_degree(G, v):
+    return len(set(nx.single_source_shortest_path_length(G, v, cutoff=2)) - {v})
+
+# 2-degree First Zagreb Index
+def first_zagreb_index_2_degree(G):
+    return sum(two_degree(G, v) ** 2 for v in G.nodes())
+
+# 2-degree Second Zagreb Index
+def second_zagreb_index_2_degree(G):
+    return sum(two_degree(G, u) * two_degree(G, v) for u, v in G.edges())
+
+# Reciprocal 2-degree First Zagreb Index
+def reciprocal_first_zagreb_index_2_degree(G):
+    return sum(1 / (two_degree(G, v) ** 2) for v in G.nodes() if two_degree(G, v) > 0)
+
+# Reciprocal 2-degree Second Zagreb Index
+def reciprocal_second_zagreb_index_2_degree(G):
+    return sum(1 / (two_degree(G, u) * two_degree(G, v)) for u, v in G.edges() if two_degree(G, u) > 0 and two_degree(G, v) > 0)
+
+# 2-degree Average Degree
+def average_degree_2_degree(G):
+    return sum(two_degree(G, v) for v in G.nodes()) / G.number_of_nodes()
+
+# Reciprocal 2-degree Randić Index
+def reciprocal_randic_index_2_degree(G):
+    return sum(1 / np.sqrt(two_degree(G, u) * two_degree(G, v)) for u, v in G.edges() if two_degree(G, u) > 0 and two_degree(G, v) > 0)
+
+# Reciprocal 2-degree Sum-connectivity Index
+def reciprocal_sum_connectivity_index_2_degree(G):
+    return sum(1 / np.sqrt(two_degree(G, u) + two_degree(G, v)) for u, v in G.edges() if (two_degree(G, u) + two_degree(G, v)) > 0)
+
+# 2-degree Hyper-Zagreb Index
+def hyper_zagreb_index_2_degree(G):
+    return sum(two_degree(G, v) * (two_degree(G, v) - 1) for v in G.nodes() if two_degree(G, v) > 1)
+
+# Reciprocal 2-degree Geometric-Arithmetic Index
+def reciprocal_geometric_arithmetic_index_2_degree(G):
+    return sum(2 * np.sqrt(two_degree(G, u) * two_degree(G, v)) / (two_degree(G, u) + two_degree(G, v)) for u, v in G.edges() if (two_degree(G, u) + two_degree(G, v)) > 0)
+
+
+def edge_degree(G, e):
+    """Returns the degree of an edge, which is the number of edges sharing an endpoint with the given edge e."""
+    u, v = e
+    return len(set(G.edges(u)) | set(G.edges(v))) - 1  # Subtract 1 to avoid double-counting the edge itself
+
+def average_edge_degree(G):
+    """Computes the average edge degree of the graph G."""
+    total_edge_degree = sum(edge_degree(G, e) for e in G.edges())
+    return total_edge_degree / G.number_of_edges()
+
+def augmented_average_edge_degree(G):
+    """Computes 2 * |E(G)| / (average_edge_degree(G) + 2)."""
+    num_edges = G.number_of_edges()
+    avg_edge_degree = average_edge_degree(G)
+    return 2 * num_edges / (avg_edge_degree + 2)

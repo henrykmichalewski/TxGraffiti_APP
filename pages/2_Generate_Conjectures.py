@@ -6,6 +6,7 @@ from functions import (
     rows_multi_radio,
     multi_radio,
     invariants,
+    computable_invariants,
     booleans,
     conjecture_to_latex,
     conjecture_to_dict,
@@ -67,6 +68,10 @@ def generate_conjectures():
     single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     type_two_conjectures = st.radio('### Type 2 Conjecturing? (will increase the run time by several minutes)', ['no', 'yes'])
     dalmatian_answer = st.radio('### Apply the **weak**-Dalmatian heuristic or **strong**-Dalmatian for conjecture (further) filtering?', ['weak', 'strong'])
+
+    use_against_computable = st.radio('### Focus conjectures on computable invariants?', ['yes', 'no'])
+    if use_against_computable == 'yes':
+        numerical_columns = [col for col in df.columns if col in computable_invariants]
 
     use_strong_dalmatian = False if dalmatian_answer == 'weak' else True
     type_two_conjectures = False if type_two_conjectures == 'no' else True
