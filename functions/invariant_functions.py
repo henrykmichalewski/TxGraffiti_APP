@@ -242,8 +242,6 @@ def compute(G, property):
         return reciprocal_first_zagreb_index(G)
     elif property == "reciprocal_second_zagreb_index":
         return reciprocal_second_zagreb_index(G)
-    elif property == "reciprocal_estrada_index":
-        return reciprocal_estrada_index(G)
     elif property == "reciprocal_harary_index":
         return reciprocal_harary_index(G)
     elif property == "reciprocal_second_zagreb_variation":
@@ -258,6 +256,15 @@ def compute(G, property):
         return reciprocal_hyper_zagreb_index(G)
     elif property == "reciprocal_geometric_arithmetic_index":
         return reciprocal_geometric_arithmetic_index(G)
+    elif property == "inverse_degree_plus_one_sum":
+        return inverse_degree_plus_one_sum(G)
+    elif property == "inverse_degree_plus_two_sum":
+        return inverse_degree_plus_two_sum(G)
+    elif property == "inverse_edge_degree_plus_one_sum":
+        return inverse_edge_degree_plus_one_sum(G)
+    elif property == "inverse_edge_degree_plus_two_sum":
+        return inverse_edge_degree_plus_two_sum(G)
+
 
     # New 2-degree based indices
     elif property == "first_zagreb_index_2_degree":
@@ -281,6 +288,9 @@ def compute(G, property):
 
     elif property == "augmented_average_edge_degree":
         return augmented_average_edge_degree(G)
+
+    elif property == "a connected graph that is a line graph":
+        return is_line_graph_modified(G)
 
     else:
         return getattr(gp, property)(G)
@@ -1062,3 +1072,85 @@ def augmented_average_edge_degree(G):
     num_edges = G.number_of_edges()
     avg_edge_degree = average_edge_degree(G)
     return 2 * num_edges / (avg_edge_degree + 2)
+
+def inverse_degree_plus_one_sum(G):
+    """Computes the sum of the inverse of the degree plus one for all vertices in G."""
+    return sum(1 / (G.degree(v) + 1) for v in G.nodes())
+
+def inverse_degree_plus_two_sum(G):
+    """Computes the sum of the inverse of the degree plus one for all vertices in G."""
+    return sum(1 / (G.degree(v) + 2) for v in G.nodes())
+
+def inverse_edge_degree_plus_one_sum(G):
+    """Computes the sum of the inverse of the edge degree plus one for all edges in G."""
+    return sum(1 / (edge_degree(G, e) + 1) for e in G.edges())
+
+def inverse_edge_degree_plus_two_sum(G):
+    """Computes the sum of the inverse of the edge degree plus one for all edges in G."""
+    return sum(1 / (edge_degree(G, e) + 2) for e in G.edges())
+
+# Define the forbidden subgraphs based on Beineke's theorem
+def get_forbidden_subgraphs():
+    forbidden_graphs = []
+
+    # Claw (K1,3)
+    G1 = nx.Graph([(0, 1), (0, 2), (0, 3)])
+    forbidden_graphs.append(G1)
+
+    # K5 - e (House)
+    G2 = nx.complete_graph(5)
+    G2.remove_edge(0, 1)
+    forbidden_graphs.append(G2)
+
+    # K3,3 - e (Fork)
+    G3 = nx.complete_bipartite_graph(3, 3)
+    G3.remove_edge(0, 3)
+    forbidden_graphs.append(G3)
+
+    # Diamond (K4 - e)
+    G4 = nx.Graph([(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)])
+    forbidden_graphs.append(G4)
+
+    # Banner (C4 with an extra vertex connected to two opposite vertices)
+    G5 = nx.cycle_graph(4)
+    G5.add_node(4)
+    G5.add_edges_from([(4, 0), (4, 2)])
+    forbidden_graphs.append(G5)
+
+    # C5 (Pentagon)
+    G6 = nx.cycle_graph(5)
+    forbidden_graphs.append(G6)
+
+    # Butterfly (Two triangles sharing a vertex)
+    G7 = nx.Graph([(0, 1), (1, 2), (2, 0), (0, 3), (3, 4), (4, 0)])
+    forbidden_graphs.append(G7)
+
+    # Extended C4 (C4 with an extra vertex connected to 3 consecutive vertices)
+    G8 = nx.cycle_graph(4)
+    G8.add_node(4)
+    G8.add_edges_from([(4, 0), (4, 1), (4, 2)])
+    forbidden_graphs.append(G8)
+
+    # Triangle with a pending edge
+    G9 = nx.Graph([(0, 1), (1, 2), (2, 0), (2, 3)])
+    forbidden_graphs.append(G9)
+
+    return forbidden_graphs
+
+# Function to check if a graph contains a forbidden subgraph
+def contains_forbidden_subgraph(G, forbidden_subgraph):
+    GM = nx.algorithms.isomorphism.GraphMatcher(G, forbidden_subgraph)
+    return GM.subgraph_is_isomorphic()
+
+# Function to determine if G is a line graph, ignoring C5 as a forbidden subgraph
+def is_line_graph_modified(G):
+    forbidden_subgraphs = get_forbidden_subgraphs()
+
+    for i, forbidden in enumerate(forbidden_subgraphs, start=1):
+        # Ignore Forbidden Subgraph 6 (C5) for line graphs, as it's a valid structure
+        if i == 6:
+            continue
+        if contains_forbidden_subgraph(G, forbidden):
+            return False  # Contains a forbidden subgraph, so not a line graph
+
+    return True  # No forbidden subgraphs found, so it's a line graph

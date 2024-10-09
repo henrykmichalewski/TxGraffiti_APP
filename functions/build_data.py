@@ -2,6 +2,7 @@ from functions.invariant_functions import compute
 import os
 import grinpy as gp
 import pandas as pd
+import networkx as nx
 
 __all__ = [
     "compute_graph_values_from_instance",
@@ -17,6 +18,8 @@ __all__ = [
     "invariants",
     "booleans",
     "computable_invariants",
+    "add_new_invariant",
+    "add_new_invariants",
 ]
 
 
@@ -34,6 +37,63 @@ computable_invariants = [
     line.rstrip("\n")
     for line in open("functions/computable_invariants.txt")
 ]
+
+def add_new_invariant(file_path, invariant):
+    df = pd.read_csv(file_path)
+
+    # Print the names of the graphs for debugging
+    print("Graph names:", df.name.tolist())
+
+    # Initialize the new column data
+    new_column = []
+
+    # Loop through each graph name and compute the strong harmonic index
+    for name in df.name:
+        graph_edgelist = f"graph-edgelists/{name}.txt"
+
+        # Check if the graph file exists and handle potential errors
+        try:
+            G = nx.read_edgelist(graph_edgelist)
+            strong_harmonic_index = compute(G, invariant)
+        except Exception as e:
+            print(f"Error processing {name}: {e}")
+            strong_harmonic_index = None  # Handle missing or error case appropriately
+
+        new_column.append(strong_harmonic_index)
+
+    # Add the new data as a column to the dataframe
+    df["strong_harmonic_index"] = new_column
+
+    # Save the updated dataframe back to the CSV
+    df.to_csv(file_path, index=False)
+
+    print(f"Updated data saved to {file_path}")
+
+def add_new_invariants(file_path, invariants):
+    df = pd.read_csv(file_path)
+
+    # Print the names of the graphs for debugging
+    print("Graph names:", df.name.tolist())
+
+    for invariant in invariants:
+        # Initialize the new column data
+        new_column = []
+
+        # Loop through each graph name and compute the strong harmonic index
+        for name in df.name:
+            graph_edgelist = f"graph-edgelists/{name}.txt"
+
+            G = nx.read_edgelist(graph_edgelist)
+            index = compute(G, invariant)
+            new_column.append(index)
+
+        # Add the new data as a column to the dataframe
+        df[f"{invariant}"] = new_column
+
+    # Save the updated dataframe back to the CSV
+    df.to_csv(file_path, index=False)
+
+    print(f"Updated data saved to {file_path}")
 
 def compute_graph_values_from_instance(G, name="G", invariants=invariants, properties=booleans):
     """

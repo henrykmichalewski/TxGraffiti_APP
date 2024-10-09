@@ -7,6 +7,7 @@ from functions import (
     booleans,
     conjecture_to_latex,
     conjecture_to_dict,
+    computable_invariants,
     def_map,
     tex_map,
 )
@@ -34,7 +35,7 @@ boolean_columns = [col for col in df.columns if col in booleans]
 def generate_conjectures():
     # st.title("Generate Conjectures")
     st.set_page_config(page_title="Conjecture Generator") #, page_icon="📈")
-    st.markdown("# Conjecturing with TxGraffiti")
+    st.markdown("# Conjecturing with **TxGraffiti II**")
     # st.sidebar.header("Plotting Demo")
     st.write(
         """Generate conjectures using a *mixed-integer program* that maximizes the number of equalities found in the
@@ -95,8 +96,10 @@ def generate_conjectures():
     df = pd.read_csv(DATA_FILE)
 
     numerical_columns = [col for col in df.columns if col in invariants if col not in ["semitotal_domination_number", "square_negative_energy", "square_positive_energy", "second_largest_eigenvalues", "size"]]
-    boolean_columns = [col for col in df.columns if col in booleans]
-
+    boolean_columns = ["all"]
+    for col in df.columns:
+        if col in booleans:
+            boolean_columns.append(col)
 
     # data = st.button("Update Graph Database")
     # if data:
@@ -104,25 +107,33 @@ def generate_conjectures():
 
     # with st.sidebar:
 
-    invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
+    # invariant_column = rows_multi_radio('### Select one or more graph invariants to conjecture on:', numerical_columns)
+    invariant_column = st.multiselect('### Select one or more graph invariants to conjecture on:', numerical_columns)
+
     if invariant_column == []:
         invariant_column = numerical_columns
 
     # removal_invariants = multi_radio('### Exclude any invariants?', numerical_columns)
     # invariant_column = [invariant for invariant in invariant_column if invariant not in removal_invariants]
 
-    single_property = multi_radio('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
+    single_property = st.multiselect('### Would you like TxGraffiti to focus on specific families of graphs?', boolean_columns)
     type_two_conjectures = st.radio('### Type 2 Conjecturing? (will increase the run time by several minutes)', ['no', 'yes'])
     dalmatian_answer = st.radio('### Apply the **weak**-Dalmatian heuristic or **strong**-Dalmatian heuristic for conjecture (further) filtering?', ['weak', 'strong'])
 
     use_strong_dalmatian = False if dalmatian_answer == 'weak' else True
     type_two_conjectures = False if type_two_conjectures == 'no' else True
 
+    use_against_computable = st.radio('### Focus conjectures on computable invariants?', ['yes', 'no'])
+    if use_against_computable == 'yes':
+        numerical_columns = [col for col in df.columns if col in computable_invariants]
+
     generate_conjectures = st.button('Generate Conjectures')
     conjectures = []
     if generate_conjectures:
-        if single_property != []:
+        if "all" not in single_property:
             boolean_columns = single_property
+        else:
+            boolean_columns = [col for col in df.columns if col in booleans]
         for invariant in invariant_column:
 
             with st.spinner(f'Learning conjectures for the {invariant} ...'):

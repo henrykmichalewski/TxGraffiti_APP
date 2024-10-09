@@ -11,7 +11,10 @@
         "If G is a connected and well-covered graph, then independent_domination_number >= independence_number",
         "If G is a tree graph, then independence_number >= (order - matching_number)",
         "If G is a connected and bipartite graph, then independence_number >= min_edge_cover",
-        "If G is a connected and triangle-free graph, then independence_number >= max_degree"
+        "If G is a connected and triangle-free graph, then independence_number >= max_degree",
+        "If G is a connected graph which is not K_n, then zero_forcing_number <= order - 2",
+        "If G is a connected graph which is not K_n, then total_zero_forcing_number <= order - 2",
+        "If G is a connected graph which is not K_n, then connected_zero_forcing_number <= order - 2"
     ],
     "known_inequalities": [
         "independence_number <= (order - matching_number)",
@@ -290,6 +293,13 @@
         "total_domination_number <= 2 * edge_domination_number",
         "zero_forcing_number <= - diameter + order",
         "total_domination_number <= 7/9 * max_degree + 5/3",
-        "edge_domination_number <= matching_number"
+        "edge_domination_number <= matching_number",
+        "zero_forcing_number <= order - 1",
+        "total_zero_forcing_number <= order - 1",
+        "connected_zero_forcing_number <= order - 1",
+        "independence_number <= order - 1",
+        "independence_number <= power_min_degree_annihilation_sum",
+        "independence_number <= power_2_annihilation_sum",
+        "independence_number <= power_3_annihilation_sum"
     ]
 }
