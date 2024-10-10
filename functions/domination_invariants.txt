@@ -1,0 +1,12 @@
+domination_number
+total_domination_number
+connected_domination_number
+independent_domination_number
+edge_domination_number
+roman_domination_number
+double_roman_domination_number
+two_rainbow_domination_number
+three_rainbow_domination_number
+restrained_domination_number
+outer_connected_domination_number
+power_domination_number

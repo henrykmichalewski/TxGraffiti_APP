@@ -1,0 +1,6 @@
+independence_number
+chromatic_number
+matching_number
+clique_number
+vertex_cover_number
+min_edge_cover

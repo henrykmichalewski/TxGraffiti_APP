@@ -14,7 +14,9 @@
         "If G is a connected and triangle-free graph, then independence_number >= max_degree",
         "If G is a connected graph which is not K_n, then zero_forcing_number <= order - 2",
         "If G is a connected graph which is not K_n, then total_zero_forcing_number <= order - 2",
-        "If G is a connected graph which is not K_n, then connected_zero_forcing_number <= order - 2"
+        "If G is a connected graph which is not K_n, then connected_zero_forcing_number <= order - 2",
+        "If G is a connected graph which is not K_n and has maximum degree at most 3, then zero_forcing_number >= max_degree - 1",
+        "If G is a connected graph which is not K_n and has maximum degree at most 3, then zero_forcing_number <= 3 * power_domination_number"
     ],
     "known_inequalities": [
         "independence_number <= (order - matching_number)",
@@ -300,6 +302,7 @@
         "independence_number <= order - 1",
         "independence_number <= power_min_degree_annihilation_sum",
         "independence_number <= power_2_annihilation_sum",
-        "independence_number <= power_3_annihilation_sum"
+        "independence_number <= power_3_annihilation_sum",
+        "zero_forcing_number <= order - 2"
     ]
 }

@@ -17,11 +17,9 @@ __all__ = [
     "update_data_from_user",
     "invariants",
     "booleans",
-    "computable_invariants",
     "add_new_invariant",
     "add_new_invariants",
 ]
-
 
 invariants = [
     line.rstrip("\n")
@@ -37,6 +35,7 @@ computable_invariants = [
     line.rstrip("\n")
     for line in open("functions/computable_invariants.txt")
 ]
+
 
 def add_new_invariant(file_path, invariant):
     df = pd.read_csv(file_path)

@@ -1,0 +1,4 @@
+zero_forcing_number
+total_zero_forcing_number
+connected_zero_forcing_number
+positive_semidefinite_zero_forcing_number
