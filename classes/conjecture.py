@@ -268,4 +268,36 @@ class MultiLinearConjecture(Conjecture):
             print("Cannot plot multi-linear conjectures")
             return None
 
+    def to_lean(self):
+        """Return a Lean statement encoding the conjecture."""
+        ineq_map = {"<=": "≤", ">=": "≥", "=": "="}
+        lean_var = {
+            "order": "Fintype.card V",
+            "size": "Finset.card G.edgeFinset",
+            "chromatic_number": "G.chromaticNumber",
+        }
+
+        lhs = lean_var.get(self.conclusion.lhs, f"{self.conclusion.lhs} G")
+
+        rhs_terms = []
+        for m, var in zip(self.conclusion.slopes, self.conclusion.rhs):
+            term = lean_var.get(var, f"{var} G")
+            if m == 1:
+                rhs_terms.append(term)
+            else:
+                rhs_terms.append(f"({m}) * {term}")
+
+        rhs = " + ".join(rhs_terms)
+        if self.conclusion.intercept != 0:
+            rhs += f" + {self.conclusion.intercept}"
+
+        inequality = ineq_map.get(self.conclusion.inequality, self.conclusion.inequality)
+
+        hypothesis = "(hG : G.Connected)" if self.hypothesis.statement == "a connected graph" else ""
+
+        return (
+            "theorem generated {V} [Fintype V] (G : SimpleGraph V) "
+            f"{hypothesis} : {lhs} {inequality} {rhs} := by\n  sorry"
+        )
+
 

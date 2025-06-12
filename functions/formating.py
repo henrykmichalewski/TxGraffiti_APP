@@ -8,6 +8,7 @@ __all__ =[
     'str_to_fraction',
     'conjecture_to_dict',
     'conjecture_to_latex',
+    'conjecture_to_lean',
     'multi_radio',
     'rows_multi_radio',
     'def_map',
@@ -743,6 +744,36 @@ def conjecture_to_latex(conjecture):
     )
 
     return tex_string
+
+
+def conjecture_to_lean(conjecture):
+    ineq_map = {"<=": "≤", ">=": "≥", "=": "="}
+    lean_var = {
+        "order": "Fintype.card V",
+        "size": "Finset.card G.edgeFinset",
+        "chromatic_number": "G.chromaticNumber",
+    }
+
+    lhs = lean_var.get(conjecture.conclusion.lhs, f"{conjecture.conclusion.lhs} G")
+
+    rhs_terms = []
+    for slope, var in zip(conjecture.conclusion.slopes, conjecture.conclusion.rhs):
+        term = lean_var.get(var, f"{var} G")
+        if slope == 1:
+            rhs_terms.append(term)
+        else:
+            rhs_terms.append(f"({slope}) * {term}")
+    rhs = " + ".join(rhs_terms)
+    if conjecture.conclusion.intercept != 0:
+        rhs += f" + {conjecture.conclusion.intercept}"
+
+    inequality = ineq_map.get(conjecture.conclusion.inequality, conjecture.conclusion.inequality)
+    hypothesis = "(hG : G.Connected)" if conjecture.hypothesis.statement == "a connected graph" else ""
+
+    return (
+        "theorem generated {V} [Fintype V] (G : SimpleGraph V) "
+        f"{hypothesis} : {lhs} {inequality} {rhs} := by\n  sorry"
+    )
 
 
 def multi_radio(label, options):
