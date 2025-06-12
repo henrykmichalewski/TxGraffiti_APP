@@ -6,6 +6,7 @@ from functions import (
     invariants,
     booleans,
     conjecture_to_latex,
+    conjecture_to_lean,
     conjecture_to_dict,
     def_map,
     tex_map,
@@ -155,6 +156,7 @@ def generate_conjectures():
                 hypothesis = tex_map(conjecture.hypothesis.statement)
                 st.write(f"{hypothesis}")
                 st.latex(conjecture_to_latex(conjecture))
+                st.code(conjecture_to_lean(conjecture), language="lean")
                 st.write(r" $\text{with equality on }$" +  f"{conjecture.touch}" +  r"$\text{ graphs in the known collection of graphs.}$")
 
                 lhs = conjecture.conclusion.lhs
