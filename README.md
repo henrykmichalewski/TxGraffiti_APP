@@ -71,9 +71,9 @@ of Lean `conjecture` statements similar to those in Graffiti Conjectures 100.
 Run it directly from the command line:
 
 ```bash
-python utils/conjecture_generator.py        # prints 100 conjectures
+python utils/conjecture_generator.py        # prints 100 conjectures (by default)
 
-python utils/conjecture_generator.py 50 > demo.lean
+python utils/conjecture_generator.py --limit 50 > demo.lean
 
 python3 utils/conjecture_generator.py \
   --lhs independence_number \
@@ -81,7 +81,7 @@ python3 utils/conjecture_generator.py \
   --k 1:3 --c 0:2 --limit 50 > indep_vs_all.lean
 ```
 
-The optional numeric argument controls how many conjectures are emitted. You can
+The `--limit` (or `-n`) argument controls how many conjectures are emitted. You can
 redirect the output into a `.lean` file and paste it into Lean for exploration.
 
 Example output:
@@ -94,22 +94,22 @@ namespace AutoGraffiti
 variable {V : Type*}
 /- Conjecture 1: For every finite simple graph G, independence number(G) ≤ 1 * chromatic number(G) + 0. -/
 conjecture independence_number_le_1_chromatic_number (G : SimpleGraph V) [Fintype V] :
-  independence_number G ≤ chromatic_number G := by
+  independence number G ≤ chromatic number G := by
   sorry
 
 /- Conjecture 2: For every finite simple graph G, independence number(G) ≤ 1 * matching number(G) + 0. -/
 conjecture independence_number_le_1_matching_number (G : SimpleGraph V) [Fintype V] :
-  independence_number G ≤ matching_number G := by
+  independence number G ≤ matching number G := by
   sorry
 
 /- Conjecture 3: For every finite simple graph G, independence number(G) ≤ 1 * clique number(G) + 0. -/
 conjecture independence_number_le_1_clique_number (G : SimpleGraph V) [Fintype V] :
-  independence_number G ≤ clique_number G := by
+  independence number G ≤ clique number G := by
   sorry
 
 /- Conjecture 4: For every finite simple graph G, independence number(G) ≤ 1 * vertex cover number(G) + 0. -/
 conjecture independence_number_le_1_vertex_cover_number (G : SimpleGraph V) [Fintype V] :
-  independence_number G ≤ vertex_cover_number G := by
+  independence number G ≤ vertex cover number G := by
   sorry
 ```
 
@@ -121,12 +121,24 @@ Below is a ready‑made cheat‑sheet that shows how some classical WOWII inequa
 
 | WOWII statement                                   | Lean statement                                                              | Parameters `(lhs, k, rhs, c)`                      | Generator example                                                                                                                                                |
 | ------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| For any connected graph *G*, **γₜ(G) ≤ a(G) + 1** | `∀ G, Connected G → gamma_t G ≤ annihilation_number G + 1`                  | `(gamma_t, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_t --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_gt_a1.lean`                                     |
-| For any connected graph *G*, **γ₂(G) ≤ a(G) + 1** | `∀ G, Connected G → gamma_2 G ≤ annihilation_number G + 1`                  | `(gamma_2, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_2 --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_g2_a1.lean`                                     |
-| For any graph *G*, **R(G) ≤ α(G)**                | `∀ G, randic_index G ≤ independence_number G`                               | `(randic_index, 1, independence_number, 0)`        | `python3 utils/conjecture_generator.py --lhs randic_index --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_alpha.lean`                              |
-| For any connected graph *G*, **r(G) ≤ α(G)**      | `∀ G, Connected G → radius G ≤ independence_number G`                       | `(radius, 1, independence_number, 0)`              | `python3 utils/conjecture_generator.py --lhs radius --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_small_alpha.lean`                              |
-| For any connected graph *G*, **d̄(G) ≤ α(G)**     | `∀ G, Connected G → average_distance G ≤ independence_number G`             | `(average_distance, 1, independence_number, 0)`    | `python3 utils/conjecture_generator.py --lhs average_distance --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_dbar_alpha.lean`                       |
-| For any 3‑regular *G ≠ K₄*, **Z(G) ≤ α(G) + 1**   | `∀ G, Cubic G ∧ G ≠ K₄ → zero_forcing_number G ≤ independence_number G + 1` | `(zero_forcing_number, 1, independence_number, 1)` | `python3 utils/conjecture_generator.py --lhs zero_forcing_number --rhs independence_number --k 1:1 --c 1:1 --limit 1 --graph-class cubic > wowii_zf_alpha1.lean` |
+| For any graph *G*, **γₜ(G) ≤ a(G) + 1**           | `∀ G, gamma t G ≤ annihilation number G + 1`                                  | `(gamma_t, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_t --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_gt_a1.lean`                                     |
+| For any graph *G*, **γ₂(G) ≤ a(G) + 1**           | `∀ G, gamma 2 G ≤ annihilation number G + 1`                                  | `(gamma_2, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_2 --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_g2_a1.lean`                                     |
+| For any graph *G*, **R(G) ≤ α(G)**                | `∀ G, randic index G ≤ independence number G`                               | `(randic_index, 1, independence_number, 0)`        | `python3 utils/conjecture_generator.py --lhs randic_index --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_alpha.lean`                              |
+| For any graph *G*, **r(G) ≤ α(G)**                | `∀ G, radius G ≤ independence number G`                                     | `(radius, 1, independence_number, 0)`              | `python3 utils/conjecture_generator.py --lhs radius --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_small_alpha.lean`                              |
+| For any graph *G*, **d̄(G) ≤ α(G)**               | `∀ G, average distance G ≤ independence number G`                           | `(average_distance, 1, independence_number, 0)`    | `python3 utils/conjecture_generator.py --lhs average_distance --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_dbar_alpha.lean`                       |
+| For any graph *G*, **Z(G) ≤ α(G) + 1**            | `∀ G, zero forcing number G ≤ independence number G + 1`                    | `(zero_forcing_number, 1, independence_number, 1)` | `python3 utils/conjecture_generator.py --lhs zero_forcing_number --rhs independence_number --k 1:1 --c 1:1 --limit 1 > wowii_zf_alpha1.lean`                     |
+
+### Testing the Generator
+
+The examples provided in the table above are covered by automated tests in `tests/test_conjecture_generator.py`. These tests use `pytest` to verify that the `conjecture_generator.py` script produces the expected Lean output for each set of parameters.
+
+To run these tests, you can use the following command from the root of the repository:
+
+```bash
+pytest tests/test_conjecture_generator.py
+```
+
+Make sure you have `pytest` and the necessary dependencies (like `networkx` and `pandas`) installed in your Python environment.
 
 ### How the flags map to the inequality
 
@@ -141,7 +153,8 @@ lhs(G) ≤ k · rhs(G) + c
 * `--k` — inclusive range `a:b`; `1:1` fixes it to *k* = 1.
 * `--c` — inclusive range `a:b`; `0:0` or `1:1` fix the offset.
 * `--limit` — stop after that many conjectures (we only need the first one).
-* `--graph-class` (optional) — restrict generation to a family such as `cubic` if the conjecture requires it.
+
+Note: The script generates general conjectures. Conditions like `Connected G` or `Cubic G` that might appear in classical statements are not automatically added to the Lean output by this script and would need to be manually added or handled during the proving process if required. The `--graph-class` flag is not currently supported by this utility.
 
 Save the resulting `.lean` file next to your Lean project or drop it into `lakefile.lean`, run `lake build`, and start proving!
 
