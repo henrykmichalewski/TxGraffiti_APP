@@ -72,9 +72,43 @@ Run it directly from the command line:
 
 ```bash
 python utils/conjecture_generator.py        # prints 100 conjectures
+
 python utils/conjecture_generator.py 50 > demo.lean
+
+python3 utils/conjecture_generator.py \
+  --lhs independence_number \
+  --rhs '*' \
+  --k 1:3 --c 0:2 --limit 50 > indep_vs_all.lean
 ```
 
 The optional numeric argument controls how many conjectures are emitted. You can
 redirect the output into a `.lean` file and paste it into Lean for exploration.
 
+Example output:
+
+```
+import Mathlib.Data.Nat.Basic
+import Mathlib.Combinatorics.SimpleGraph.Basic
+
+namespace AutoGraffiti
+variable {V : Type*}
+/- Conjecture 1: For every finite simple graph G, independence number(G) ≤ 1 * chromatic number(G) + 0. -/
+conjecture independence_number_le_1_chromatic_number (G : SimpleGraph V) [Fintype V] :
+  independence_number G ≤ chromatic_number G := by
+  sorry
+
+/- Conjecture 2: For every finite simple graph G, independence number(G) ≤ 1 * matching number(G) + 0. -/
+conjecture independence_number_le_1_matching_number (G : SimpleGraph V) [Fintype V] :
+  independence_number G ≤ matching_number G := by
+  sorry
+
+/- Conjecture 3: For every finite simple graph G, independence number(G) ≤ 1 * clique number(G) + 0. -/
+conjecture independence_number_le_1_clique_number (G : SimpleGraph V) [Fintype V] :
+  independence_number G ≤ clique_number G := by
+  sorry
+
+/- Conjecture 4: For every finite simple graph G, independence number(G) ≤ 1 * vertex cover number(G) + 0. -/
+conjecture independence_number_le_1_vertex_cover_number (G : SimpleGraph V) [Fintype V] :
+  independence_number G ≤ vertex_cover_number G := by
+  sorry
+```
