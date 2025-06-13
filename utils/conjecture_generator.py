@@ -1,34 +1,27 @@
 #!/usr/bin/env python3
 """
 conjecture_generator.py
-=======================
+-----------------------
+Emit TxGraffiti-style Lean conjectures, interleaving English prose with Lean
+`conjecture` stubs.
 
-A tiny standalone script that **from Python** emits TxGraffiti-style Lean conjectures.
-It interleaves natural-language comments with Lean `conjecture` stubs, matching the
-style of *Graffiti Conjectures 100*.
+Examples
+--------
+# strongest ≤100 conjectures over all invariants, 1≤k≤4, 0≤c≤4
+python3 utils/conjecture_generator.py --limit 100 > conjectures.lean
 
-Usage
------
-    python conjecture_generator.py                # prints 100 conjectures to stdout
-    python conjecture_generator.py 50 > foo.lean  # prints first 50 into foo.lean
-
-Customisation
--------------
-* Edit the `INVARIANTS` list to include the graph-invariant names you care about
-  (they must already exist—or be stubbed—in your Lean environment).
-* Tweak `K_RANGE` and `C_RANGE` for the coefficient search space.
-* Adjust `BOUND_LIMIT` or pass a CLI argument to control how many conjectures are
-  emitted.
-
-The output is pure Lean source: you can pipe it into a `.lean` file or paste the
-string into the canvas.
+# only independence_number on the left, any rhs, 1≤k≤2, 0≤c≤3
+python3 utils/conjecture_generator.py --lhs independence_number \
+        --rhs '*' --k 1:2 --c 0:3 > few.lean
 """
 
-import itertools
-import sys
-import textwrap
+from __future__ import annotations
+import argparse, itertools, json, textwrap, sys
+import networkx as nx
 
-# ---- PARAMETERS ---------------------------------------------------------
+# -------------------------------------------------------------------------
+#  configurable defaults
+# -------------------------------------------------------------------------
 
 INVARIANTS = [
     "independence_number",
@@ -50,67 +43,122 @@ INVARIANTS = [
     "wiener_index",
 ]
 
-K_RANGE = [1, 2, 3, 4]   # multiplicative coefficients k
-C_RANGE = [1, 2, 3, 4]   # additive shifts c
+# map short string → callable(G)         (tiny subset just for filtering step)
+# add more as you wire up real invariant code later
+INV_FUN: dict[str, callable[[nx.Graph], int | float]] = {
+    "independence_number": lambda G: nx.algorithms.approximation.maximum_independent_set(G).__len__(),
+    "chromatic_number":    lambda G: nx.algorithms.coloring.greedy_color(G).__len__(),
+    "matching_number":     lambda G: nx.max_weight_matching(G, maxcardinality=True).__len__(),
+    "diameter":            lambda G: nx.diameter(G) if nx.is_connected(G) else max(nx.diameter(c) for c in nx.connected_components(G)),
+    "radius":              lambda G: nx.radius(G) if nx.is_connected(G) else min(nx.radius(G.subgraph(c)) for c in nx.connected_components(G)),
+}
 
-BOUND_LIMIT = 100        # default number of conjectures produced
+SMALL_GRAPHS = [
+    nx.complete_graph(4),
+    nx.cycle_graph(5),
+    nx.path_graph(6),
+]
 
-# ---- HELPER -------------------------------------------------------------
+HEADER = textwrap.dedent("""\
+    import Mathlib.Data.Nat.Basic
+    import Mathlib.Combinatorics.SimpleGraph.Basic
 
-def pretty_comment(idx: int, lhs: str, k: int, rhs: str, c: int) -> str:
-    lhs_name = lhs.replace("_", " ")
-    rhs_name = rhs.replace("_", " ")
-    return textwrap.fill(
-        f"Conjecture {idx}: For every finite simple graph G, "
-        f"{lhs_name}(G) ≤ {k} * {rhs_name}(G) + {c}.",
-        width=78,
-    )
+    namespace AutoGraffiti
+    variable {V : Type*}
+""")
 
-def lean_ident(lhs: str, k: int, rhs: str, c: int) -> str:
-    return f"{lhs}_le_{k}_{rhs}{'' if c==0 else f'_plus_{c}'}"
+# -------------------------------------------------------------------------
+#  pretty-printers
+# -------------------------------------------------------------------------
 
-def conjecture_block(idx: int, lhs: str, k: int, rhs: str, c: int) -> str:
-    comment = pretty_comment(idx, lhs, k, rhs, c)
-    ident   = lean_ident(lhs, k, rhs, c)
-    rhs_term = f"{k} * {rhs} G + {c}" if k != 1 else f"{rhs} G + {c}"
-    return textwrap.dedent(f"""
+def english(lhs: str, k: int, rhs: str, c: int, idx: int) -> str:
+    lhs_h, rhs_h = lhs.replace("_", " "), rhs.replace("_", " ")
+    return f"Conjecture {idx}: For every finite simple graph G, " \
+           f"{lhs_h}(G) ≤ {k} * {rhs_h}(G) + {c}."
+
+def ident(lhs: str, k: int, rhs: str, c: int) -> str:
+    return f"{lhs}_le_{k}_{rhs}" + ("" if c == 0 else f"_plus_{c}")
+
+def lean_block(lhs: str, k: int, rhs: str, c: int, idx: int) -> str:
+    comment = english(lhs, k, rhs, c, idx)
+    rhs_term = f"{k} * {rhs} G" if k != 1 else f"{rhs} G"
+    rhs_term += "" if c == 0 else f" + {c}"
+    return textwrap.dedent(f"""\
         /- {comment} -/
-        conjecture {ident} (G : SimpleGraph V) [Fintype V] :
+        conjecture {ident(lhs,k,rhs,c)} (G : SimpleGraph V) [Fintype V] :
           {lhs} G ≤ {rhs_term} := by
           sorry
     """)
 
-# ---- MAIN ---------------------------------------------------------------
+# -------------------------------------------------------------------------
+#  dominance + counter-example filters
+# -------------------------------------------------------------------------
+
+def dominates(a: tuple[int,int], b: tuple[int,int]) -> bool:
+    """(k,c) dominates (k',c')  ⇔  k ≤ k' and c ≤ c' and not equal."""
+    k, c   = a
+    k2, c2 = b
+    return (k, c) != (k2, c2) and k <= k2 and c <= c2
+
+def passes_small_graphs(lhs: str, k: int, rhs: str, c: int) -> bool:
+    if lhs not in INV_FUN or rhs not in INV_FUN:
+        return True        # can’t test, keep it
+    lhs_f, rhs_f = INV_FUN[lhs], INV_FUN[rhs]
+    for G in SMALL_GRAPHS:
+        if lhs_f(G) > k * rhs_f(G) + c:
+            return False   # counter-example found
+    return True
+
+# -------------------------------------------------------------------------
+#  main
+# -------------------------------------------------------------------------
+
+def parse_range(r: str) -> range:
+    lo, hi = map(int, r.split(":"))
+    return range(lo, hi + 1)
 
 def main() -> None:
-    try:
-        limit = int(sys.argv[1])
-    except (IndexError, ValueError):
-        limit = BOUND_LIMIT
+    p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    p.add_argument("--lhs", default="*", help="lhs invariant or * for all")
+    p.add_argument("--rhs", default="*", help="rhs invariant or * for all")
+    p.add_argument("--k",   default="1:4", help="inclusive range a:b for k")
+    p.add_argument("--c",   default="0:4", help="inclusive range a:b for c")
+    p.add_argument("--limit", "-n", type=int, default=100, help="max conjectures to emit")
+    args = p.parse_args()
 
-    header = textwrap.dedent("""
-        import Mathlib.Data.Nat.Basic
-        import Mathlib.Combinatorics.SimpleGraph.Basic
+    lhs_list = INVARIANTS if args.lhs == "*" else [args.lhs]
+    rhs_list = INVARIANTS if args.rhs == "*" else [args.rhs]
+    k_range  = parse_range(args.k)
+    c_range  = parse_range(args.c)
 
-        namespace AutoGraffiti
-
-        variable {V : Type*}
-    """)
-
-    conjectures = []
-    idx = 1
-    for lhs, rhs in itertools.product(INVARIANTS, repeat=2):
+    # build the full search space
+    raw: dict[tuple[str,str], list[tuple[int,int]]] = {}
+    for lhs, rhs in itertools.product(lhs_list, rhs_list):
         if lhs == rhs:
-            continue  # skip trivial self-bounds
-        for k, c in itertools.product(K_RANGE, C_RANGE):
-            conjectures.append(conjecture_block(idx, lhs, k, rhs, c))
-            idx += 1
-            if len(conjectures) >= limit:
+            continue
+        pairs = list(itertools.product(k_range, c_range))
+        # dominance filter
+        minimal = []
+        for k, c in sorted(pairs):
+            if not any(dominates((k2,c2), (k,c)) for k2,c2 in minimal):
+                minimal.append((k,c))
+        raw[(lhs, rhs)] = minimal
+
+    # flatten, counter-example filter, cap at limit
+    out_blocks = []
+    idx = 1
+    for (lhs, rhs), pairs in raw.items():
+        for k, c in pairs:
+            if passes_small_graphs(lhs, k, rhs, c):
+                out_blocks.append(lean_block(lhs, k, rhs, c, idx))
+                idx += 1
+            if len(out_blocks) >= args.limit:
                 break
-        if len(conjectures) >= limit:
+        if len(out_blocks) >= args.limit:
             break
-    lean_source = header + "\n".join(conjectures) + "\nend AutoGraffiti\n"
-    print(lean_source)
+
+    sys.stdout.write(HEADER + "\n".join(out_blocks) + "\nend AutoGraffiti\n")
 
 if __name__ == "__main__":
     main()
+
