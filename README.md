@@ -112,3 +112,38 @@ conjecture independence_number_le_1_vertex_cover_number (G : SimpleGraph V) [Fin
   independence_number G ≤ vertex_cover_number G := by
   sorry
 ```
+
+## WOWII‑style Conjecture Examples
+
+Below is a ready‑made cheat‑sheet that shows how some classical WOWII inequalities can be recreated with **`utils/conjecture_generator.py`**.  Each row links the original wording to a Lean stub and the exact command to produce it.
+
+> **Tip —** if an invariant name such as `gamma_t` (total domination number) is not yet in `INVARIANTS`, simply add it to the list or pass it via `--lhs/--rhs`.
+
+| WOWII statement                                   | Lean statement                                                              | Parameters `(lhs, k, rhs, c)`                      | Generator example                                                                                                                                                |
+| ------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| For any connected graph *G*, **γₜ(G) ≤ a(G) + 1** | `∀ G, Connected G → gamma_t G ≤ annihilation_number G + 1`                  | `(gamma_t, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_t --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_gt_a1.lean`                                     |
+| For any connected graph *G*, **γ₂(G) ≤ a(G) + 1** | `∀ G, Connected G → gamma_2 G ≤ annihilation_number G + 1`                  | `(gamma_2, 1, annihilation_number, 1)`             | `python3 utils/conjecture_generator.py --lhs gamma_2 --rhs annihilation_number --k 1:1 --c 1:1 --limit 1 > wowii_g2_a1.lean`                                     |
+| For any graph *G*, **R(G) ≤ α(G)**                | `∀ G, randic_index G ≤ independence_number G`                               | `(randic_index, 1, independence_number, 0)`        | `python3 utils/conjecture_generator.py --lhs randic_index --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_alpha.lean`                              |
+| For any connected graph *G*, **r(G) ≤ α(G)**      | `∀ G, Connected G → radius G ≤ independence_number G`                       | `(radius, 1, independence_number, 0)`              | `python3 utils/conjecture_generator.py --lhs radius --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_r_small_alpha.lean`                              |
+| For any connected graph *G*, **d̄(G) ≤ α(G)**     | `∀ G, Connected G → average_distance G ≤ independence_number G`             | `(average_distance, 1, independence_number, 0)`    | `python3 utils/conjecture_generator.py --lhs average_distance --rhs independence_number --k 1:1 --c 0:0 --limit 1 > wowii_dbar_alpha.lean`                       |
+| For any 3‑regular *G ≠ K₄*, **Z(G) ≤ α(G) + 1**   | `∀ G, Cubic G ∧ G ≠ K₄ → zero_forcing_number G ≤ independence_number G + 1` | `(zero_forcing_number, 1, independence_number, 1)` | `python3 utils/conjecture_generator.py --lhs zero_forcing_number --rhs independence_number --k 1:1 --c 1:1 --limit 1 --graph-class cubic > wowii_zf_alpha1.lean` |
+
+### How the flags map to the inequality
+
+```text
+lhs(G) ≤ k · rhs(G) + c
+‾‾‾        ‾‾‾‾‾‾     ‾
+--lhs      --k        --c
+            --rhs
+```
+
+* `--lhs` / `--rhs` — invariant names (must appear in `INVARIANTS` or be added).
+* `--k` — inclusive range `a:b`; `1:1` fixes it to *k* = 1.
+* `--c` — inclusive range `a:b`; `0:0` or `1:1` fix the offset.
+* `--limit` — stop after that many conjectures (we only need the first one).
+* `--graph-class` (optional) — restrict generation to a family such as `cubic` if the conjecture requires it.
+
+Save the resulting `.lean` file next to your Lean project or drop it into `lakefile.lean`, run `lake build`, and start proving!
+
+
+
