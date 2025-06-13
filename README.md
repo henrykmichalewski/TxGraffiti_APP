@@ -64,3 +64,17 @@ on the heuristic for more details.
 
 
 For a detailed mathematical description of **TxGraffiti**'s algorithms and the history of automated conjecturing in mathematics, see our preprint on arXiv: [arXiv preprint 2409.19379](https://arxiv.org/abs/2409.19379)
+## Conjecture Generator Utility
+
+A small standalone script lives in `utils/conjecture_generator.py`. It outputs a sequence
+of Lean `conjecture` statements similar to those in Graffiti Conjectures 100.
+Run it directly from the command line:
+
+```bash
+python utils/conjecture_generator.py        # prints 100 conjectures
+python utils/conjecture_generator.py 50 > demo.lean
+```
+
+The optional numeric argument controls how many conjectures are emitted. You can
+redirect the output into a `.lean` file and paste it into Lean for exploration.
+
