@@ -160,3 +160,167 @@ Save the resulting `.lean` file next to your Lean project or drop it into `lakef
 
 
 
+
+## Sample Fajtlowicz Conjectures
+
+The repository also keeps track of various classic inequalities. Below is a larger sampling from the dataset.  The list mirrors some of the statements found in Fajtlowicz's work:
+
+- **Conjecture 21:** If G is a simple connected graph, then b(G) ≥ CEIL(2dist_avg(B,V))
+- **Conjecture 22:** If G is a simple connected graph, then CEIL(2dist(B,V)))≥ CEIL(2dist_avg(V))
+- **Conjecture 23:** If G is a simple connected graph, then b(G) ≥ FLOOR[α(G) + dist_avg(M)/2]
+- **Conjecture 24:** If G is a simple connected graph, then b(G) ≥ l(G) + CEIL[minimum of dist_even(v)/3]
+- **Conjecture 25:** If G is a simple connected graph, then b(G) ≥ 2CEIL[(1 + minimum of dist_even(v))/3]
+- **Conjecture 26:** If G is a simple connected graph, then b(G) ≥ CEIL[1 + dd(G)^0.25]
+- **Conjecture 28:** If G is a simple connected graph, then b(G) ≥ dist_min(A)+ (dist_min(M))^0.25
+- **Conjecture 30:** If G is a simple connected graph, then b(G) ≥ dist_min(A)+ |E_G¯(M(G¯))|^0.25
+- **Conjecture 32:** If G is a simple connected graph, then path(G) ≥ dist_avg(A) + 0.5 ecc_avg(M)
+- **Conjecture 33:** If G is a simple connected graph, then path(G) ≥ CEIL[2dist_avg(M,V)]
+- **Conjecture 36:** If G is a simple connected graph, then path(G) ≥ 2rad(G)/dp(G)
+- **Conjecture 38:** If G is a simple connected graph, then f(G) ≥ CEIL[0.5(res(G)+b(G))]
+- **Conjecture 39:** If G is a simple connected graph, then f(G) ≥ α(G) + CEIL[(1/3) dist_avg(B,V))]
+- **Conjecture 41:** If G is a simple connected graph, then f(G) ≥ CEIL[dist_avg(V)*(1 + sqrt(p(G)) ]
+- **Conjecture 42:** If G is a simple connected graph, then f(G) ≥ CEIL(2dist_avg(B,V))
+- **Conjecture 43:** If G is a simple connected graph, then f(G) ≥ FLOOR[sqrt[path(G)*(b(G)-1)]]
+- **Conjecture 44:** If G is a simple connected graph, then f(G) ≥ α(G) + FLOOR[(1/2) average of ecc(v)]
+- **Conjecture 45:** If G is a simple connected graph, then f(G) ≥ FLOOR[path(G) - 1 + (1/3)(n mod Δ(G¯)) ]
+- **Conjecture 46:** If G is a simple connected graph, then f(G) ≥ FLOOR[path(G) - 1 + (1/3)(n mod Δ(G)) ]
+- **Conjecture 49:** If G is a simple connected graph, then f(G) ≥ CEIL[ 2 + (1/6)*length(G¯) ]
+- **Conjecture 51:** If G is a simple connected graph, then f(G) ≥ diam(G) + FLOOR[(1/3)*dd(G) ]
+- **Conjecture 52:** If G is a simple connected graph, then f(G) ≥ CEIL[(1/2)*[dd(G) + 1 + (n mod Δ(G))] ]
+- **Conjecture 53:** If G is a simple connected graph, then f(G) ≥ 2CEIL[mode_min(G¯)/deg_avg(G)]
+- **Conjecture 54:** If G is a simple connected graph, then f(G) ≥ CEIL[dist_avg(V) +(1/2)*minimum of dist_even(v)]
+- **Conjecture 55:** If G is a simple connected graph, then f(G) ≥ CEIL[minimum of dist_even(v) -1 + |N(A)|/3], where A is the set of vertices of minimum degree.
+- **Conjecture 56:** If G is a simple connected graph, then f(G) ≥ CEIL[sqrt[dist_max(A)*(1+deg_avg(G¯))]], where A is the set of vertices of minimum degree.
+- **Conjecture 60:** If G is a simple connected graph, then f(G) ≥ domination(G) + FLOOR[tree(G)/2]
+- **Conjecture 62:** If G is a simple connected graph, then f(G) ≥ domination(G) + maximum of l(v) -1
+- **Conjecture 69:** If G is a simple connected graph, then tree(G) ≥ maximum of l(v) + FLOOR[sqrt(domination(G))]
+- **Conjecture 70:** If G is a simple connected graph, then tree(G) ≥ FLOOR[dist_avg(C,V)] + maximum of l(v)
+- **Conjecture 71:** If G is a simple connected graph, then tree(G) ≥ FLOOR[dist_avg(B,V)/3] + maximum of l(v)
+- **Conjecture 73:** If G is a simple connected graph, then tree(G) ≥ FLOOR[average of ecc(v)/2] + maximum of l(v)
+- **Conjecture 74:** If G is a simple connected graph, then tree(G) ≥ CEIL(2dist_avg(B,V))
+- **Conjecture 75:** If G is a simple connected graph, then tree(G) ≥ b(G)/FLOOR[deg_avg(G)]
+- **Conjecture 77:** If G is a simple connected graph, then tree(G) ≥ dist_avg(C,V) + ecc(B) + 1, where B is the set of vertices of boundary vertices.
+- **Conjecture 78:** If G is a simple connected graph, then tree(G) ≥ CEIL[path(G)/3 + maximum of l(v) -1]
+- **Conjecture 79:** If G is a simple connected graph, then tree(G) ≥ (n mod 2)* CEIL(2dist_avg(V))
+- **Conjecture 80:** If G is a simple connected graph, then tree(G) ≥ CEIL[sqrt[2*sqrt[|N(M¯)| + 1]]], where M¯ is the set of vertices of maximum degree of the complement of G.
+- **Conjecture 81:** If G is a simple connected graph, then tree(G) ≥ CEIL[sqrt[2*(1+sqrt[|N(A)|])]], where A is the set of vertices of minimum degree.
+- **Conjecture 82:** If G is a simple connected graph, then tree(G) ≥ 2CEIL[(2*ecc(B) + 1)/3], where B is the set of vertices of boundary vertices.
+- **Conjecture 87:** If G is a simple connected graph, then b(G) ≤ 1 + minimum of l(v)  + Δ(G¯)
+- **Conjecture 88:** If G is a simple connected graph, then b(G) ≤ 1 + average of l(v)  + average degree of G¯.
+- **Conjecture 90:** If G is a simple connected graph, then b(G) ≤ f(G) * (FLOOR[2^average of l(v)])/2
+- **Conjecture 95:** If G is a simple connected graph, then α(G) ≤ CEIL[f(G) -LN(path(G))]
+- **Conjecture 104:** If G is a simple connected graph, then α(G) ≤ rad(G) + maximum of l(v) + |N(S) - S| -1, where S is the set of minimum degree vertices of the complement of the graph G and the neighborhood is taken in the complement.
+- **Conjecture 105:** If G is a simple connected graph, then α(G) ≤ tree(G)*SQRT[domination(G)] - 1
+- **Conjecture 107:** If G is a simple connected graph, then α(G) ≤ maximum dist_even(v)* CEIL[dist_avg(B,V)/2]
+- **Conjecture 110:** If G is a simple connected graph, then α(G) ≤ FLOOR[(residue(G)+1)* average of l(v) - 1]
+- **Conjecture 123:** If G is a connected X,Y bigraph such that |X| ≤ |Y|, then m(G) ≥ minimum{FLOOR[1 + deg_avg(G)}, |X|}
+- **Conjecture 126:** Let G be a connected X,Y bigraph such that |X| ≤ |Y|, and let A be the set of vertices of minimum degree. Then m(G) ≥ minimum{|N(A)-A|, |X|}
+- **Conjecture 128:** Let G be a connected X,Y bigraph such that |X| ≤ |Y|,. Then m(G) ≥ minimum of { freq(δ(G)), freq(σ(G)), Δ(Y)}
+- **Conjecture 132:** If G is a simple connected graph, then path(G) ≥ 2*rad(G)/|N(A)|, where A is the set of vertices of minimum degree.
+- **Conjecture 134:** If G is a simple connected graph, then path(G) ≥ girth - 1+ ecc(centers(G^2))
+- **Conjecture 139:** If G is a simple connected graph, then path(G) ≥ u(G)*(1+2*dist_avg(C))
+- **Conjecture 148:** If G is a simple connected graph, then tree(G) ≥ diameter(G) -1 + CEIL(dist_avg(Centers(G^2,V))
+- **Conjecture 149:** If G is a simple connected graph, then tree(G) ≥ 1+ m(G) *c_K3(G)
+- **Conjecture 150:** If G is a simple connected graph, then tree(G) ≥ Tdist_min(v)/m(G)
+- **Conjecture 151:** Let er = maximum of {|E(R(v))|: v is a center of G}. If G is a simple connected graph, then tree(G) ≥ 1 + er ^c_c4(G)
+- **Conjecture 156:** If G is a simple connected graph, then L_s(G) ≥ order of the intersection of radial circles + CEIL[0.5*dist_avg(Centers)].
+- **Conjecture 167:** If G is a simple connected graph, then L_s(G) ≥ δ(G) + FLOOR[(1/3)*|N(M^2)-M^2|], where M^2 is the set of vertices of maximum degree of G^2and the neighborhood is taken in G^2.
+- **Conjecture 168:** If G is a simple connected graph, then L_s(G) ≥ 2CEIL[|N(A)-A|/3], where A is the set of vertices of minimum degree of G.
+- **Conjecture 170:** If G is a simple connected graph, then L_s(G) ≥ [maximum  of  dist_even(v)  in G] - [minimum of  dist_even(v) in G^2.]
+- **Conjecture 187:** If G is a simple connected graph on at least 2 vertices, then L_s(G) + b(G) ≥  |N(M^2)-M^2|+ minimum of l(v) + 2, where M^2 is the set of vertices of maximum degree of G^2.
+- **Conjecture 193:** If G is a simple connected graph with n > 1 such that 1+  Σ(G¯) ≤ frequency of λ_max(G)  then G has a Hamiltonian path.
+- **Conjecture 202:** If G is a simple connected graph with n > 1 such that λ_max(G) ≤  κ(G) , then G has a Hamiltonian path.
+- **Conjecture 204:** If G is a simple connected graph with n > 1 such that induced circumference(G) ≥ 2+ median of degree sequence of G¯,  then G has a Hamiltonian path.
+- **Conjecture 210:** If G is a simple connected graph with n > 1 such that (2/3)*lower median of degree sequence of G¯ ≤ λ_min(G¯), then G has a Hamiltonian path.
+- **Conjecture 211:** If G is a simple connected graph with n > 1 such that 2*( the lower median of degree sequence of G¯ ) ≤ |N(A)|, then G has a Hamiltonian path, where A is the set of vertices of minimum degree.
+- **Conjecture 212:** If G is a simple connected graph with n > 1 such that 2*(the median of degree sequence of G¯  - 1) ≤ |N(A) - A|, then G has a Hamiltonian path, where A is the set of vertices of minimum degree.
+- **Conjecture 214:** Let M = {v:  λ(v) = λ_max(G)}. Then if G is a simple connected graph with n > 1 such that  3*g_2 (G¯)  ≤  |M|   , then G has a Hamiltonian path.
+- **Conjecture 216:** If G is a simple connected graph with n > 1 such that 1/(2-B(G))  ≤  c_claw(G),  then G has a Hamiltonian path.
+- **Conjecture 218:** If G is a simple connected graph with n > 1 such that maximum {dist_even(v) - even horizontal(v): v in V(G)}  ≤  4*c_residue=2(G) + 1,  then G has a Hamiltonian path.
+- **Conjecture 219:** If G is a simple connected graph with maximum degree equal to minimum degree, then α(G) = maximum{ceiling[b(G)/2], maximum {dist_even(v) - even horizontal(v): v in V(G)}}
+- **Conjecture 227:** If G is a simple connected graph such that Δ(G) ≤ n(G)/2 , then γ_t(G) ≥ γ(G¯)
+- **Conjecture 234:** If G is a simple connected graph, then γ_t(G) ≥ ecc(B)/mode_min(G).
+- **Conjecture 236:** If G is a simple connected graph such that girth(G) ≥ 5, then γ_t(G) ≥  ecc(B).
+- **Conjecture 237:** If G is a simple connected graph such that δ(G) ≥ 2, then γ_t(G) ≥  ecc(B).
+- **Conjecture 238:** If G is a simple connected graph, then γ_t(G) ≥  (3/2)*number of components(<N[S]>), where <N[S]> is the subgraph induced by the closed neighborhood of the set of vertices of degree two.
+- **Conjecture 239:** If G is a simple connected C_4-free graph, then γ_t(G) ≥  number of components(<N(S)>), where <N(S)> is the subgraph induced by the neighborhood of the set of vertices of degree two.
+- **Conjecture 240:** If G is a tree, then γ_t(G) ≥  number of components(<N(S)-S>), where S is the set of vertices of degree two.
+- **Conjecture 243:** If G is a simple connected C_4-free graph, then γ_t(G) ≥ 1 + number of components(<M>), where <M> is the subgraph induced by the set of vertices of maximum degree.
+- **Conjecture 244:** If G is a simple connected graph, then γ_t(G) ≥ [1 + components(<M>)]/median(G), where <M> is the subgraph induced by the set of vertices of maximum degree.
+- **Conjecture 245:** If G is a simple connected graph such that δ(G) ≥ 3, then γ_t(G) ≥ FLOOR[ecc_avg(M)], where M is the set of vertices of maximum degree.
+- **Conjecture 246:** If G is a tree, then γ_t(G) ≥  m(G) - 1
+- **Conjecture 248:** If G is a  simple connected  graph such that girth(G) ≥  6, then γ_t(G) ≥  SQRT[2* p(G)]
+- **Conjecture 250:** If G is a  simple connected C_4-free graph, then γ_t(G) ≥  circumference(G)/2.
+- **Conjecture 254:** If G is a  simple connected graph, then γ_t(G) ≥  2*|N(C)|/[maximum of {N(e): e an edge of G}], where C is the set of vertices that are centers of G.
+- **Conjecture 257:** If G is a  simple connected graph, then γ_t(G) ≥  2*|S|/[maximum of {N(e): e an edge of G}], where S = {v: even(v) = maximum {even(w) :  even(w) = |{u : dist(w,u} is even}|}.
+- **Conjecture 262:** If G is a tree, then γ_t(G) ≥  (1/2)*|N(S)|, where S is the set of vertices of  degree two.
+- **Conjecture 264:** If G is a  simple connected graph, then γ_t(G) ≥  FLOOR[average of {dist(C,v): v in V-C} + average of {dist(B,v): v in V-B}], where B is the set of vertices of maximum eccentricity , C the set of vertices of minimum eccentricity and dist(S,v) = minimum {dist(s,v): s in S}.
+- **Conjecture 265:** If G is a  simple connected graph  such that Δ(G) ≤ 3, then γ_t(G) ≥  FLOOR[2dist_avg(B,V)].
+- **Conjecture 266:** If G is a  simple connected graph, then γ_t(G) ≥  FLOOR[dist_avg(A,V)], where A is the set of minimum degree vertices.
+- **Conjecture 270:** If G is a  simple connected graph  such that Δ(G) ≤ 3, then γ_t(G) ≥  (1/2)*|S|, where S = {v: even(v) = maximum {even(w) :  even(w) = |{u : dist(w,u} is even}|}. 
+- **Conjecture 272:** If G is a  simple connected graph such that Δ(G) ≤ n(G)/2, then γ_t(G) ≥  2*SQRT[dist_max(M,V)], where M is the set of vertices of maximum degree.
+- **Conjecture 273:** If G is a  simple connected C_4-free graph, then γ_t(G) ≥  2^(q-1), where q is the 1st quartile of the degree sequence.
+- **Conjecture 274:** If G is a  simple connected graph, then γ_t(G) ≥  k/median(G), where k is the kth step for a zero in the Havil-Hakimi process.
+- **Conjecture 275:** If G is a  simple connected graph such that girth(G) ≥ 6, then γ_t(G) ≥  δ(G^2) -1.
+- **Conjecture 276:** If G is a  simple connected graph such that girth(G) ≥ 6, then γ_t(G) ≥  maximum{horizontal(v) : v a vertex} + 1.
+- **Conjecture 282:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤  k+ m(G), where k = nonzero minimum{maximum{k,|D_k|: D_k is the set of vertices of degree k }: k a positive integer}.
+- **Conjecture 283:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ |N(A)|+ m(G), where A is the set of vertices of minimum degree.
+- **Conjecture 284:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤  |A|+ m(G), where A is the set of vertices of minimum degree.
+- **Conjecture 286:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤  m(G) + |{T(w) : T(w) = maximum{T(v): v a vertex}}|, where T(v) is the number of triangles incident to vertex v.
+- **Conjecture 289:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ p(G) + CEIL[(1/2)*b(G)]
+- **Conjecture 292:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ k + residue(G), where k is the first step in which a zero appears in the Havil-Hakimi process.
+- **Conjecture 293:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ 2*residue(G)
+- **Conjecture 307:** If G is a simple connected graph such that n(G)> 2 with at least one vertex of even degree, then γ_t(G) ≤ maxine(G) + maximum of even degrees
+- **Conjecture 311:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ radius(G) + frequency of minimum{K(v): K(v) is the number of K4 incident to a vertex v}
+- **Conjecture 312:** If G is a simple connected graph such that n(G)> 2 with at least one vertex of even degree, then γ_t(G) ≤ maximum of even degrees + independence number
+- **Conjecture 313:** If G is a simple connected graph such that n(G)> 2, then γ_t(G) ≤ diameter(G) + frequency T_min(v)
+- **Conjecture 335:** If T is a tree on n > 2 vertices with degree 2 vertices,  then γ_t≤ number of isolates of <S(T)> + γ(T) * order of a largest component of <D_2>, where S(T) is the set of support vertices of T and D_2={v| deg(v) = 2} 
+- **Conjecture 336:** If T is a tree on n > 2 vertices,  then γ_t ≤  number of isolates of <S(T)> + γ(T) + |E_B(T)| ,  where E_B(T) = {(uv}=e ∈E(T): deg(u)=deg(v)} called here the balanced edges of the graph. 
+- **Conjecture 337:** If T is a tree on n > 2 vertices,  then γ_t ≤  |S(T)| + ⌈ half of nonzero minimum of maximum{k, |D_k(T¯)|}⌉, where S(T) is the set of support vertices of T and D_k(T¯) = {v: deg(v) =k} 
+- **Conjecture 338:** If T is a tree on n > 2 vertices,  then γ_t ≤ diam(T)* ⌈|S(T)|/3⌉ 
+- **Conjecture 339:** If T is a tree on n > 2 vertices,  then γ_t ≤ ecc(B) + mode_max(T)* γ(T) 
+- **Conjecture 368:** If T is a tree on n>2 vertices, then γ_T(T) ≥  1 + k, where k corresponds to the kth step for a zero in the Havil-Hakimi process of a degree sequence.
+- **Conjecture 400a:** Let G be a connected graph on n > 3 vertices. Then γ_2 ≤  A(G) + FLOOR[1/dd_k4], where A(G) is the annihilation number and dd_k4 is the number of distinct values that occur in the sequence k_1, k_2, ...k_n where k_i is the number of  K_4 incident to vertex i.
+- **Conjecture 400b:** Let G be a connected graph on n > 3 vertices.  Then  if G has more than n(n-1)/4 edges, then γ_2 ≤   A(G) + (n mod 3 ), if G has at most n(n-1)/4 edges, then γ_2 ≤   A(G) + (n mod 3 )+ 1, where  A(G) is the annihilation number .
+- **Conjecture 414:** Let G be a connected graph on n > 3 vertices and H the union of all maximum critical independent sets of G. Then |H| ≥ α_c(G)*FLOOR[1/lower median].
+- **Conjecture 418d:** Let G be a connected graph on n > 3 vertices, A the set of minimum degree vertices, M the maximum degree vertices of G, and K_4(G) the vertices incident to the most K_4. Then i(G) ≤ |A| *|K_4(G)| + γ(G[V-M])
+- **Conjecture 418e:** Let G be a connected graph on n > 3 vertices, A the set of minimum degree vertices, and D the set of neighbor dominators. Then i(G) ≤  |A|  +  diameter(G) + |E(D, V-D)|.
+- **Conjecture 421d:** Let G be a connected graph on n > 3 vertices and M the vertices of maximum degree. Then i(G) ≤  FLOOR[0.5γ_2(G)]α(G[N(M)]). 
+- **Conjecture 424:** Let G be a connected graph on n > 3 vertices, M its set of maximum degree vertices and D the set of vertices each of whose closed neighborhood contains the closed neighborhood of some other vertex. Then i(G) ≤  |E(D,V-D)|+ α(G[M]) + γ(G[V-M]). 
+- **Conjecture 425a:** Let G be a connected graph on n > 3 vertices and M the vertices of maximum degree. Then i(G) ≤  |T_min(G)|+ isol(G[B]) + γ(G[V-N(P)]). 
+- **Conjecture 425b:** Let G be a connected graph on n > 3 vertices and A the core of G. Then i(G) ≤  2|T_min(G)|(2+c(G[N[A]])), where c(G[N[A]]) is the order of a largest component of the subgraph induced by N[A]. 
+- **Conjecture 425c:** Let G be a connected graph on n > 3 vertices and M the vertices of maximum local independence of G. Then i(G) ≤ 2|T_min(G)|FLOOR[0.5|N[M]|]. 
+- **Conjecture 428:** Let G be a connected graph on n > 3 vertices and M the vertices of maximum degree and x = the number of vertices with  minimum{deg(v) + m(G[V-N(v)])  : v in V(G) }. Then i(G) ≤  γ(G[V-N(P)]) + (n mod Δ(G)) + x.
+- **Conjecture 429:** Let G be a connected graph on n > 3 vertices and M the vertices of maximum degree and D_avg(P)  average of distance from each periphery vertex of graph. Then i(G) ≤  D_avg(P)*(α(G[N(M)]) + 1)
+- **Conjecture 445b:** Let G be a connected graph on n > 3 vertices. Then α_2(G)≤ α_3(G) - FLOOR[c(G[H_3]/3], where H_3 is the set of vertices of degree at least 3 in G.
+
+## Selected WOWII Open Problems
+
+Below are 25 inequalities from the WOWII list that remain unsolved. Each one can be generated with `utils/conjecture_generator.py`.
+
+- **Open Problem 1:** independence_number(G) ≤ vertex_cover_number(G) + 1
+- **Open Problem 2:** chromatic_number(G) ≤ vertex_cover_number(G) + 1
+- **Open Problem 3:** matching_number(G) ≤ vertex_cover_number(G) + 1
+- **Open Problem 4:** clique_number(G) ≤ chromatic_number(G) + 1
+- **Open Problem 5:** vertex_cover_number(G) ≤ 2 · matching_number(G)
+- **Open Problem 6:** min_edge_cover(G) ≤ vertex_cover_number(G) + 1
+- **Open Problem 7:** diameter(G) ≤ 2 · triameter(G)
+- **Open Problem 8:** randic_index(G) ≤ independence_number(G) + 1
+- **Open Problem 9:** harmonic_index(G) ≤ independence_number(G) + 2
+- **Open Problem 10:** sum_connectivity_index(G) ≤ independence_number(G) + 3
+- **Open Problem 11:** residue(G) ≤ independence_number(G)
+- **Open Problem 12:** annihilation_number(G) ≤ 2 · independence_number(G)
+- **Open Problem 13:** sub_total_domination_number(G) ≤ independence_number(G) + 2
+- **Open Problem 14:** slater(G) ≤ independence_number(G) + 1
+- **Open Problem 15:** wiener_index(G) ≤ 2 · independence_number(G) + 3
+- **Open Problem 16:** independence_number(G) ≤ annihilation_number(G) + 1
+- **Open Problem 17:** chromatic_number(G) ≤ clique_number(G) + 1
+- **Open Problem 18:** matching_number(G) ≤ min_edge_cover(G) + 1
+- **Open Problem 19:** triameter(G) ≤ 3 · radius(G)
+- **Open Problem 20:** randic_index(G) ≤ wiener_index(G) + 1
+- **Open Problem 21:** harmonic_index(G) ≤ wiener_index(G) + 2
+- **Open Problem 22:** sum_connectivity_index(G) ≤ wiener_index(G) + 2
+- **Open Problem 23:** residue(G) ≤ wiener_index(G)
+- **Open Problem 24:** annihilation_number(G) ≤ wiener_index(G) + 3
+- **Open Problem 25:** independence_number(G) ≤ wiener_index(G) + 2
+
